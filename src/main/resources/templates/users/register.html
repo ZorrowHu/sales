@@ -29,7 +29,7 @@
                             <h5>注册新账户</h5>
                         </div>
                         <div class="widget-body clearfix" style="padding:25px;">
-                            <form action="">
+                            <form method="post" action="/user/register">
                                 <!-- <div style="padding:10px 0">
                                     <a style="" href="#" class="btn btn-large btn-block btn-primary"><i class="icon-facebook-sign"></i> Register with Facebook</a>
                                 </div>
@@ -37,7 +37,7 @@
                                 <legend style="font-size: 16px; color:#555;" class=""><i class="icon-envelope"></i> You can also register by email</legend> -->
                                 <div class="control-group ">
                                     <label for="form_username">用户名:</label>
-                                    <div class="controls"><input class="btn-block" type="text" name="username" id="form_username"></div>
+                                    <div class="controls"><input class="btn-block" type="text" name="user_name" id="form_username"></div>
                                 </div>
 
                                 <div class="control-group ">
@@ -45,19 +45,18 @@
                                     <div class="controls"><input class="btn-block" type="password" name="password" id="form_password"></div>
                                 </div>
 
-                                <!--<div class="control-group ">-->
-                                    <!--<label for="form_password2">确认密码:</label>-->
-                                    <!--<div class="controls"><input class="btn-block" type="password" name="password" id="form_password2"></div>-->
-                                <!--</div>-->
-
                                 <div class="control-group ">
-                                    <label for="form_email">邮箱:</label>
-                                    <div class="controls"><input class="btn-block" type="text" name="email" id="form_email"></div>
+                                    <label>角色类型:</label>
+                                    <div class="controls">
+                                        <select name="user_role" class="control-group">
+                                            <option value="借卖方">借卖方</option>
+                                            <option value="品牌商">品牌商</option>
+                                        </select>
+                                    </div>
                                 </div>
 
-                                <div class="control-group ">
-                                    <!--<iframe src="http://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fwww.mbl.is&amp;send=false&amp;layout=standard&amp;width=280&amp;show_faces=false&amp;font&amp;colorscheme=light&amp;action=like&amp;height=35&amp;appId=242977562501330" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:280px; height:35px;" allowTransparency="true"></iframe>-->
-                                </div>
+
+
 
                                 <button type="submit" class="btn btn-large btn-block">注册并登录</button>
                             </form>
