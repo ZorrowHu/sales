@@ -1,4 +1,4 @@
 package com.platform.sales.surface;
 
-public class BrandreposServiceImpl {
+public interface Brand_reposService {
 }

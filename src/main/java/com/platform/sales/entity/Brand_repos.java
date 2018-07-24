@@ -7,28 +7,28 @@ import javax.persistence.*;
 public class Brand_repos {
     @Id
     @GeneratedValue
-    private Integer good_id;    //商品ID
+    private Integer goodId;    //商品ID
     @ManyToOne
     private Users brand;        //品牌商ID
-    @ManyToOne
+    @ManyToOne()
     private Type type;          //类型ID
     private Float price;        //价格
     private Integer quantity;   //数量
-    private String good_name;   //商品名
+    private String goodName;   //商品名
     private String status;      //状态
     private String image;       //图片
 
 
     public Brand_repos() { }
 
-    public Integer getGood_id() { return good_id; }
-    public void setGood_id(Integer good_id) { this.good_id = good_id; }
+    public Integer getGoodId() { return goodId; }
+    public void setGoodId(Integer goodId) { this.goodId = goodId; }
     public float getPrice() { return price; }
     public void setPrice(float price) { this.price = price; }
     public Integer getQuantity() { return quantity; }
     public void setQuantity(Integer quantity) { this.quantity = quantity; }
-    public String getGood_name() { return good_name; }
-    public void setGood_name(String good_name) { this.good_name = good_name; }
+    public String getGoodName() { return goodName; }
+    public void setGoodName(String goodName) { this.goodName = goodName; }
     public String getStatus() { return status; }
     public void setStatus(String status) { this.status = status; }
     public String getImage() { return image; }
