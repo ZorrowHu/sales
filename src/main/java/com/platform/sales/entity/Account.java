@@ -10,10 +10,10 @@ public class Account {
         @GeneratedValue
         private Integer account_id;        //账户id
         //private Integer user_id
-        @OneToOne                               //一个账户对应一个用户
-        private Users user;                      //用户id
-        private Integer balance;             //余额
-        private String pay_pwd;             //支付密码
+        @OneToOne                          //一个账户对应一个用户
+        private Users user;                //用户id
+        private Integer balance;           //余额
+        private String pay_pwd;            //支付密码
 
         public Account() { }
 
