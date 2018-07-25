@@ -39,18 +39,9 @@
 
                 <div class="top-menu visible-desktop">
                     <ul class="pull-right">
-                        <li><a th:href="@{/index/login}"><i class="icon-off"></i> Logout</a></li>
+                        <li><a th:href="@{/user/login}"><i class="icon-off"></i> Logout</a></li>
                     </ul>
                 </div>
-
-                <div class="top-menu visible-phone visible-tablet">
-                    <ul class="pull-right">
-                        <li><a title="link to View all Messages page, no popover in phone view or tablet" href="#"><i class="icon-envelope"></i></a></li>
-                        <li><a title="link to View all Notifications page, no popover in phone view or tablet" href="#"><i class="icon-globe"></i></a></li>
-                        <li><a th:href="@{/index/login}"><i class="icon-off"></i></a></li>
-                    </ul>
-                </div>
-
             </div>
         </div>
     </div>
@@ -58,7 +49,6 @@
     <div class="container-fluid">
 
         <!-- Side menu -->
-
         <div class="sidebar-nav nav-collapse collapse">
             <div class="user_side clearfix">
                 <img th:src="@{/assets/img/odinn.jpg}" alt="Odinn god of Thunder">
@@ -67,21 +57,23 @@
             </div>
             <div class="accordion" id="accordion2">
                 <div class="accordion-group">
+
                     <div class="accordion-heading">
                         <a class="accordion-toggle b_9FDDF6 active" data-toggle="collapse" data-parent="#accordion2" href="#collapse2"><i class="icon-reorder"></i> <span>品牌商</span></a>
                     </div>
                     <div id="collapse2" class="accordion-body collapse active in">
                         <div class="accordion-inner">
-                            <a class="accordion-toggle" th:href="@{'/brand/brandinfo/'+${session.user.getUserId()}}"><i class="icon-rss"></i> 我的信息</a>
+                            <a class="accordion-toggle" th:href="@{/brand/brandinfo}"><i class="icon-rss"></i> 我的信息</a>
                             <a class="accordion-toggle" th:href="@{/brand/index}"><i class="icon-calendar"></i> 商品录入</a>
                             <a class="accordion-toggle" th:href="@{/brand/mainframe}"><i class="icon-picture"></i> 商品主图</a>
-                            <a class="accordion-toggle" th:href="@{/brand/brandaccount/1}"><i class="icon-calendar"></i> 我的钱包</a>
-                            <a class="accordion-toggle" href="#"><i class="icon-picture"></i> 订单管理</a>
+                            <a class="accordion-toggle" th:href="@{/brand/brandaccount}"><i class="icon-calendar"></i> 我的钱包</a>
+                            <a class="accordion-toggle" th:href="@{/brand/brandorder}"><i class="icon-picture"></i> 订单管理</a>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>        <!-- /Side menu -->
+        </div>
+        <!-- /Side menu -->
 
         <!-- Main window -->
         <div class="main_container" id="tables_page">
