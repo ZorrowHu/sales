@@ -64,12 +64,12 @@
             <div class="accordion" id="accordion2">
                 <div class="accordion-group">
                     <div class="accordion-heading">
-                        <a class="accordion-toggle b_C3F7A7 collapsed" data-toggle="collapse" data-parent="#accordion2" href="#collapse1"><i class="icon-user   "></i> <span>管理员业务</span></a>
+                        <a class="accordion-toggle b_C3F7A7 collapsed" data-toggle="collapse" data-parent="#accordion2" href="#collapse1"><i class="icon-magic"></i> <span>管理员业务</span></a>
                     </div>
                     <div id="collapse1" class="accordion-body collapse">
                         <div class="accordion-inner">
-                            <a class="accordion-toggle" href="/administrator/type"><i class="icon-star"></i> 商品类别管理</a>
-                            <a class="accordion-toggle active" href="/administrator/cash"><i class="icon-list-alt"></i> 平台流水管理</a>
+                            <a class="accordion-toggle active" href="/administrator/type"><i class="icon-star"></i> 商品类别管理</a>
+                            <a class="accordion-toggle" href="/administrator/cash"><i class="icon-list-alt"></i> 平台流水管理</a>
                         </div>
                     </div>
                 </div>
@@ -81,66 +81,42 @@
         <div class="main_container">
             <div class="row-fluid">
                 <!-- 页面内容写在这里 -->
-                <div class="col-lg-offset-1 col-lg-10">
-                    <div class="panel panel-primary">
-                        <!-- Default panel contents -->
-                        <div class="panel-body">
-                            <p>
-                            <div class="alert alert-success">
-                                在这里，你可以对账户流水信息进行操作
-                            </div>
-                            </p>
-
-                            <table class="table">
-                                <thead>
-                                <tr>
-                                    <th>
-                                        <p>通过分类来管理订单</p>
-                                    </th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr>
-                                    <td>
-                                        <a th:href="@{index}" title="全部订单">全部订单<i class="fa fa-edit text-navy"></i></a>
-                                        &nbsp;&nbsp;&nbsp;&nbsp;
-                                        <a th:href="@{index}" title="待审核">待审核<i class="fa fa-edit text-navy"></i></a>
-                                        &nbsp;&nbsp;&nbsp;&nbsp;
-                                        <a th:href="@{index}" title="已通过">已通过<i class="fa fa-edit text-navy"></i></a>
-                                        &nbsp;&nbsp;&nbsp;&nbsp;
-                                        <a th:href="@{index}" title="未通过">未通过<i class="fa fa-edit text-navy"></i></a>
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
-
-                            <table class="table">
-                                <thead>
-                                <tr>
-                                    <th>发起人</th>
-                                    <th>发起时间</th>
-                                    <th>业务类型</th>
-                                    <th>金额</th>
-                                    <th>操作</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr >
-                                    <td>XiaoBao</td>
-                                    <td>2017/7/24</td>
-                                    <td>充值</td>
-                                    <td>$666</td>
-                                    <td>
-                                        <a th:href="@{index}" title="通过">通过<i class="fa fa-edit text-navy"></i></a>
-                                        &nbsp;&nbsp;&nbsp;&nbsp;
-                                        <a th:href="@{index}" title="不通过">不通过<i class="fa fa-trash-o text-navy"></i></a>
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
+                <div class="col-lg-12">
+                    <div class="alert alert-success">
+                        添加学生信息
                     </div>
                 </div>
+
+                <div class="col-lg-offset-2 col-lg-6">
+                    <form class="form-horizontal" role="form" action="../../administrator/add" method="post">
+                        <div class="form-group">
+                            <label for="inputEmail3" class="col-sm-2 control-label">一级目录</label>
+                            <div class="col-sm-8">
+                                <input type="text" name="content1" class="form-control" id="inputEmail3">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputPassword3" class="col-sm-2 control-label">二级目录</label>
+                            <div class="col-sm-8">
+                                <input type="text" name="content2" class="form-control" id="inputPassword3">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputPhone" class="col-sm-2 control-label">三级目录</label>
+                            <div class="col-sm-8">
+                                <input type="text" name="content3" class="form-control" id="inputPhone">
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <button type="submit" class="btn btn-success">添加商品类型</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
             </div>
         </div>
         <!-- /Main window -->

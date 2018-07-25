@@ -37,4 +37,9 @@ public class UsersServiceImpl implements UsersService {
     public Users userLogin(String name, String pwd) {
         return usersRepository.login(name, pwd);
     }
+
+    @Override
+    public Users userRegister(String name, String role) {
+        return usersRepository.register(name, role);
+    }
 }

@@ -58,6 +58,7 @@
                 <div class="user_side clearfix">
                     <img th:src="@{../assets/img/admin.jpg}" alt="Odinn god of Thunder">
                     <h5 th:text="${session.user.getUserName()}"></h5>
+                    <!--<h5>admin</h5>-->
                     <!--<a href="#"><i class="icon-cog"></i> Settings</a>        -->
                 </div>
                 <div class="accordion" id="accordion2">
@@ -67,7 +68,7 @@
                     </div>
                         <div id="collapse1" class="accordion-body collapse">
                             <div class="accordion-inner">
-                                <a class="accordion-toggle" href="#"><i class="icon-star"></i> 商品类别管理</a>
+                                <a class="accordion-toggle active" href="/administrator/type"><i class="icon-star"></i> 商品类别管理</a>
                                 <a class="accordion-toggle" href="/administrator/cash"><i class="icon-list-alt"></i> 平台流水管理</a>
                             </div>
                         </div>

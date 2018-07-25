@@ -5,7 +5,6 @@ import com.platform.sales.entity.Users;
 import com.platform.sales.surface.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,7 +20,6 @@ public class UsersController {
 
     @Autowired
     private UsersService usersService;  // 用于用户相关的数据操作
-    private Model model;
 
     /**
      * 转到登录界面
@@ -33,14 +31,13 @@ public class UsersController {
     }
 
     /**
-     * 跳转到重新登录页面
+     * 登录方法
+     * @param userName  页面表单提交的用户名
+     * @param password  页面表单提交的密码
+     * @param session   用来保存用户信息
+     * @param redirectAttributes    用于重载页面
      * @return
      */
-//    @GetMapping("/relogin")
-//    public String reloginPage(){
-//        return "users/relogin";
-//    }
-
     @PostMapping("/login")
     public String login(@RequestParam String userName,
                         @RequestParam String password,
@@ -48,7 +45,6 @@ public class UsersController {
                         RedirectAttributes redirectAttributes){
 
         Users user = usersService.userLogin(userName, password);    // 根据传过来的账户密码查询相应用户
-
         if (user != null && user.getUserRole() != "消费者"){
             user.setPassword("");   // 将密码设空以免泄露
             session.setAttribute("user", user);
@@ -64,8 +60,9 @@ public class UsersController {
         }
         // 默认为登陆错误
         redirectAttributes.addFlashAttribute("message", "用户名或密码错误，请重新输入！");
-        return "redirect:/users/login";
+        return "redirect:/user/login";
     }
+
     /**
      * 跳转到注册界面
      * @return
@@ -75,24 +72,38 @@ public class UsersController {
         return "users/register";
     }
 
-    @GetMapping("/reregister")
-    public String reregisterPage(){
-        return "users/reregister";
-    }
 
     /**
-     * 注册即添加新账户
-     * @param user
+     * 注册方法
+     * @param userName  表单提交过来的用户信息
+     * @param password  表单提交过来的用户密码
+     * @param userRole  表单提交过来的用户角色类型
+     * @param session   用来保存用户信息
+     * @param redirectAttributes    用于重载页面
      * @return
      */
     @PostMapping("/register")
-    public String register(Users user){
-        if (usersService.findByNameAndRole(user.getUserName(), user.getUserRole()) != null){  // 当同类用户同名的时候，即该用户名不可用
-            return this.reregisterPage();
-        }else{  // 当该用户名可用
-            usersService.addUsers(user);
-            return "users/login";
+    public String register(@RequestParam String userName,
+                           @RequestParam String password,
+                           @RequestParam String userRole,
+                           HttpSession session,
+                           RedirectAttributes redirectAttributes){
+
+        Users user = usersService.userRegister(userName, userRole);
+        if (user != null){  // 当用户名已被占用，就重载到注册页并显示错误信息
+            user.setPassword("");   // 将用户密码设空以免泄露信息
+            redirectAttributes.addFlashAttribute("message", "该用户名已被占用，请输入其他用户名！");
+            return "redirect:/user/register";
+        }else{                 // 当用户名可用
+            Users userInfo = new Users();
+            userInfo.setUserName(userName);
+            userInfo.setPassword(password);
+            userInfo.setUserRole(userRole);
+            usersService.addUsers(userInfo);    // 保存该用户
+            redirectAttributes.addFlashAttribute("message", "");
+            return "redirect:/user/login";   // 重载到登录页
         }
     }
+
 
 }

@@ -64,12 +64,12 @@
             <div class="accordion" id="accordion2">
                 <div class="accordion-group">
                     <div class="accordion-heading">
-                        <a class="accordion-toggle b_C3F7A7 collapsed" data-toggle="collapse" data-parent="#accordion2" href="#collapse1"><i class="icon-user   "></i> <span>管理员业务</span></a>
+                        <a class="accordion-toggle b_C3F7A7 collapsed" data-toggle="collapse" data-parent="#accordion2" href="#collapse1"><i class="icon-magic"></i> <span>管理员业务</span></a>
                     </div>
                     <div id="collapse1" class="accordion-body collapse">
                         <div class="accordion-inner">
-                            <a class="accordion-toggle" href="/administrator/type"><i class="icon-star"></i> 商品类别管理</a>
-                            <a class="accordion-toggle active" href="/administrator/cash"><i class="icon-list-alt"></i> 平台流水管理</a>
+                            <a class="accordion-toggle active" href="/administrator/type"><i class="icon-star"></i> 商品类别管理</a>
+                            <a class="accordion-toggle" href="/administrator/cash"><i class="icon-list-alt"></i> 平台流水管理</a>
                         </div>
                     </div>
                 </div>
@@ -84,58 +84,35 @@
                 <div class="col-lg-offset-1 col-lg-10">
                     <div class="panel panel-primary">
                         <!-- Default panel contents -->
+                        <div class="panel-heading">学生信息管理界面</div>
                         <div class="panel-body">
                             <p>
                             <div class="alert alert-success">
-                                在这里，你可以对账户流水信息进行操作
+                                在这里，你可以对商品类型信息进行查看/修改/删除/查询操作，如果需要添加商品类型信息请点击
+                                <a th:href="@{/administrator/add}" class="alert-link">添加商品类型</a>
                             </div>
                             </p>
-
                             <table class="table">
                                 <thead>
                                 <tr>
-                                    <th>
-                                        <p>通过分类来管理订单</p>
-                                    </th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr>
-                                    <td>
-                                        <a th:href="@{index}" title="全部订单">全部订单<i class="fa fa-edit text-navy"></i></a>
-                                        &nbsp;&nbsp;&nbsp;&nbsp;
-                                        <a th:href="@{index}" title="待审核">待审核<i class="fa fa-edit text-navy"></i></a>
-                                        &nbsp;&nbsp;&nbsp;&nbsp;
-                                        <a th:href="@{index}" title="已通过">已通过<i class="fa fa-edit text-navy"></i></a>
-                                        &nbsp;&nbsp;&nbsp;&nbsp;
-                                        <a th:href="@{index}" title="未通过">未通过<i class="fa fa-edit text-navy"></i></a>
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
-
-                            <table class="table">
-                                <thead>
-                                <tr>
-                                    <th>发起人</th>
-                                    <th>发起时间</th>
-                                    <th>业务类型</th>
-                                    <th>金额</th>
+                                    <th>一级目录</th>
+                                    <th>二级目录</th>
+                                    <th>三级目录</th>
                                     <th>操作</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr >
-                                    <td>XiaoBao</td>
-                                    <td>2017/7/24</td>
-                                    <td>充值</td>
-                                    <td>$666</td>
+                                <tr th:each="Type:${Types}">
+                                    <td th:text="${Type.getContent1()}" ></td>
+                                    <td th:text="${Type.getContent2()}" ></td>
+                                    <td th:text="${Type.getContent3()}" ></td>
                                     <td>
-                                        <a th:href="@{index}" title="通过">通过<i class="fa fa-edit text-navy"></i></a>
+                                        <a th:href="@{'update/'+${Type.getTypeId()}}" title="修改">修改<i class="fa fa-edit text-navy"></i></a>
                                         &nbsp;&nbsp;&nbsp;&nbsp;
-                                        <a th:href="@{index}" title="不通过">不通过<i class="fa fa-trash-o text-navy"></i></a>
+                                        <a th:href="@{'delete/'+${Type.getTypeId()}}" title="删除">删除<i class="fa fa-trash-o text-navy"></i></a>
                                     </td>
                                 </tr>
+
                                 </tbody>
                             </table>
                         </div>
