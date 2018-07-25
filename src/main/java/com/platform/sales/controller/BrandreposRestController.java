@@ -27,7 +27,7 @@ public class BrandreposRestController {
                         Map<String,String> taskMap=new HashMap<String,String>();
 
                         taskMap.put("secondary", list);
-                        list.add(taskMap);
+                        //list.add(taskMap);
                 }
                 jsonMap.put("tasks", lists);
                 return jsonMap;
