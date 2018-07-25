@@ -37,16 +37,16 @@
                     </a>
                     <div class="top-menu visible-desktop">
                         <ul class="pull-right">  
-                            <li><a th:href="@{login}"><i class="icon-off"></i> Logout</a></li>
+                            <li><a th:href="@{/user/login}"><i class="icon-off"></i> Logout</a></li>
                         </ul>
                     </div>
-                    <div class="top-menu visible-phone visible-tablet">
-                        <ul class="pull-right">  
-                            <li><a title="link to View all Messages page, no popover in phone view or tablet" href="#"><i class="icon-envelope"></i></a></li>
-                            <li><a title="link to View all Notifications page, no popover in phone view or tablet" href="#"><i class="icon-globe"></i></a></li>
-                            <li><a th:href="@{login}"><i class="icon-off"></i></a></li>
-                        </ul>
-                    </div>
+                    <!--<div class="top-menu visible-phone visible-tablet">-->
+                        <!--<ul class="pull-right">  -->
+                            <!--<li><a title="link to View all Messages page, no popover in phone view or tablet" href="#"><i class="icon-envelope"></i></a></li>-->
+                            <!--<li><a title="link to View all Notifications page, no popover in phone view or tablet" href="#"><i class="icon-globe"></i></a></li>-->
+                            <!--<li><a th:href="@{/user/login}"><i class="icon-off"></i></a></li>-->
+                        <!--</ul>-->
+                    <!--</div>-->
                 </div>
             </div>
         </div>
@@ -56,61 +56,22 @@
             <!-- Side menu -->
             <div class="sidebar-nav nav-collapse collapse">
                 <div class="user_side clearfix">
-                    <img th:src="@{../assets/img/odinn.jpg}" alt="Odinn god of Thunder">
-                    <h5>Odinn</h5>
-                    <a href="#"><i class="icon-cog"></i> Settings</a>        
+                    <img th:src="@{../assets/img/admin.jpg}" alt="Odinn god of Thunder">
+                    <h5 th:text="${session.user.getUserName()}"></h5>
+                    <!--<a href="#"><i class="icon-cog"></i> Settings</a>        -->
                 </div>
                 <div class="accordion" id="accordion2">
                     <div class="accordion-group">
-                    <div class="accordion-heading">
-                        <a class="accordion-toggle active b_F79999" href="#"><i class="icon-dashboard"></i> <span>管理员</span></a>
-                    </div>
-                    </div>
-                    <div class="accordion-group">
                         <div class="accordion-heading">
-                            <a class="accordion-toggle b_C3F7A7 collapsed" data-toggle="collapse" data-parent="#accordion2" href="#collapse1"><i class="icon-magic"></i> <span>借卖方</span></a>
+                            <a class="accordion-toggle b_C3F7A7 collapsed" data-toggle="collapse" data-parent="#accordion2" href="#collapse1"><i class="icon-magic"></i> <span>管理员业务</span></a>
                     </div>
                         <div id="collapse1" class="accordion-body collapse">
                             <div class="accordion-inner">
-                                <a class="accordion-toggle" href="#"><i class="icon-star"></i> 我的订单</a>
-                                <a class="accordion-toggle" href="#"><i class="icon-list-alt"></i> 我的钱包</a>
-                                <a class="accordion-toggle" href="#"><i class="icon-table"></i> 我的店铺</a>
-                                <a class="accordion-toggle" href="#"><i class="icon-circle"></i> 查看货物</a>
+                                <a class="accordion-toggle" href="#"><i class="icon-star"></i> 商品类别管理</a>
+                                <a class="accordion-toggle" href="/administrator/cash"><i class="icon-list-alt"></i> 平台流水管理</a>
                             </div>
                         </div>
                     </div>
-                    <div class="accordion-group">
-                        <div class="accordion-heading">
-                            <a class="accordion-toggle b_9FDDF6 collapsed" data-toggle="collapse" data-parent="#accordion2" href="#collapse2"><i class="icon-reorder"></i> <span>品牌商</span></a>
-                        </div>
-                        <div id="collapse2" class="accordion-body collapse">
-                            <div class="accordion-inner">
-                                <a class="accordion-toggle" href="#"><i class="icon-rss"></i> 我的货物</a>
-                                <a class="accordion-toggle" href="#"><i class="icon-calendar"></i> 我的钱包</a>
-                                <a class="accordion-toggle" href="#"><i class="icon-picture"></i> 查看店铺</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="accordion-group">
-                        <div class="accordion-heading">
-                            <a class="accordion-toggle b_F6F1A2" href="#"><i class="icon-tasks"></i> <span>这是个测试111</span></a>
-                        </div>
-                    </div>
-                    <div class="accordion-group">
-                        <div class="accordion-heading">
-                            <a class="accordion-toggle b_C1F8A9" href="#"><i class="icon-bar-chart"></i> <span>这是个测试</span></a>
-                        </div>
-                    </div> 
-                    <div class="accordion-group">
-                        <div class="accordion-heading">
-                            <a class="accordion-toggle b_9FDDF6" href="#"><i class="icon-bullhorn"></i> <span>这是个测试</span></a>
-                        </div>
-                    </div> 
-                    <div class="accordion-group">
-                        <div class="accordion-heading">
-                            <a class="accordion-toggle b_F5C294" href=""><i class="icon-user"></i> <span>这是个测试</span></a>
-                        </div>
-                    </div>      
                 </div>
             </div>
         <!-- /Side menu -->
@@ -125,57 +86,9 @@
                         <div class="panel-body">
                             <p>
                             <div class="alert alert-success">
-                                在这里，你可以对账户流水信息进行操作
+                                欢迎你！亲爱的管理员
                             </div>
                             </p>
-
-                            <table class="table">
-                                <thead>
-                                <tr>
-                                    <th>
-                                        <p>通过分类来管理订单</p>
-                                    </th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr>
-                                    <td>
-                                        <a th:href="@{index}" title="全部订单">全部订单<i class="fa fa-edit text-navy"></i></a>
-                                        &nbsp;&nbsp;&nbsp;&nbsp;
-                                        <a th:href="@{index}" title="待审核">待审核<i class="fa fa-edit text-navy"></i></a>
-                                        &nbsp;&nbsp;&nbsp;&nbsp;
-                                        <a th:href="@{index}" title="已通过">已通过<i class="fa fa-edit text-navy"></i></a>
-                                        &nbsp;&nbsp;&nbsp;&nbsp;
-                                        <a th:href="@{index}" title="未通过">未通过<i class="fa fa-edit text-navy"></i></a>
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
-
-                            <table class="table">
-                                <thead>
-                                <tr>
-                                    <th>发起人</th>
-                                    <th>发起时间</th>
-                                    <th>业务类型</th>
-                                    <th>金额</th>
-                                    <th>操作</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr >
-                                    <td>XiaoBao</td>
-                                    <td>2017/7/24</td>
-                                    <td>充值</td>
-                                    <td>$666</td>
-                                    <td>
-                                        <a th:href="@{index}" title="通过">通过<i class="fa fa-edit text-navy"></i></a>
-                                        &nbsp;&nbsp;&nbsp;&nbsp;
-                                        <a th:href="@{index}" title="不通过">不通过<i class="fa fa-trash-o text-navy"></i></a>
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
                         </div>
                     </div>
                 </div>

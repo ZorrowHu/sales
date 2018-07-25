@@ -6,12 +6,13 @@ import com.platform.sales.surface.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.validation.Valid;
+import javax.servlet.http.HttpSession;
 
 
 @Controller
@@ -31,18 +32,39 @@ public class UsersController {
         return "users/login";
     }
 
-    @GetMapping("/relogin")
-    public String reloginPage(){
-        return "users/relogin";
-    }
+    /**
+     * 跳转到重新登录页面
+     * @return
+     */
+//    @GetMapping("/relogin")
+//    public String reloginPage(){
+//        return "users/relogin";
+//    }
 
     @PostMapping("/login")
-    public String login(Users user){
-//        if (usersService.findByNameAndPwd(user.getUserName(), user.getPassword()) != null){
-            return "administrator/index";
-//        }else{
-//            return this.reloginPage();
-//        }
+    public String login(@RequestParam String userName,
+                        @RequestParam String password,
+                        HttpSession session,
+                        RedirectAttributes redirectAttributes){
+
+        Users user = usersService.userLogin(userName, password);    // 根据传过来的账户密码查询相应用户
+
+        if (user != null && user.getUserRole() != "消费者"){
+            user.setPassword("");   // 将密码设空以免泄露
+            session.setAttribute("user", user);
+            // 下列判断根据登陆者的身份信息，跳转到不同的页面
+            switch (user.getUserRole()){
+                case "管理员":
+                    return "administrator/index";
+                case "品牌商":
+                    return "brand/index";
+                case "借卖方":
+                    return "Stores/index";
+            }
+        }
+        // 默认为登陆错误
+        redirectAttributes.addFlashAttribute("message", "用户名或密码错误，请重新输入！");
+        return "redirect:/users/login";
     }
     /**
      * 跳转到注册界面

@@ -8,9 +8,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("administrator")
 public class AdministratorController {
 
+    /**
+     * 跳转到首页
+     * @return
+     */
     @GetMapping("/index")
     public String getAllOrders(){
         return "administrator/index";
+    }
+
+    @GetMapping("/cash")
+    public String getAllCash(){
+
+        return "administrator/cash";
     }
 
 }

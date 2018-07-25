@@ -32,4 +32,9 @@ public class UsersServiceImpl implements UsersService {
     public Users findByNameAndPwd(String name, String pwd) {
         return usersRepository.findByUserNameAndPassword(name, pwd);
     }
+
+    @Override
+    public Users userLogin(String name, String pwd) {
+        return usersRepository.login(name, pwd);
+    }
 }

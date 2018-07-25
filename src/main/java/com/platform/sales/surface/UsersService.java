@@ -19,4 +19,7 @@ public interface UsersService {
     // 根据账号密码查询用户
     Users findByNameAndPwd(String name, String pwd);
 
+    // 根据登录信息查询用户
+    Users userLogin(String name, String pwd);
+
 }
