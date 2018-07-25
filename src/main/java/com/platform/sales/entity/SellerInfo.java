@@ -3,26 +3,35 @@ package com.platform.sales.entity;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 
 @Entity
-public class Seller_info {
+public class SellerInfo {
     @Id
-    @Autowired
-    private int seller_id;//id，无实际意义
-    private String user_name;//借卖方名称
+    @GeneratedValue
+    private Integer sellerId;//id，无实际意义
+    private String userName;//借卖方名称
     private String mail;//借卖方邮箱
     private String phone;//电话
     @OneToOne
     private Users user;//用户id
 
-    public String getUser_name() {
-        return user_name;
+    public Integer getSellerId() {
+        return sellerId;
     }
 
-    public void setUser_name(String user_name) {
-        this.user_name = user_name;
+    public void setSellerId(Integer sellerId) {
+        this.sellerId = sellerId;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public String getMail() {
@@ -39,14 +48,6 @@ public class Seller_info {
 
     public void setPhone(String phone) {
         this.phone = phone;
-    }
-
-    public int getSeller_id() {
-        return seller_id;
-    }
-
-    public void setSeller_id(int seller_id) {
-        this.seller_id = seller_id;
     }
 
     public Users getUser() {

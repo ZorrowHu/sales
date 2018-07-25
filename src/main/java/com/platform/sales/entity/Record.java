@@ -10,7 +10,7 @@ public class Record {
 
     @Id
     @GeneratedValue
-    private Integer record_id;  //流水编号
+    private Integer recordId;  //流水编号
     @ManyToOne
     private Users users;        //主ID
     @ManyToOne
@@ -23,12 +23,13 @@ public class Record {
     public Record() {
     }
 
-    public Integer getRecord_id() {
-        return record_id;
+
+    public Integer getRecordId() {
+        return recordId;
     }
 
-    public void setRecord_id(Integer record_id) {
-        this.record_id = record_id;
+    public void setRecordId(Integer recordId) {
+        this.recordId = recordId;
     }
 
     public Users getUsers() {

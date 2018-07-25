@@ -6,7 +6,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToOne;
 
 @Entity
-public class Consumer_info {
+public class ConsumerInfo {
 
     @Id
     @GeneratedValue
@@ -16,8 +16,9 @@ public class Consumer_info {
     @OneToOne
     private Account account;//钱包ID
 
-    public Consumer_info() {
+    public ConsumerInfo() {
     }
+
 
     public Integer getId() {
         return id;
