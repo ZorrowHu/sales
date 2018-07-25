@@ -24,7 +24,13 @@ public interface TypeRepository extends JpaRepository<Type, Integer> {
         @Query( value = "SELECT DISTINCT content2 FROM Type WHERE content1 = ?1")
         List<String> getSecondary(String secondary);
 
+        @Query( value = "SELECT DISTINCT content2 FROM Type")
+        List<String> getSecondary();
+
         @Query( value = "SELECT DISTINCT content3 FROM Type WHERE content1 = ?1 AND content2 = ?2")
         List<String> getTertiary(String primary, String secondary);
+
+        @Query( value = "SELECT DISTINCT content3 FROM Type")
+        List<String> getTertiary();
 
 }

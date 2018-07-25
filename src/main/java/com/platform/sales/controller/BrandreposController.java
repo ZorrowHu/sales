@@ -10,7 +10,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("brand")
@@ -63,10 +65,17 @@ public class BrandreposController {
         @GetMapping("/uptgoods/{id}")
         public String uptgoods(@PathVariable("id") Integer id, Model model){
                 BrandRepos good = brandReposRepository.findById(id).get();
+                List<String> primaries = typeRepository.getPrimary();
+                List<String> secondaries = typeRepository.getSecondary(good.getType().getContent1());
+                List<String> tertiaries = typeRepository.getTertiary(good.getType().getContent1(), good.getType().getContent2());
                 model.addAttribute("good", good);
+                model.addAttribute("primaries", primaries);
+                model.addAttribute("secondaries", secondaries);
+                model.addAttribute("tertiaries", tertiaries);
                 return "brand/update";
         }
-
+        //@RequestMapping(value="/addframe", method=RequestMethod.POST)
+        //@RequestParam("goodId") Integer goodId
         @PostMapping("/doupdate/{id}")
         public String doupdate(@PathVariable("id") Integer id, BrandRepos good){
                 good.setGoodId(id);
@@ -88,6 +97,12 @@ public class BrandreposController {
         public String mainframe(String keyword, Model model) {
                 //find out all goods that is not newly added tot the repository
                 List<BrandRepos> Lists = brandReposRepository.findBrandreposByGoodNameAndStatusNot(keyword, "新入仓");
+                Map<String,String> taskMap=new HashMap<String,String>();
+                for (BrandRepos list : Lists){
+                        //list.getType().getContent3();
+                        //taskMap.put(list.getGoodId(), typeRepository.findById(list.getType().getTypeId()).get().getContent3());
+
+                }
                 model.addAttribute("Lists", Lists);
                 return "brand/mainframe";
         }
