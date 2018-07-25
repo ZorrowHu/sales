@@ -78,7 +78,6 @@ public class UsersController {
      * @param userName  表单提交过来的用户信息
      * @param password  表单提交过来的用户密码
      * @param userRole  表单提交过来的用户角色类型
-     * @param session   用来保存用户信息
      * @param redirectAttributes    用于重载页面
      * @return
      */
@@ -86,12 +85,11 @@ public class UsersController {
     public String register(@RequestParam String userName,
                            @RequestParam String password,
                            @RequestParam String userRole,
-                           HttpSession session,
                            RedirectAttributes redirectAttributes) {
 
         Users user = usersService.userRegister(userName, userRole);
 
-        if (userName == null || password == null){  // 当用户输入空白的信息
+        if (userName == "" || password == ""){  // 当用户输入空白的信息
             redirectAttributes.addFlashAttribute("message", "请不要输入空白信息，用户名密码均为必填");
             return "redirect:/user/register";
         }else if (user != null){  // 当用户名已被占用，就重载到注册页并显示错误信息
