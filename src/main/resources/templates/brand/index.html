@@ -164,10 +164,10 @@
                                     </thead>
                                     <tbody>
                                     <tr th:each="list : ${Lists}">
-                                        <td th:text="${list.goodId}">1</td>
-                                        <td th:text="${list.goodName}">Mark</td>
-                                        <td th:text="${list.price}">Otto</td>
-                                        <td th:text="${list.quantity}">@mdo</td>
+                                        <td th:text="${list.goodId}">此处会被覆盖</td>
+                                        <td th:text="${list.goodName}">此处会被覆盖</td>
+                                        <td th:text="${list.price}">此处会被覆盖</td>
+                                        <td th:text="${list.quantity}">此处会被覆盖</td>
                                         <td>
                                             <div class="btn-group">
                                                 <a th:href="@{'/brand/uptgoods/'+${list.goodId}}" class="btn"> 修改</a>
@@ -181,7 +181,6 @@
                             <div align="right">
                                 <a  class="btn btn-primary" th:href="@{/brand/newgoods}">添加</a>
                             </div>
-
                     </div><!--/widget-body-->
                 </div> <!-- /widget -->
             </div> <!-- /row-fluid -->

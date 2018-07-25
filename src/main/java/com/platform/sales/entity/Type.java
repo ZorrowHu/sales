@@ -8,43 +8,43 @@ public class Type {
 
         @Id
         @GeneratedValue
-        private Integer type_id;       //类型id
-        private String content_1;     //一级菜单
-        private String content_2;     //二级菜单
-        private String content_3;     //三级菜单
+        private Integer typeId;       //类型id
+        private String content1;     //一级菜单
+        private String content2;     //二级菜单
+        private String content3;     //三级菜单
 
     public Type() {
     }
 
-    public Integer getType_id() {
-        return type_id;
+    public Integer getTypeId() {
+        return typeId;
     }
 
-    public void setType_id(Integer type_id) {
-        this.type_id = type_id;
+    public void setTypeId(Integer typeId) {
+        this.typeId = typeId;
     }
 
-    public String getContent_1() {
-        return content_1;
+    public String getContent1() {
+        return content1;
     }
 
-    public void setContent_1(String content_1) {
-        this.content_1 = content_1;
+    public void setContent1(String content1) {
+        this.content1 = content1;
     }
 
-    public String getContent_2() {
-        return content_2;
+    public String getContent2() {
+        return content2;
     }
 
-    public void setContent_2(String content_2) {
-        this.content_2 = content_2;
+    public void setContent2(String content2) {
+        this.content2 = content2;
     }
 
-    public String getContent_3() {
-        return content_3;
+    public String getContent3() {
+        return content3;
     }
 
-    public void setContent_3(String content_3) {
-        this.content_3 = content_3;
+    public void setContent3(String content3) {
+        this.content3 = content3;
     }
 }

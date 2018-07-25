@@ -3,14 +3,14 @@ package com.platform.sales.entity;
 import javax.persistence.*;
 
 @Entity
-public class Ship_addr {
+public class ShipAddr {
 
     @Id
     @GeneratedValue
-    private Integer ship_id;    //地址表ID
+    private Integer shipId;    //地址表ID
     @ManyToOne
     private Users users;        //收货人ID
-    private String receive_name;//收货人姓名
+    private String receiveName;//收货人姓名
     private String province;    //省份
     private String city;        //城市
     private String district;    //区
@@ -19,15 +19,16 @@ public class Ship_addr {
     private String phone;       //电话
     private String email;       //邮箱
 
-    public Ship_addr() {
+    public ShipAddr() {
     }
 
-    public Integer getShip_id() {
-        return ship_id;
+
+    public Integer getShipId() {
+        return shipId;
     }
 
-    public void setShip_id(Integer ship_id) {
-        this.ship_id = ship_id;
+    public void setShipId(Integer shipId) {
+        this.shipId = shipId;
     }
 
     public Users getUsers() {
@@ -38,12 +39,12 @@ public class Ship_addr {
         this.users = users;
     }
 
-    public String getReceive_name() {
-        return receive_name;
+    public String getReceiveName() {
+        return receiveName;
     }
 
-    public void setReceive_name(String receive_name) {
-        this.receive_name = receive_name;
+    public void setReceiveName(String receiveName) {
+        this.receiveName = receiveName;
     }
 
     public String getProvince() {
