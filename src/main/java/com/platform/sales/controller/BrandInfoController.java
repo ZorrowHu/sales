@@ -3,10 +3,12 @@ package com.platform.sales.controller;
 import com.platform.sales.entity.Account;
 import com.platform.sales.entity.BrandInfo;
 import com.platform.sales.entity.Record;
+import com.platform.sales.entity.Users;
 import com.platform.sales.surface.BrandAccountService;
 import com.platform.sales.surface.BrandInfoService;
 import com.platform.sales.surface.BrandRecordService;
 import com.platform.sales.surface.UsersService;
+import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,7 +16,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpSession;
 import java.util.Date;
 import java.util.List;
 
@@ -35,39 +39,78 @@ public class BrandInfoController {
     private UsersService usersService;
 
     //我的信息
-    @GetMapping("/brandinfo/{id}")
-    public String brandInfo(@PathVariable("id") Integer id, Model model){
-        BrandInfo brandInfo = brandInfoService.findByUserId(id);
+    @GetMapping("/brandinfo")
+    public String brandInfo(HttpSession session,Model model){
+        Users users = (Users) session.getAttribute("user");
+        BrandInfo brandInfo = brandInfoService.findByUserId(users.getUserId());
+        Account brandacnt = brandAccountService.findByUserId(users.getUserId());
         if(brandInfo == null){
-
+            if(brandacnt != null)
+                model.addAttribute("account", brandacnt.getAccountId());
+            else
+                model.addAttribute("account", "-1");
+            return "/brand/newbrandinfo";
+        }else{
+            model.addAttribute("brandinfo",brandInfo);
+            return "/brand/brandinfo";
         }
-        model.addAttribute("brandinfo",brandInfo);
-        return "/brand/brandinfo";
     }
 
     @PostMapping("/updateBrandinfo")
-    public String updateBrandInfo(BrandInfo brandInfo){
+    public String updateBrandInfo(HttpSession session, BrandInfo brandInfo, Model model){
+        //分配一个钱包
+        if(brandInfo.getAccount().getAccountId() == -1){
+            Users users = (Users) session.getAttribute("user");
+            Account brandacnt = new Account();
+            brandacnt.setBalance(new Float(0));
+            brandacnt.setPayPwd("");
+            brandacnt.setUser(users);
+            Account acnt = brandAccountService.update(brandacnt);
+            brandInfo.setAccount(acnt);
+        }
         BrandInfo newbrandInfo = brandInfoService.update(brandInfo);
-        return "redirect:/brand/brandinfo/" + newbrandInfo.getUsers().getUserId();
+        model.addAttribute("brandinfo", newbrandInfo);
+        return "/brand/brandinfo";
     }
 
     //我的钱包
-    @GetMapping("/brandaccount/{id}")
-    public String brandAccount(@PathVariable("id") Integer id, Model model){
-        Account account = brandAccountService.findByUserId(id);
-        model.addAttribute("brandaccount",account);
+    @GetMapping("/brandaccount")
+    public String brandAccount(HttpSession session, Model model){
+        Users users = (Users) session.getAttribute("user");
+        Account account = brandAccountService.findByUserId(users.getUserId());
+        if(account == null){
+            Account brandacnt = new Account();
+            brandacnt.setBalance(new Float(0));
+            brandacnt.setPayPwd("");
+            brandacnt.setUser(users);
+            account = brandAccountService.update(brandacnt);
+        }
+        if(account.getPayPwd().equals("") && account.getBalance() == 0){
+            model.addAttribute("account",account);
+            return "/brand/newaccount";
+        }else{
+            model.addAttribute("brandaccount",account);
+            return "/brand/brandaccount";
+        }
+    }
+
+    @PostMapping("/brandaccount")
+    public String updateAccount(Account account, Model model){
+        Account newaccount = brandAccountService.update(account);
+        model.addAttribute("brandaccount",newaccount);
         return "/brand/brandaccount";
     }
 
     //提现
-    @GetMapping("/withdraw/{id}")
-    public String withdraw(@PathVariable("id") Integer id, Model model){
-        Account account = brandAccountService.findByUserId(id);
+    @GetMapping("/withdraw")
+    public String withdraw(HttpSession session, Model model){
+        Users users = (Users) session.getAttribute("user");
+        Account account = brandAccountService.findByUserId(users.getUserId());
         model.addAttribute("account", account);
         return "/brand/withdraw";
     }
 
-    @PostMapping("withdraw")
+    @PostMapping("/withdraw")
     public String withdraw(Account account,Model model){
         Account acnt = brandAccountService.findByUserId(account.getUser().getUserId());
         if(acnt.getPayPwd().equals(account.getPayPwd())){
@@ -84,7 +127,7 @@ public class BrandInfoController {
                 record.setStatus("待审核");
                 record.setType("提现");
                 brandRecordService.create(record);
-                return "redirect:/brand/brandaccount/" + acnt.getUser().getUserId();
+                return "redirect:/brand/brandaccount";
             }else{
                 model.addAttribute("error","余额不足！");
                 return "/brand/withdraw";
@@ -99,12 +142,13 @@ public class BrandInfoController {
     }
 
     //流水表
-    @GetMapping("/withdrawrecord/{id}")
-    public String withdrawRecord(@PathVariable("id") Integer id, Model model){
-        List<Record> records = brandRecordService.findByUserAndOp(id);
+    @GetMapping("/withdrawrecord")
+    public String withdrawRecord(HttpSession session, Model model){
+        Users users = (Users) session.getAttribute("user");
+        List<Record> records = brandRecordService.findByUserAndOp(users.getUserId());
         if(records.isEmpty())
             model.addAttribute("empty","无");
-        model.addAttribute("id", id);
+        model.addAttribute("id", users.getUserId());
         model.addAttribute("records", records);
         return "/brand/withdrawrecord";
     }

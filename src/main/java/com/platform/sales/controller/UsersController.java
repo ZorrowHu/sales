@@ -53,7 +53,7 @@ public class UsersController {
                 case "管理员":
                     return "redirect:/administrator/index";
                 case "品牌商":
-                    return "redirect:/brand/index";
+                    return "redirect:/brand/brandinfo";
                 case "借卖方":
                     return "redirect:/Stores/storeindex";
             }
