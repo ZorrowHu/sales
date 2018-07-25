@@ -12,7 +12,7 @@ public class Account {
         //private Integer user_id
         @OneToOne                          //一个账户对应一个用户
         private Users user;                //用户id
-        private Integer balance;           //余额
+        private Float balance;           //余额
         private String payPwd;            //支付密码
 
         public Account() { }
@@ -34,19 +34,19 @@ public class Account {
                 this.user = user;
         }
 
-        public Integer getBalance() {
-                return balance;
-        }
-
-        public void setBalance(Integer balance) {
-                this.balance = balance;
-        }
-
         public String getPayPwd() {
                 return payPwd;
         }
 
         public void setPayPwd(String payPwd) {
                 this.payPwd = payPwd;
+        }
+
+        public Float getBalance() {
+                return balance;
+        }
+
+        public void setBalance(Float balance) {
+                this.balance = balance;
         }
 }
