@@ -15,7 +15,9 @@ public class Order {
     private Users seller;       //借买方ID
     @ManyToOne
     private Users consumer;     //消费者ID
+
     private Integer quantity;   //数量
+    private String status;      //类型()
 
     private Float totalPrice;  //此订单总额
     private Date payTime;      //支付时间

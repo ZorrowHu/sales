@@ -18,7 +18,7 @@ public class Record {
     private Float money;        //金额
     private Date time;          //创建时间
     private String status;      //状态
-    private String type;        //类型（转账、体现、充值）
+    private String type;        //类型（转账、提现、充值）
 
 
     public Record() {

@@ -6,6 +6,7 @@ import com.platform.sales.entity.Record;
 import com.platform.sales.surface.BrandAccountService;
 import com.platform.sales.surface.BrandInfoService;
 import com.platform.sales.surface.BrandRecordService;
+import com.platform.sales.surface.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,10 +31,16 @@ public class BrandInfoController {
     @Autowired
     private BrandRecordService brandRecordService;
 
+    @Autowired
+    private UsersService usersService;
+
     //我的信息
     @GetMapping("/brandinfo/{id}")
     public String brandInfo(@PathVariable("id") Integer id, Model model){
         BrandInfo brandInfo = brandInfoService.findByUserId(id);
+        if(brandInfo == null){
+
+        }
         model.addAttribute("brandinfo",brandInfo);
         return "/brand/brandinfo";
     }
@@ -75,6 +82,7 @@ public class BrandInfoController {
                 record.setMoney(account.getBalance());
                 record.setTime(new Date());
                 record.setStatus("待审核");
+                record.setType("提现");
                 brandRecordService.create(record);
                 return "redirect:/brand/brandaccount/" + acnt.getUser().getUserId();
             }else{
@@ -90,6 +98,7 @@ public class BrandInfoController {
         }
     }
 
+    //流水表
     @GetMapping("/withdrawrecord/{id}")
     public String withdrawRecord(@PathVariable("id") Integer id, Model model){
         List<Record> records = brandRecordService.findByUserAndOp(id);
@@ -100,4 +109,9 @@ public class BrandInfoController {
         return "/brand/withdrawrecord";
     }
 
+    //订单管理
+    @GetMapping("/brandorder")
+    public String brandOrder(){
+        return "/brand/brandorder";
+    }
 }
