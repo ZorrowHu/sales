@@ -37,7 +37,7 @@
                 </a>
                 <div class="top-menu visible-desktop">
                     <ul class="pull-right">
-                        <li><a th:href="@{login}"><i class="icon-off"></i> Logout</a></li>
+                        <li><a th:href="@{/user/login}"><i class="icon-off"></i> Logout</a></li>
                     </ul>
                 </div>
                 <div class="top-menu visible-phone visible-tablet">
@@ -57,58 +57,22 @@
         <div class="sidebar-nav nav-collapse collapse">
             <div class="user_side clearfix">
                 <img th:src="@{../assets/img/odinn.jpg}" alt="Odinn god of Thunder">
-                <h5>Odinn</h5>
-                <a href="#"><i class="icon-cog"></i> Settings</a>
+                <h5 th:text="${session.user.getUserRole()}">Odinn</h5>
+                <h5 th:text="${session.user.getUserName()}">Odinn</h5>
             </div>
             <div class="accordion" id="accordion2">
-                <div class="accordion-group">
-                    <div class="accordion-heading">
-                        <a class="accordion-toggle active b_F79999" href="#"><i class="icon-dashboard"></i> <span>管理员</span></a>
-                    </div>
-                </div>
                 <div class="accordion-group">
                     <div class="accordion-heading">
                         <a class="accordion-toggle b_C3F7A7 collapsed" data-toggle="collapse" data-parent="#accordion2" href="#collapse1"><i class="icon-magic"></i> <span>借卖方</span></a>
                     </div>
                     <div id="collapse1" class="accordion-body collapse">
                         <div class="accordion-inner">
+                            <a class="accordion-toggle" th:href="@{'/seller/getInfo/'+${session.user.getUserId()}}"><i class="icon-rss"></i> 我的信息</a>
                             <a class="accordion-toggle" href="#"><i class="icon-star"></i> 我的订单</a>
                             <a class="accordion-toggle" href="#"><i class="icon-list-alt"></i> 我的钱包</a>
                             <a class="accordion-toggle" href="#"><i class="icon-table"></i> 我的店铺</a>
                             <a class="accordion-toggle" href="#"><i class="icon-circle"></i> 查看货物</a>
                         </div>
-                    </div>
-                </div>
-                <div class="accordion-group">
-                    <div class="accordion-heading">
-                        <a class="accordion-toggle b_9FDDF6 collapsed" data-toggle="collapse" data-parent="#accordion2" href="#collapse2"><i class="icon-reorder"></i> <span>品牌商</span></a>
-                    </div>
-                    <div id="collapse2" class="accordion-body collapse">
-                        <div class="accordion-inner">
-                            <a class="accordion-toggle" href="#"><i class="icon-rss"></i> 我的货物</a>
-                            <a class="accordion-toggle" href="#"><i class="icon-calendar"></i> 我的钱包</a>
-                            <a class="accordion-toggle" href="#"><i class="icon-picture"></i> 查看店铺</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="accordion-group">
-                    <div class="accordion-heading">
-                        <a class="accordion-toggle b_F6F1A2" href="#"><i class="icon-tasks"></i> <span>这是个测试111</span></a>
-                    </div>
-                </div>
-                <div class="accordion-group">
-                    <div class="accordion-heading">
-                        <a class="accordion-toggle b_C1F8A9" href="#"><i class="icon-bar-chart"></i> <span>这是个测试</span></a>
-                    </div>
-                </div>
-                <div class="accordion-group">
-                    <div class="accordion-heading">
-                        <a class="accordion-toggle b_9FDDF6" href="#"><i class="icon-bullhorn"></i> <span>这是个测试</span></a>
-                    </div>
-                </div>
-                <div class="accordion-group">
-                    <div class="accordion-heading">
-                        <a class="accordion-toggle b_F5C294" href=""><i class="icon-user"></i> <span>这是个测试</span></a>
                     </div>
                 </div>
             </div>
@@ -128,7 +92,7 @@
 
             </div>
                 <div class="col-lg-offset-2 col-lg-6">
-                    <form class="form-horizontal" role="form" th:action="@{/stores/updatestore}" method="post">
+                    <form class="form-horizontal" role="form" th:action="@{/Stores/updatestore}" method="post">
                         <input type="hidden" name="storeId" th:value="${stu.storeId}" >
                         <div class="form-group">
                             <label for="inputEmail3" class="col-sm-2 control-label">店铺名</label>
