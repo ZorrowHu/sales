@@ -16,6 +16,7 @@ public class Brand_info {
     private Users users;            //一个品牌对应一个Users
     @OneToOne
     private Account account;        //一个品牌对应一个钱包
+    private String image;           //商标
 
     public Brand_info() {
     }
@@ -58,5 +59,13 @@ public class Brand_info {
 
     public void setAccount(Account account) {
         this.account = account;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 }

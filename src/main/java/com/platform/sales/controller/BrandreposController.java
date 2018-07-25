@@ -43,7 +43,7 @@ public class BrandreposController {
         @PostMapping("/addgoods")
         public String addgoods(Brand_repos brand_repos){
                 Users brand = new Users();
-                brand.setUser_id(1);
+                brand.setUserId(1);
                 brand_repos.setBrand(brand);            //default user_id
                 brand_repos.setStatus("新入仓");       //default status
 
@@ -72,10 +72,10 @@ public class BrandreposController {
                 good.setGoodId(id);
 
                 Users brand = new Users();
-                brand.setUser_id(1);
+                brand.setUserId(1);
                 good.setBrand(brand);            //default user_id
                 good.setStatus("新入仓");       //default status
-                
+
                 Type type = typeRepository.findById(good.getType().getType_id()).get();
                 good.setType(type);
 
