@@ -108,8 +108,26 @@ public class BrandreposController {
                 return "brand/newframe";
         }
 
-        @PostMapping("/addframe")
-        public String addframe(BrandRepos goods){
+        @RequestMapping(value="/addframe", method=RequestMethod.POST)
+        public String addframe(@RequestParam("goodId") Integer goodId){
+                BrandRepos good = brandReposRepository.findById(goodId).get();
+                good.setStatus("已入仓");
+                brandReposRepository.save(good);
+                return "redirect:/brand/mainframe";
+        }
+
+        @GetMapping("/loadgoods/{id}")
+        public String loadgoods(@PathVariable("id") Integer id){
+                BrandRepos good = brandReposRepository.findById(id).get();
+                good.setStatus("已上架");
+                brandReposRepository.save(good);
+                return "redirect:/brand/mainframe";
+        }
+        @GetMapping("/unloadgoods/{id}")
+        public String unloadgoods(@PathVariable("id") Integer id){
+                BrandRepos good = brandReposRepository.findById(id).get();
+                good.setStatus("已下架");
+                brandReposRepository.save(good);
                 return "redirect:/brand/mainframe";
         }
 }

@@ -171,12 +171,9 @@
                                         <td><span class="label label-success" th:text="${list.status}">Active</span></td>
                                         <td>
                                             <div class="btn-group">
-                                                <a href="#" class="btn"> 修改</a>
                                                 <a th:href="@{'/brand/delframe/'+${list.goodId}}" class="btn"> 删除</a>
-                                                <a href="#" class="btn"> 入仓 </a>
-                                                <a href="#" class="btn"> 出仓 </a>
-                                                <a href="#" class="btn"> 上架 </a>
-                                                <a href="#" class="btn"> 下架 </a>
+                                                <a th:href="@{'/brand/loadgoods/'+${list.goodId}}" class="btn"> 上架 </a>
+                                                <a th:href="@{'/brand/unloadgoods/'+${list.goodId}}" class="btn"> 下架 </a>
                                             </div>
                                         </td>
                                     </tr>

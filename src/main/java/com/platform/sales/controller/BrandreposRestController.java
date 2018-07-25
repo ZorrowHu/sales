@@ -1,5 +1,7 @@
 package com.platform.sales.controller;
 
+import com.platform.sales.entity.BrandRepos;
+import com.platform.sales.entity.Type;
 import com.platform.sales.repository.BrandReposRepository;
 import com.platform.sales.repository.TypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,21 +22,20 @@ public class BrandreposRestController {
         TypeRepository typeRepository;
 
         @PostMapping("/getsecondary")
-        public Map<String, Object> getsecondary(String primary){
-                Map<String, Object> jsonMap = new HashMap<String, Object>();
+        public List<String> getsecondary(String primary){
                 List<String> secondaries = typeRepository.getSecondary(primary);
-                List list = new ArrayList();
-                ;
+                return secondaries;
+        }
+        @PostMapping("/gettertiary")
+        public List<String> gettertiary(String primary, String secondary){
+                List<String> tertiary = typeRepository.getTertiary(primary, secondary);
+                return tertiary;
+        }
 
-                for(String secondary : secondaries){
-                        Map<String,String> taskMap=new HashMap<String,String>();
-
-                        taskMap.put("primary", primary);
-                        taskMap.put("secondary", secondary);
-                        list.add(taskMap);
-                        //list.add(taskMap);
-                }
-                jsonMap.put("tasks", list);
-                return jsonMap;
+        @PostMapping("/getgoodsbytype")
+        public List<BrandRepos> getgoodsbytype(String primary, String secondary, String tertiary){
+                Type type = typeRepository.findTypeByContent1AndAndContent2AndContent3(primary, secondary, tertiary);
+                List<BrandRepos> goods = brandReposRepository.findBrandreposByTypeAndStatusNot(type, "新入仓");
+                return goods;
         }
 }

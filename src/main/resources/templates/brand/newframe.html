@@ -140,15 +140,15 @@
                                     <a href="#" data-title="Collapse" data-collapsed="false" class="tip collapse"><i class="icon-chevron-up"></i></a>
                                 </div>
                             </div>
+                            <form class="form-horizontal" th:action="@{/brand/addframe}" method="post">
                             <div class="widget-body">
                                 <div class="widget-forms clearfix">
-                                    <form class="form-horizontal" th:action="@{/brand/addframe}" method="post">
                                         <div class="control-group">
                                             <label class="control-label">Primary</label>
                                             <div class="controls">
                                                 <select tabindex="1" class="span7" id="type_primary" th:each="primary : ${primaries}">
                                                     <option value="Category 0">----Please choose the primary type----</option>>
-                                                    <option value="Category 1" th:text="${primary}">First Dropdown</option>
+                                                    <option th:value="${primary}" th:text="${primary}">First Dropdown</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -168,13 +168,21 @@
                                                 </select>
                                             </div>
                                         </div>
-                                    </form>
+                                        <div class="control-group">
+                                            <label class="control-label">Goods</label>
+                                            <div class="controls">
+                                                <select tabindex="1" class="span7" id="type_goods" name="goodId">
+                                                    <option value=""></option>
+                                                </select>
+                                            </div>
+                                        </div>
                                 </div>
                             </div>
                             <div class="widget-footer">
                                 <button class="btn btn-primary" type="submit">添加</button>
-                                <button class="btn" type="button">取消</button>
+                                <a class="btn" type="button" th:href="@{/brand/mainframe}">取消</a>
                             </div>
+                            </form>
                         </div>
                     </div>
                 </div> <!-- /row-fluid -->
@@ -199,28 +207,87 @@
 <script type='text/javascript' th:src='@{/assets/js/jquery.gritter.min.js}'></script>
 <script type="text/javascript" th:src="@{/assets/js/realm.js}"></script>
 <script type="text/javascript" th:src="@{/assets/js/jquery.slimscroll.min.js}"></script>
+
 <script type="text/javascript">
     $(function(){
         $("#type_primary").change(function(){
             var type_primary = $("#type_primary").val();
+            //alert(type_primary);
             $.ajax({
                 type:"POST",
-                url : "brandrest/getsecondary",
+                url : "/brandrest/getsecondary",
+                async : false,
                 data:{
                     primary : type_primary
                 },
-                dataType : "json",
                 success:function(data){
                     $("#type_secondary").empty();
-                    $("#type_secondary").append("<option value=''>----Secondary----</option>");
-                    $.each(data.tasks,function(index,item){
-                        $("#type_secondary").append( "<option value='"+ item.prim+"'>"+item.secon+"</option>");
-                    });
+                    $("#type_tertiary").empty();
+                    $("#type_goods").empty();
+                    $("#type_secondary").append("<option value=''>----Please choose the secondary type----</option>");
+                    for (i = 0; i < data.length; i++) {
+                        //alert(data[i]);
+                        $("#type_secondary").append( "<option value='"+data[i]+"'>"+data[i]+"</option>");
+                    }
                 }
             });
         });
     });
 </script>
-
+<script type="text/javascript">
+    $(function(){
+        $("#type_secondary").change(function(){
+            var type_primary = $("#type_primary").val();
+            var type_secondary = $("#type_secondary").val();
+            //alert(type_primary);
+            $.ajax({
+                type:"POST",
+                url : "/brandrest/gettertiary",
+                async : false,
+                data:{
+                    primary : type_primary,
+                    secondary : type_secondary
+                },
+                success:function(data){
+                    $("#type_tertiary").empty();
+                    $("#type_goods").empty();
+                    $("#type_tertiary").append("<option value=''>----Please choose the tertiary type----</option>");
+                    for (i = 0; i < data.length; i++) {
+                        //alert(data[i]);
+                        $("#type_tertiary").append( "<option value='"+data[i]+"'>"+data[i]+"</option>");
+                    }
+                }
+            });
+        });
+    });
+</script>
+<script type="text/javascript">
+    $(function(){
+        $("#type_tertiary").change(function(){
+            var type_primary = $("#type_primary").val();
+            var type_secondary = $("#type_secondary").val();
+            var type_tertiary = $("#type_tertiary").val();
+            $.ajax({
+                type:"POST",
+                url : "/brandrest/getgoodsbytype",
+                async : false,
+                data:{
+                    primary : type_primary,
+                    secondary : type_secondary,
+                    tertiary : type_tertiary
+                },
+                success:function(data){
+                    $("#type_goods").empty();
+                    $("#type_goods").append("<option value=''>----Please choose the goods according to the types above----</option>");
+                    var obj = eval(data);
+                    //alert(obj1[0].goodName);
+                    for (i = 0; i < obj.length; i++) {
+                           $("#type_goods").append( "<option value='"+obj[i].goodId+"'>"+obj[i].goodName+"</option>");
+                    }
+                }
+            });
+        });
+    });
+</script>
 </body>
 </html>
