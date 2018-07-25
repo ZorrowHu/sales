@@ -50,7 +50,7 @@ public class ConsumerController {
      */
     @PostMapping("/register")
     public String register(Users user){
-        user.setUser_role("消费者");   // 消费者的注册没有角色类型可选，所以指定为消费者
+        user.setUserRole("消费者");   // 消费者的注册没有角色类型可选，所以指定为消费者
         usersService.addUsers(user);
         return "consumer/login";
     }

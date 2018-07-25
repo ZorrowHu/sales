@@ -16,4 +16,7 @@ public interface UsersService {
     // 根据user_name和user_role查询用户
     Users findByNameAndRole(String name, String role);
 
+    // 根据账号密码查询用户
+    Users findByNameAndPwd(String name, String pwd);
+
 }

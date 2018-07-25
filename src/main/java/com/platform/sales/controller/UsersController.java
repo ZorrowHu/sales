@@ -6,9 +6,12 @@ import com.platform.sales.surface.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import javax.validation.Valid;
 
 
 @Controller
@@ -28,6 +31,19 @@ public class UsersController {
         return "users/login";
     }
 
+    @GetMapping("/relogin")
+    public String reloginPage(){
+        return "users/relogin";
+    }
+
+    @PostMapping("/login")
+    public String login(Users user){
+//        if (usersService.findByNameAndPwd(user.getUserName(), user.getPassword()) != null){
+            return "administrator/index";
+//        }else{
+//            return this.reloginPage();
+//        }
+    }
     /**
      * 跳转到注册界面
      * @return
@@ -49,14 +65,12 @@ public class UsersController {
      */
     @PostMapping("/register")
     public String register(Users user){
-
-        if (usersService.findByNameAndRole(user.getUser_name(), user.getUser_role()) != null){  // 当同类用户同名的时候，即该用户名不可用
+        if (usersService.findByNameAndRole(user.getUserName(), user.getUserRole()) != null){  // 当同类用户同名的时候，即该用户名不可用
             return this.reregisterPage();
         }else{  // 当该用户名可用
             usersService.addUsers(user);
             return "users/login";
         }
-
     }
 
 }

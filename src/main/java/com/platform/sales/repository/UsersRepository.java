@@ -8,4 +8,6 @@ public interface UsersRepository extends JpaRepository<Users, Integer> {
 
 //    @Override
     public Users findByUserNameAndUserRole(String userName, String userRole);
+
+    public Users findByUserNameAndPassword(String userName, String password);
 }

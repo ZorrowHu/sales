@@ -27,4 +27,9 @@ public class UsersServiceImpl implements UsersService {
     public Users findByNameAndRole(String name, String role) {
         return usersRepository.findByUserNameAndUserRole(name, role);
     }
+
+    @Override
+    public Users findByNameAndPwd(String name, String pwd) {
+        return usersRepository.findByUserNameAndPassword(name, pwd);
+    }
 }
