@@ -15,4 +15,7 @@ public interface TypeRepository extends JpaRepository<Type, Integer> {
 
         @Query( value = "SELECT DISTINCT content_1 FROM type", nativeQuery = true)
         List<String> getPrimary();
+
+        @Query( value = "SELECT DISTINCT content_2 FROM type WHERE content_1 = ?1")
+        List<String> getSecondary(String secondary);
 }

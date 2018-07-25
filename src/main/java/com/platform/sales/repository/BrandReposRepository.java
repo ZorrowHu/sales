@@ -11,5 +11,7 @@ public interface BrandReposRepository extends JpaRepository<BrandRepos, Integer>
         @Override
         Page<BrandRepos> findAll(Pageable pageable);
 
-        List<BrandRepos> findBrandReposByGoodName(String name);
+        List<BrandRepos> findBrandreposByGoodName(String name);
+        List<BrandRepos> findBrandreposByStatusNot(String status);
+        List<BrandRepos> findBrandreposByGoodNameAndStatusNot(String name, String status);
 }
