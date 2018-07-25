@@ -66,52 +66,16 @@
             <div class="accordion" id="accordion2">
                 <div class="accordion-group">
                     <div class="accordion-heading">
-                        <a class="accordion-toggle active b_F79999" href="#"><i class="icon-dashboard"></i> <span>管理员</span></a>
+                        <a class="accordion-toggle b_9FDDF6 active" data-toggle="collapse" data-parent="#accordion2" href="#collapse2"><i class="icon-reorder"></i> <span>品牌商</span></a>
                     </div>
-                </div>
-                <div class="accordion-group">
-                    <div class="accordion-heading">
-                        <a class="accordion-toggle b_C3F7A7 collapsed" data-toggle="collapse" data-parent="#accordion2" href="#collapse1"><i class="icon-magic"></i> <span>借卖方</span></a>
-                    </div>
-                    <div id="collapse1" class="accordion-body collapse">
+                    <div id="collapse2" class="accordion-body collapse active in">
                         <div class="accordion-inner">
-                            <a class="accordion-toggle" href="#"><i class="icon-star"></i> 我的订单</a>
-                            <a class="accordion-toggle" href="#"><i class="icon-list-alt"></i> 我的钱包</a>
-                            <a class="accordion-toggle" href="#"><i class="icon-table"></i> 我的店铺</a>
-                            <a class="accordion-toggle" href="#"><i class="icon-circle"></i> 查看货物</a>
+                            <a class="accordion-toggle" th:href="@{'/brand/brandinfo/'+${session.user.getUserId()}}"><i class="icon-rss"></i> 我的信息</a>
+                            <a class="accordion-toggle" th:href="@{/brand/index}"><i class="icon-calendar"></i> 商品录入</a>
+                            <a class="accordion-toggle" th:href="@{/brand/mainframe}"><i class="icon-picture"></i> 商品主图</a>
+                            <a class="accordion-toggle" th:href="@{/brand/brandaccount/1}"><i class="icon-calendar"></i> 我的钱包</a>
+                            <a class="accordion-toggle" href="#"><i class="icon-picture"></i> 订单管理</a>
                         </div>
-                    </div>
-                </div>
-                <div class="accordion-group">
-                    <div class="accordion-heading">
-                        <a class="accordion-toggle b_9FDDF6 collapsed" data-toggle="collapse" data-parent="#accordion2" href="#collapse2"><i class="icon-reorder"></i> <span>品牌商</span></a>
-                    </div>
-                    <div id="collapse2" class="accordion-body collapse">
-                        <div class="accordion-inner">
-                            <a class="accordion-toggle" href="#"><i class="icon-rss"></i> 我的货物</a>
-                            <a class="accordion-toggle" href="#"><i class="icon-calendar"></i> 我的钱包</a>
-                            <a class="accordion-toggle" href="#"><i class="icon-picture"></i> 查看店铺</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="accordion-group">
-                    <div class="accordion-heading">
-                        <a class="accordion-toggle b_F6F1A2" href="#"><i class="icon-tasks"></i> <span>这是个测试</span></a>
-                    </div>
-                </div>
-                <div class="accordion-group">
-                    <div class="accordion-heading">
-                        <a class="accordion-toggle b_C1F8A9" href="#"><i class="icon-bar-chart"></i> <span>这是个测试</span></a>
-                    </div>
-                </div>
-                <div class="accordion-group">
-                    <div class="accordion-heading">
-                        <a class="accordion-toggle b_9FDDF6" href="#"><i class="icon-bullhorn"></i> <span>这是个测试</span></a>
-                    </div>
-                </div>
-                <div class="accordion-group">
-                    <div class="accordion-heading">
-                        <a class="accordion-toggle b_F5C294" href="#"><i class="icon-user"></i> <span>这是个测试</span></a>
                     </div>
                 </div>
             </div>
@@ -132,58 +96,77 @@
             <div class="row-fluid">
                 <div class="widget widget-padding span12">
                     <div class="widget-header">
-                        <i class="icon-table"></i>
-                        <h5>新增商品信息</h5>
+                        <i class="icon-list-alt"></i><h5>修改商品信息</h5>
                         <div class="widget-buttons">
-                            <!--<a href="http://twitter.github.com/bootstrap/base-css.html#tables" data-title="Documentation" class="tip" target="_blank"><i class="icon-external-link"></i></a>-->
-                            <!--<a href="#" data-title="Collapse" data-collapsed="false" class="tip collapse"><i class="icon-chevron-up"></i></a>-->
+                            <a href="#" data-title="Collapse" data-collapsed="false" class="tip collapse"><i class="icon-chevron-up"></i></a>
                         </div>
                     </div>
-                    <div class="widget-body">
-                        <div class="row-fluid">
-                            <form class="form-horizontal" role="form" th:action="@{'/brand/doupdate/'+ ${good.getGoodId()}}" method="post">
-                                <div class="form-group">
-                                    <label for="goodName" class="col-sm-2 control-label">商品名称　</label>
-                                    <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="goodName" name="goodName" th:value="${good.goodName}">
+                    <form class="form-horizontal" role="form" th:action="@{'/brand/doupdate/'+ ${good.getGoodId()}}" method="post">                        <input type="hidden" name="goodId">
+                        <div class="widget-body">
+                            <div class="widget-forms clearfix">
+                                <div class="control-group">
+                                    <label class="control-label">商品名称</label>
+                                    <div class="controls">
+                                        <input class="span7" type="text" placeholder="请输入商品名称" name="goodName" th:value="${good.goodName}">
+                                        <span class="help-inline"></span>
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <label for="price" class="col-sm-2 control-label">商品价格　</label>
-                                    <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="price" name="price" th:value="${good.price}">
+                                <div class="control-group">
+                                    <label class="control-label">商品价格</label>
+                                    <div class="controls">
+                                        <input class="span7" type="text" placeholder="请输入商品价格" name="price" th:value="${good.price}">
+                                        <span class="help-inline"></span>
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <label for="quantity" class="col-sm-2 control-label">商品库存　</label>
-                                    <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="quantity" name="quantity" th:value="${good.quantity}">
+                                <div class="control-group">
+                                    <label class="control-label">商品库存</label>
+                                    <div class="controls">
+                                        <input class="span7" type="text" placeholder="请输入商品库存" name="quantity" th:value="${good.quantity}">
+                                        <span class="help-inline"></span>
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <label for="type" class="col-sm-2 control-label">商品类别　</label>
-                                    <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="type" name="type.typeId" th:value="${good.getType().getTypeId()}">
+                                <div class="control-group">
+                                <label class="control-label">一级类别</label>
+                                <div class="controls">
+                                    <select tabindex="1" class="span7" id="type_primary">
+                                        <option value="Category 0">----Please choose the primary type----</option>
+                                        <option th:each="primary : ${primaries}" th:selected="${good.getType().content1==primary}" th:value="${primary}" th:text="${primary}">First Dropdown</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label">二级类别</label>
+                                <div class="controls">
+                                    <select tabindex="1" class="span7" id="type_secondary">
+                                        <option value="Category 0">----Please choose the secondary type----</option>
+                                        <option th:each="secondary : ${secondaries}" th:selected="${good.getType().content2==secondary}" th:value="${secondary}" th:text="${secondary}">Second Dropdown</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label">三级类别</label>
+                                <div class="controls">
+                                    <select tabindex="1" class="span7" id="type_tertiary">
+                                        <option value="Category 0">----Please choose the tertiary type----</option>>
+                                        <option th:each="tertiary : ${tertiaries}" th:selected="${good.getType().content3==tertiary}" th:value="${tertiary}" th:text="${tertiary}">Third Dropdown</option>
+                                    </select>
+                                </div>
+                            </div>
+                                <div class="control-group">
+                                    <label class="control-label">商品图片</label>
+                                    <div class="controls">
+                                        <input class="span7" type="text" placeholder="请输入商品图片" name="image" th:value="${good.image}">
+                                        <span class="help-inline"></span>
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <label for="image" class="col-sm-2 control-label">商品图片　</label>
-                                    <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="image" name="image" th:value="${good.image}">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <div class="col-sm-offset-2 col-sm-10">
-                                        <button type="submit" class="btn btn-default">修改</button>
-                                    </div>
-                                </div>
-                                <input type="hidden" name="brand.userId" th:value="${good.brand.userId}">
-                                <input type="hidden" name="status" th:value="${good.status}">
-                            </form>
-
-                        </div><!--/widget-body-->
-                    </div> <!-- /widget -->
-                </div> <!-- /row-fluid -->
+                            </div>
+                        </div>
+                        <div class="widget-footer">
+                            <button class="btn btn-primary" type="submit">修改</button>
+                            <a class="btn" type="button" th:href="@{/brand/index}">取消</a>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div><!--/.fluid-container-->
     </div><!-- wrap ends-->
@@ -206,5 +189,60 @@
 <script type='text/javascript' th:src='@{/assets/js/jquery.gritter.min.js}'></script>
 <script type="text/javascript" th:src="@{/assets/js/realm.js}"></script>
 <script type="text/javascript" th:src="@{/assets/js/jquery.slimscroll.min.js}"></script>
+
+
+<script type="text/javascript">
+    $(function(){
+        $("#type_primary").change(function(){
+            var type_primary = $("#type_primary").val();
+            //alert(type_primary);
+            $.ajax({
+                type:"POST",
+                url : "/brandrest/getsecondary",
+                async : false,
+                data:{
+                    primary : type_primary
+                },
+                success:function(data){
+                    $("#type_secondary").empty();
+                    $("#type_tertiary").empty();
+                    $("#type_goods").empty();
+                    $("#type_secondary").append("<option value=''>----Please choose the secondary type----</option>");
+                    for (i = 0; i < data.length; i++) {
+                        //alert(data[i]);
+                        $("#type_secondary").append( "<option value='"+data[i]+"'>"+data[i]+"</option>");
+                    }
+                }
+            });
+        });
+    });
+</script>
+<script type="text/javascript">
+    $(function(){
+        $("#type_secondary").change(function(){
+            var type_primary = $("#type_primary").val();
+            var type_secondary = $("#type_secondary").val();
+            //alert(type_primary);
+            $.ajax({
+                type:"POST",
+                url : "/brandrest/gettertiary",
+                async : false,
+                data:{
+                    primary : type_primary,
+                    secondary : type_secondary
+                },
+                success:function(data){
+                    $("#type_tertiary").empty();
+                    $("#type_goods").empty();
+                    $("#type_tertiary").append("<option value=''>----Please choose the tertiary type----</option>");
+                    for (i = 0; i < data.length; i++) {
+                        //alert(data[i]);
+                        $("#type_tertiary").append( "<option value='"+data[i]+"'>"+data[i]+"</option>");
+                    }
+                }
+            });
+        });
+    });
+</script>
 </body>
 </html>
