@@ -13,14 +13,15 @@ public class StoreOrder {
     private Users consumer;     //消费者ID
     @ManyToOne
     private Stores store;       //店铺ID
-    private Date pay_time;      //支付时间
+    private Date payTime;      //支付时间
     @ManyToOne
     private ShipAddr ship;     //收货地址
     private String status;      //订单状态
-    private Float total_price;  //订单总价
+    private Float totalPrice;  //订单总价
 
     public StoreOrder() {
     }
+
 
     public Integer getId() {
         return id;
@@ -46,12 +47,12 @@ public class StoreOrder {
         this.store = store;
     }
 
-    public Date getPay_time() {
-        return pay_time;
+    public Date getPayTime() {
+        return payTime;
     }
 
-    public void setPay_time(Date pay_time) {
-        this.pay_time = pay_time;
+    public void setPayTime(Date payTime) {
+        this.payTime = payTime;
     }
 
     public ShipAddr getShip() {
@@ -70,11 +71,11 @@ public class StoreOrder {
         this.status = status;
     }
 
-    public Float getTotal_price() {
-        return total_price;
+    public Float getTotalPrice() {
+        return totalPrice;
     }
 
-    public void setTotal_price(Float total_price) {
-        this.total_price = total_price;
+    public void setTotalPrice(Float totalPrice) {
+        this.totalPrice = totalPrice;
     }
 }
