@@ -35,4 +35,9 @@ public  class StoresServiceImpl implements StoresService {
     public Stores updateStudentInfo(Stores stores) {
         return storesRepository.save(stores);
     }
+
+    @Override
+    public List<Stores> findAllByUser_UserId(Integer id) {
+        return storesRepository.findAllByUser_UserId(id);
+    }
 }

@@ -8,9 +8,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.ui.Model;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 @Controller
-@RequestMapping("stores")
+@RequestMapping("Stores")
     public class StoresController {
 @Autowired
     private StoresService storesService;
@@ -18,33 +19,29 @@ import java.util.List;
     @GetMapping("/addstore")
     public String addPage(){
 
-        return "stores/addstore";
+        return "Stores/addstore";
     }
 
     @PostMapping("/addstore")
-    public String addStore(Stores stores)
+    public String addStore(Stores stores,HttpSession session)
     {
-        Users users= new Users();
-        users.setUserId(113);
-        users.setPassword("789");
-        users.setUserRole("seller");
-        users.setUserName("zhang");
-        stores.setUser(users);
-
+        Users user= (Users)session.getAttribute("user");
+        stores.setUser(user);
         storesService.addStoreInfo(stores);
-        return "redirect:/stores/storeindex";
+        return "redirect:/Stores/storeindex";
     }
     @GetMapping("/storeindex")
-    public String getindex(Model model){
-        List<Stores> lists=storesService.getAllstores();
+    public String getindex(Model model,HttpSession session){
+        Users user = (Users)session.getAttribute("user");
+        List<Stores> lists=storesService.findAllByUser_UserId(user.getUserId());
         model.addAttribute("stus",lists);
-        return "stores/storeindex";
+        return "Stores/storeindex";
     }
 
     @GetMapping("delete/{id}")
     public String deleteStu(@PathVariable("id") Integer store_id){
         storesService.deleteByStoreID(store_id);
-        return "redirect:/stores/storeindex"; // 删除完成后生定向到首页即：列表页面（index）
+        return "redirect:/Stores/storeindex"; // 删除完成后生定向到首页即：列表页面（index）
     }
 
     /**
@@ -57,7 +54,7 @@ import java.util.List;
     public String modifStore(@PathVariable("id") Integer store_id, Model model){
         Stores stores=storesService.getStoreByID(store_id);
         model.addAttribute("stu",stores);
-        return "stores/updatestore";
+        return "Stores/updatestore";
     }
 
     /**
@@ -66,15 +63,11 @@ import java.util.List;
      * @return
      */
     @PostMapping("updatestore")
-    public String modifStu(Stores stores ){
-        Users users= new Users();
-        users.setUserId(113);
-        users.setPassword("789");
-        users.setUserRole("seller");
-        users.setUserName("zhang");
-        stores.setUser(users);
+    public String modifStu(Stores stores,HttpSession session ){
+        Users user = (Users)session.getAttribute("user");
+        stores.setUser(user);
         storesService.updateStudentInfo(stores);
-        return "redirect:/stores/storeindex"; // 修改完成后重定向到首页即：列表页面（index）
+        return "redirect:/Stores/storeindex"; // 修改完成后重定向到首页即：列表页面（index）
     }
 
 }
