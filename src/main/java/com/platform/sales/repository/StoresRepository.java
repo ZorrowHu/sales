@@ -5,6 +5,8 @@ import com.platform.sales.entity.Stores;
 import org.hibernate.validator.constraints.Range;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface StoresRepository extends JpaRepository<Stores,Integer> {
+import java.util.List;
 
+public interface StoresRepository extends JpaRepository<Stores,Integer> {
+    List<Stores> findAllByUser_UserId(Integer id);
 }

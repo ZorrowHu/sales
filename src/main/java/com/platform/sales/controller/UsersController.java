@@ -55,7 +55,7 @@ public class UsersController {
                 case "品牌商":
                     return "redirect:/brand/brandinfo";
                 case "借卖方":
-                    return "redirect:/Stores/index";
+                    return "redirect:/Stores/storeindex";
             }
         }
         // 默认为登陆错误

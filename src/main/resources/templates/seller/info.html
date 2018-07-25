@@ -2,7 +2,7 @@
 <html lang="en"  xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
-    <title>借卖方----个人信息</title>
+    <title>个人信息</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="author" content="Bluth Company">
     <link rel="shortcut icon" th:href="@{/assets/ico/favicon.html}">
@@ -61,58 +61,22 @@
         <div class="sidebar-nav nav-collapse collapse">
             <div class="user_side clearfix">
                 <img th:src="@{/assets/img/odinn.jpg}" alt="Odinn god of Thunder">
-                <h5>Odinn</h5>
-                <a href="#"><i class="icon-cog"></i> Settings</a>
+                <h5 th:text="${session.user.getUserRole()}">Odinn</h5>
+                <h5 th:text="${session.user.getUserName()}">Odinn</h5>
             </div>
             <div class="accordion" id="accordion2">
-                <div class="accordion-group">
-                    <div class="accordion-heading">
-                        <a class="accordion-toggle active b_F79999" href="#"><i class="icon-dashboard"></i> <span>管理员</span></a>
-                    </div>
-                </div>
                 <div class="accordion-group">
                     <div class="accordion-heading">
                         <a class="accordion-toggle b_C3F7A7 collapsed" data-toggle="collapse" data-parent="#accordion2" href="#collapse1"><i class="icon-magic"></i> <span>借卖方</span></a>
                     </div>
                     <div id="collapse1" class="accordion-body collapse">
                         <div class="accordion-inner">
+                            <a class="accordion-toggle" href="#"><i class="icon-rss"></i> 我的信息</a>
                             <a class="accordion-toggle" href="#"><i class="icon-star"></i> 我的订单</a>
                             <a class="accordion-toggle" href="#"><i class="icon-list-alt"></i> 我的钱包</a>
-                            <a class="accordion-toggle" href="#"><i class="icon-table"></i> 我的店铺</a>
+                            <a class="accordion-toggle" th:href="@{'/Stores/storeindex'}"><i class="icon-table"></i> 我的店铺</a>
                             <a class="accordion-toggle" href="#"><i class="icon-circle"></i> 查看货物</a>
                         </div>
-                    </div>
-                </div>
-                <div class="accordion-group">
-                    <div class="accordion-heading">
-                        <a class="accordion-toggle b_9FDDF6 collapsed" data-toggle="collapse" data-parent="#accordion2" href="#collapse2"><i class="icon-reorder"></i> <span>品牌商</span></a>
-                    </div>
-                    <div id="collapse2" class="accordion-body collapse">
-                        <div class="accordion-inner">
-                            <a class="accordion-toggle" href="#"><i class="icon-rss"></i> 我的货物</a>
-                            <a class="accordion-toggle" href="#"><i class="icon-calendar"></i> 我的钱包</a>
-                            <a class="accordion-toggle" href="#"><i class="icon-picture"></i> 查看店铺</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="accordion-group">
-                    <div class="accordion-heading">
-                        <a class="accordion-toggle b_F6F1A2" href="#"><i class="icon-tasks"></i> <span>这是个测试</span></a>
-                    </div>
-                </div>
-                <div class="accordion-group">
-                    <div class="accordion-heading">
-                        <a class="accordion-toggle b_C1F8A9" href="#"><i class="icon-bar-chart"></i> <span>这是个测试</span></a>
-                    </div>
-                </div>
-                <div class="accordion-group">
-                    <div class="accordion-heading">
-                        <a class="accordion-toggle b_9FDDF6" href="#"><i class="icon-bullhorn"></i> <span>这是个测试</span></a>
-                    </div>
-                </div>
-                <div class="accordion-group">
-                    <div class="accordion-heading">
-                        <a class="accordion-toggle b_F5C294" href="#"><i class="icon-user"></i> <span>这是个测试</span></a>
                     </div>
                 </div>
             </div>
@@ -126,7 +90,7 @@
                     <li class="active">个人信息</li>
                 </ul>
                 <h2 class="heading">
-                    Tables
+                    个人信息
                 </h2>
             </div>
 
@@ -155,16 +119,15 @@
                                     </tr>
                                     </thead>
                                     <tr>
-                                        <input type="hidden" name="seller_id" th:value="${id}"/>
+                                        <input type="hidden" name="sellerId" th:value="${id}"/>
                                         <input type="hidden" name="user.userId" th:value="${sellerinfo.user.userId}"/>
-                                        <td><input type="text" name="user_name" th:placeholder="${sellerinfo.userName}"/></td>
-                                        <td><input type="text" name="phone" th:placeholder="${sellerinfo.phone}"/></td>
-                                        <td><input type="text" name="mail" th:placeholder="${sellerinfo.mail}"/></td>
-                                    </tr>
-                                    <tr>
-                                        <td cols="3"><input class="button" type="submit" value="确认修改"></td>
+                                        <td><input type="text" name="userName" th:placeholder="${sellerinfo.userName}" th:value="${sellerinfo.userName}" /></td>
+                                        <td><input type="text" name="phone" th:placeholder="${sellerinfo.phone}" th:value="${sellerinfo.phone}"/></td>
+                                        <td><input type="text" name="mail" th:placeholder="${sellerinfo.mail}" th:value="${sellerinfo.mail}"/></td>
                                     </tr>
                                 </table>
+                                <br/>
+                                <div align="right"><input class="btn btn-success" type="submit" value="确认修改"></div>
                             </div> <!-- /widget-body -->
                             </form>
                         </div> <!-- /widget -->

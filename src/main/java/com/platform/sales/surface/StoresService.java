@@ -9,4 +9,5 @@ public interface StoresService {
     Stores addStoreInfo(Stores stores);
     void deleteByStoreID(Integer store_id);
     Stores updateStudentInfo(Stores student);
+    List<Stores> findAllByUser_UserId(Integer id);
 }
