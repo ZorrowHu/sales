@@ -2,7 +2,7 @@ package com.platform.sales.surface;
 import java.util.List;
 import java.util.*;
 import com.platform.sales.entity.Stores;
-public interface StroresService {
+public interface StoresService {
 
     List<Stores> getAllstores();
     Stores getStoreByID(Integer store_id);
