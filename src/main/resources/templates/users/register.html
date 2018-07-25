@@ -54,8 +54,11 @@
                                         </select>
                                     </div>
                                 </div>
-
-
+                                <div>
+                                    <strong class="alert alert-warning"
+                                             th:unless="${#strings.isEmpty(message)}"
+                                             th:text="${message}"></strong>
+                                </div>
 
 
                                 <button type="submit" class="btn btn-large btn-block">注册并登录</button>
