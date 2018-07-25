@@ -13,7 +13,6 @@ public interface TypeRepository extends JpaRepository<Type, Integer> {
         @Override
         Page<Type> findAll(Pageable pageable);
 
-<<<<<<< Updated upstream
         //Get the typeId by categories for relative goods searching
         Type findTypeByContent1AndAndContent2AndContent3(String primary, String secondary, String tertiary);
 
@@ -27,8 +26,5 @@ public interface TypeRepository extends JpaRepository<Type, Integer> {
 
         @Query( value = "SELECT DISTINCT content3 FROM Type WHERE content1 = ?1 AND content2 = ?2")
         List<String> getTertiary(String primary, String secondary);
-=======
-        @Query( value = "SELECT DISTINCT content_1 FROM type", nativeQuery = true)
-        List<String> getPrimary();
->>>>>>> Stashed changes
+
 }
