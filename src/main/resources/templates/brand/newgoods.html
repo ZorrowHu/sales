@@ -114,9 +114,9 @@
                                 <div class="control-group">
                                     <label class="control-label">一级类别</label>
                                     <div class="controls">
-                                        <select tabindex="1" class="span7" id="type_primary" th:each="primary : ${primaries}" name="type_primary">
+                                        <select tabindex="1" class="span7" id="type_primary" name="type_primary">
                                             <option value="Category 0">----请选择商品的一级类别----</option>>
-                                            <option th:value="${primary}" th:text="${primary}">First Dropdown</option>
+                                            <option th:each="primary : ${primaries}" th:value="${primary}" th:text="${primary}">First Dropdown</option>
                                         </select>
                                     </div>
                                 </div>
