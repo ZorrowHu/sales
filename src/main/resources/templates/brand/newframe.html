@@ -197,8 +197,8 @@
                 success:function(data){
                     $("#type_secondary").empty();
                     $("#type_secondary").append("<option value=''>----Secondary----</option>");
-                    $.each(data.tasks,function(index,item){
-                        $("#type_secondary").append( "<option value='"+item.id+"'>"+item.name+"</option>");
+                    $.each(data.tasks,function(value){
+                        $("#type_secondary").append( "<option value='"+ value+"'>"+value+"</option>");
                     });
                 }
             });

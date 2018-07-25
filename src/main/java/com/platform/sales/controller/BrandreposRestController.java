@@ -23,7 +23,12 @@ public class BrandreposRestController {
                 Map<String, Object> jsonMap = new HashMap<String, Object>();
                 //Map<String, String> taskMap = new HashMap<String, String>();
                 List<String> lists = typeRepository.getSecondary(primary);
+                for(String list : lists){
+                        Map<String,String> taskMap=new HashMap<String,String>();
 
+                        taskMap.put("secondary", list);
+                        list.add(taskMap);
+                }
                 jsonMap.put("tasks", lists);
                 return jsonMap;
         }
