@@ -129,11 +129,11 @@
             </div>
                 <div class="col-lg-offset-2 col-lg-6">
                     <form class="form-horizontal" role="form" th:action="@{/stores/updatestore}" method="post">
-                        <input type="hidden" name="store_id" th:value="${stu.store_id}" >
+                        <input type="hidden" name="store_id" th:value="${stu.storeId}" >
                         <div class="form-group">
                             <label for="inputEmail3" class="col-sm-2 control-label">店铺名</label>
                             <div class="col-sm-8">
-                                <input type="text" name="store_name" th:value="${stu.store_name}" class="form-control" id="inputEmail3" placeholder="姓名">
+                                <input type="text" name="store_name" th:value="${stu.storeName}" class="form-control" id="inputEmail3" placeholder="姓名">
                             </div>
                         </div>
                             <div class="col-sm-offset-8 col-sm-4">

@@ -142,13 +142,13 @@
                                 </thead>
                                 <tbody>
                                 <tr th:each="Stores:${stus}">
-                                    <td th:text="${Stores.store_id}"> aehyok</td>
-                                    <td th:text="${Stores.store_name}">leo</td>
+                                    <td th:text="${Stores.storeId}"> aehyok</td>
+                                    <td th:text="${Stores.storeName}">leo</td>
                                     <td th:text="${Stores.user.userName}">leo</td>
                                     <td>
-                                        <a th:href="@{'updatestore/'+${Stores.getStore_id()}}" title="修改">修改<i class="fa fa-edit text-navy"></i></a>
+                                        <a th:href="@{'updatestore/'+${Stores.getStoreId()}}" title="修改">修改<i class="fa fa-edit text-navy"></i></a>
                                         &nbsp;&nbsp;&nbsp;&nbsp;
-                                        <a th:href="@{'delete/'+${Stores.getStore_id()}}" title="删除">删除<i class="fa fa-trash-o text-navy"></i></a>
+                                        <a th:href="@{'delete/'+${Stores.getStoreId()}}" title="删除">删除<i class="fa fa-trash-o text-navy"></i></a>
                                     </td>
 
                                 </tbody>
