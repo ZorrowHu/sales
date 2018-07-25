@@ -23,13 +23,13 @@ public class BrandreposController {
         @GetMapping("/index")
         public String index(Model model) {
                 List<BrandRepos> repository =  brandReposRepository.findAll();
-                model.addAttribute("ListsFirst",  repository);
+                model.addAttribute("Lists",  repository);
                 return "brand/index";
         }
 
         @PostMapping("/index")
         public String index(String keyword, Model model) {
-                List<BrandRepos> repository =  brandReposRepository.findBrand_reposByGoodName(keyword);
+                List<BrandRepos> repository =  brandReposRepository.findBrandreposByGoodName(keyword);
                 model.addAttribute("Lists",  repository);
                 model.addAttribute("Message", "关键字搜索");
                 return "brand/index";
@@ -41,16 +41,16 @@ public class BrandreposController {
         }
 
         @PostMapping("/addgoods")
-        public String addgoods(BrandRepos brand_repos){
+        public String addgoods(BrandRepos brandrepos){
                 Users brand = new Users();
                 brand.setUserId(1);
-                brand_repos.setBrand(brand);            //default user_id
-                brand_repos.setStatus("新入仓");       //default status
+                brandrepos.setBrand(brand);            //default user_id
+                brandrepos.setStatus("新入仓");       //default status
 
-                Type type = typeRepository.findById(brand_repos.getType().getTypeId()).get();
-                brand_repos.setType(type);
+                Type type = typeRepository.findById(brandrepos.getType().getTypeId()).get();
+                brandrepos.setType(type);
 
-                brandReposRepository.save(brand_repos);
+                brandReposRepository.save(brandrepos);
                 return "redirect:/brand/index";
         }
 
@@ -80,14 +80,14 @@ public class BrandreposController {
 
         @GetMapping("/mainframe")
         public String mainframe(Model model) {
-                List<BrandRepos> Lists = brandReposRepository.findBrand_reposByStatusNot("新入仓");
+                List<BrandRepos> Lists = brandReposRepository.findBrandreposByStatusNot("新入仓");
                 model.addAttribute("Lists", Lists);
                 return "brand/mainframe";
         }
         @PostMapping("/mainframe")
         public String mainframe(String keyword, Model model) {
                 //find out all goods that is not newly added tot the repository
-                List<BrandRepos> Lists = brandReposRepository.findBrand_reposByGoodNameAndStatusNot(keyword, "新入仓");
+                List<BrandRepos> Lists = brandReposRepository.findBrandreposByGoodNameAndStatusNot(keyword, "新入仓");
                 model.addAttribute("Lists", Lists);
                 return "brand/mainframe";
         }
@@ -102,10 +102,10 @@ public class BrandreposController {
 
         @GetMapping("/newframe")
         public String newframe(Model model){
-                List<BrandRepos> Lists = brandReposRepository.findBrand_reposByStatusNot("新入仓");
+                List<BrandRepos> Lists = brandReposRepository.findBrandreposByStatusNot("新入仓");
                 List<String> primaries = typeRepository.getPrimary();
                 model.addAttribute("primaries", primaries);
-                return "/brand/newframe";
+                return "brand/newframe";
         }
 
         @PostMapping("/addframe")

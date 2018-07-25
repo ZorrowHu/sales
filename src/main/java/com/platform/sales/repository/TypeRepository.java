@@ -13,6 +13,11 @@ public interface TypeRepository extends JpaRepository<Type, Integer> {
         @Override
         Page<Type> findAll(Pageable pageable);
 
-        @Query( value = "SELECT DISTINCT content_1 FROM type", nativeQuery = true)
+        //original SQL statement should follow the dataset name("type")
+        @Query( value = "SELECT DISTINCT content1 FROM type ", nativeQuery = true)
         List<String> getPrimary();
+
+        //HQL statement should follow the project entity name("Type")
+        @Query( value = "SELECT DISTINCT content2 FROM Type WHERE content1 = ?1")
+        List<String> getSecondary(String secondary);
 }
