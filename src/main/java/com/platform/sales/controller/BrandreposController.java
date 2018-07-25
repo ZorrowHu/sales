@@ -22,6 +22,7 @@ public class BrandreposController {
         BrandReposRepository brandReposRepository;
         @Autowired
         TypeRepository typeRepository;
+
         @GetMapping("/index")
         public String index(Model model) {
                 List<BrandRepos> repository =  brandReposRepository.findAll();
@@ -74,13 +75,17 @@ public class BrandreposController {
                 model.addAttribute("tertiaries", tertiaries);
                 return "brand/update";
         }
-        //@RequestMapping(value="/addframe", method=RequestMethod.POST)
         //@RequestParam("goodId") Integer goodId
-        @PostMapping("/doupdate/{id}")
-        public String doupdate(@PathVariable("id") Integer id, BrandRepos good){
+        //@PostMapping("/doupdate/{id}")
+        @RequestMapping(value="/doupdate/{id}", method=RequestMethod.POST)
+        public String doupdate(@PathVariable("id") Integer id, BrandRepos good,
+                               @RequestParam("type_primary") String primary,
+                               @RequestParam("type_secondary") String secondary,
+                               @RequestParam("type_tertiary") String tertiary
+                               ){
                 good.setGoodId(id);
 
-                Type type = typeRepository.findById(good.getType().getTypeId()).get();
+                Type type = typeRepository.findTypeByContent1AndContent2AndContent3(primary,secondary,tertiary);
                 good.setType(type);
 
                 brandReposRepository.save(good);

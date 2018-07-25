@@ -110,7 +110,7 @@
                                 <div class="control-group">
                                 <label class="control-label">一级类别</label>
                                 <div class="controls">
-                                    <select tabindex="1" class="span7" id="type_primary">
+                                    <select tabindex="1" class="span7" id="type_primary" name="type_primary">
                                         <option value="Category 0">----Please choose the primary type----</option>
                                         <option th:each="primary : ${primaries}" th:selected="${good.getType().content1==primary}" th:value="${primary}" th:text="${primary}">First Dropdown</option>
                                     </select>
@@ -119,7 +119,7 @@
                             <div class="control-group">
                                 <label class="control-label">二级类别</label>
                                 <div class="controls">
-                                    <select tabindex="1" class="span7" id="type_secondary">
+                                    <select tabindex="1" class="span7" id="type_secondary" name="type_secondary">
                                         <option value="Category 0">----Please choose the secondary type----</option>
                                         <option th:each="secondary : ${secondaries}" th:selected="${good.getType().content2==secondary}" th:value="${secondary}" th:text="${secondary}">Second Dropdown</option>
                                     </select>
@@ -128,7 +128,7 @@
                             <div class="control-group">
                                 <label class="control-label">三级类别</label>
                                 <div class="controls">
-                                    <select tabindex="1" class="span7" id="type_tertiary">
+                                    <select tabindex="1" class="span7" id="type_tertiary" name="type_tertiary">
                                         <option value="Category 0">----Please choose the tertiary type----</option>>
                                         <option th:each="tertiary : ${tertiaries}" th:selected="${good.getType().content3==tertiary}" th:value="${tertiary}" th:text="${tertiary}">Third Dropdown</option>
                                     </select>
