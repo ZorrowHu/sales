@@ -92,6 +92,7 @@
                                         <th>流水编号</th>
                                         <th>账户ID</th>
                                         <th>金额</th>
+                                        <th>类型</th>
                                         <th>创建时间</th>
                                         <th>状态</th>
                                     </tr>
@@ -101,6 +102,7 @@
                                         <td th:text="${Record.recordId}"></td>
                                         <td th:text="${Record.users.userId}"></td>
                                         <td th:text="${Record.money}"></td>
+                                        <td th:text="${Record.type}"></td>
                                         <td th:text="${Record.time}"></td>
                                         <td th:text="${Record.status}"></td>
                                     </tr>

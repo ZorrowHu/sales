@@ -142,10 +142,25 @@ public class BrandInfoController {
     }
 
     //流水表
-    @GetMapping("/withdrawrecord")
+    @GetMapping("/record")
     public String withdrawRecord(HttpSession session, Model model){
         Users users = (Users) session.getAttribute("user");
+        List<Record> records_1 = brandRecordService.findByUser(users.getUserId());
+        List<Record> records_2 = brandRecordService.findByOp(users.getUserId());
         List<Record> records = brandRecordService.findByUserAndOp(users.getUserId());
+        records.addAll(records_1);
+        records.addAll(records_2);
+        for (int i = 0; i < records.size(); i++){
+            Record record = records.get(i);
+            if(record.getUsers().getUserId() == users.getUserId()
+                    && record.getOp().getUserId() == users.getUserId()){
+                record.setType("提现");
+            }else if (record.getUsers().getUserId() == users.getUserId()){
+                record.setType("转出");
+            }else if(record.getOp().getUserId() == users.getUserId()){
+                record.setType("转入");
+            }
+        }
         if(records.isEmpty())
             model.addAttribute("empty","无");
         model.addAttribute("id", users.getUserId());
