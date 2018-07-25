@@ -14,7 +14,7 @@ public interface TypeRepository extends JpaRepository<Type, Integer> {
         Page<Type> findAll(Pageable pageable);
 
         //Get the typeId by categories for relative goods searching
-        Type findTypeByContent1AndAndContent2AndContent3(String primary, String secondary, String tertiary);
+        Type findTypeByContent1AndContent2AndContent3(String primary, String secondary, String tertiary);
 
         //original SQL statement should follow the dataset name("type")
         @Query( value = "SELECT DISTINCT content1 FROM type ", nativeQuery = true)
