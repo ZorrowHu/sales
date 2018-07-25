@@ -71,7 +71,11 @@ public class BrandreposController {
         public String doupdate(@PathVariable("id") Integer id, BrandRepos good){
                 good.setGoodId(id);
 
+<<<<<<< Updated upstream
                 Type type = typeRepository.findById(good.getType().getTypeId()).get();
+=======
+                Type type = typeRepository.findById(good.getType().getType_id()).get();
+>>>>>>> Stashed changes
                 good.setType(type);
 
                 brandReposRepository.save(good);
@@ -80,28 +84,43 @@ public class BrandreposController {
 
         @GetMapping("/mainframe")
         public String mainframe(Model model) {
+<<<<<<< Updated upstream
                 List<BrandRepos> Lists = brandReposRepository.findBrandreposByStatusNot("新入仓");
+=======
+                List<Brand_repos> Lists = brand_reposRepository.findBrand_reposByStatusNot("新入仓");
+>>>>>>> Stashed changes
                 model.addAttribute("Lists", Lists);
                 return "brand/mainframe";
         }
         @PostMapping("/mainframe")
         public String mainframe(String keyword, Model model) {
                 //find out all goods that is not newly added tot the repository
+<<<<<<< Updated upstream
                 List<BrandRepos> Lists = brandReposRepository.findBrandreposByGoodNameAndStatusNot(keyword, "新入仓");
+=======
+                List<Brand_repos> Lists = brand_reposRepository.findBrand_reposByGoodNameAndStatusNot(keyword, "新入仓");
+>>>>>>> Stashed changes
                 model.addAttribute("Lists", Lists);
                 return "brand/mainframe";
         }
 
         @GetMapping("/delframe/{id}")
         public String delframe(@PathVariable("id") Integer id){
+<<<<<<< Updated upstream
                 BrandRepos goods = brandReposRepository.findById(id).get();
                 goods.setStatus("新入仓");
                 brandReposRepository.save(goods);
+=======
+                Brand_repos goods = brand_reposRepository.findById(id).get();
+                goods.setStatus("新入仓");
+                brand_reposRepository.save(goods);
+>>>>>>> Stashed changes
                 return "redirect:/brand/mainframe";
         }
 
         @GetMapping("/newframe")
         public String newframe(Model model){
+<<<<<<< Updated upstream
                 List<BrandRepos> Lists = brandReposRepository.findBrandreposByStatusNot("新入仓");
                 List<String> primaries = typeRepository.getPrimary();
                 model.addAttribute("primaries", primaries);
@@ -128,6 +147,16 @@ public class BrandreposController {
                 BrandRepos good = brandReposRepository.findById(id).get();
                 good.setStatus("已下架");
                 brandReposRepository.save(good);
+=======
+                List<Brand_repos> Lists = brand_reposRepository.findBrand_reposByStatusNot("新入仓");
+                List<String> primaries = typeRepository.getPrimary();
+                model.addAttribute("primaries", primaries);
+                return "/brand/newframe";
+        }
+
+        @PostMapping("/addframe")
+        public String addframe(Brand_repos goods){
+>>>>>>> Stashed changes
                 return "redirect:/brand/mainframe";
         }
 }
