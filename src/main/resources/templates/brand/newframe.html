@@ -140,7 +140,6 @@
                                     <a href="#" data-title="Collapse" data-collapsed="false" class="tip collapse"><i class="icon-chevron-up"></i></a>
                                 </div>
                             </div>
-<<<<<<< Updated upstream
                             <form class="form-horizontal" th:action="@{/brand/addframe}" method="post">
                             <div class="widget-body">
                                 <div class="widget-forms clearfix">
@@ -150,40 +149,20 @@
                                                 <select tabindex="1" class="span7" id="type_primary" th:each="primary : ${primaries}">
                                                     <option value="Category 0">----Please choose the primary type----</option>>
                                                     <option th:value="${primary}" th:text="${primary}">First Dropdown</option>
-=======
-                            <div class="widget-body">
-                                <div class="widget-forms clearfix">
-                                    <form class="form-horizontal" th:action="@{/brand/addframe}" method="post">
-                                        <div class="control-group">
-                                            <label class="control-label">Primary</label>
-                                            <div class="controls">
-                                                <select tabindex="1" class="span7"  th:each="primary : ${primaries}">
-                                                    <option value="Category 1" th:text="${primary}">First Dropdown</option>
->>>>>>> Stashed changes
                                                 </select>
                                             </div>
                                         </div>
                                         <div class="control-group">
                                             <label class="control-label">Secondary</label>
                                             <div class="controls">
-<<<<<<< Updated upstream
                                                 <select tabindex="1" class="span7" id="type_secondary">
                                                     <option value=""></option>
-=======
-                                                <select tabindex="1" class="span7">
-                                                    <option value=""></option>
-                                                    <option value="Category 1">First Dropdown</option>
-                                                    <option value="Category 2">Second Dropdown</option>
-                                                    <option value="Category 3">Third Dropdown</option>
-                                                    <option value="Category 4">Fourth Dropdown</option>
->>>>>>> Stashed changes
                                                 </select>
                                             </div>
                                         </div>
                                         <div class="control-group">
                                             <label class="control-label">Tertiary</label>
                                             <div class="controls">
-<<<<<<< Updated upstream
                                                 <select tabindex="1" class="span7" id="type_tertiary">
                                                     <option value=""></option>
                                                 </select>
@@ -197,30 +176,13 @@
                                                 </select>
                                             </div>
                                         </div>
-=======
-                                                <select tabindex="1" class="span7">
-                                                    <option value=""></option>
-                                                    <option value="Category 1">First Dropdown</option>
-                                                    <option value="Category 2">Second Dropdown</option>
-                                                    <option value="Category 3">Third Dropdown</option>
-                                                    <option value="Category 4">Fourth Dropdown</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </form>
->>>>>>> Stashed changes
                                 </div>
                             </div>
                             <div class="widget-footer">
                                 <button class="btn btn-primary" type="submit">添加</button>
-<<<<<<< Updated upstream
                                 <a class="btn" type="button" th:href="@{/brand/mainframe}">取消</a>
                             </div>
                             </form>
-=======
-                                <button class="btn" type="button">取消</button>
-                            </div>
->>>>>>> Stashed changes
                         </div>
                     </div>
                 </div> <!-- /row-fluid -->
@@ -229,12 +191,6 @@
     </div>
 </div>
 
-<<<<<<< Updated upstream
-=======
-
-
-
->>>>>>> Stashed changes
 <script type="text/javascript" th:src="@{/assets/js/jquery.min.js}"></script>
 <script type="text/javascript" th:src="@{/assets/js/jquery-ui.min.js}"></script>
 <script type="text/javascript" th:src="@{/assets/js/raphael-min.js}"></script>
@@ -251,7 +207,6 @@
 <script type='text/javascript' th:src='@{/assets/js/jquery.gritter.min.js}'></script>
 <script type="text/javascript" th:src="@{/assets/js/realm.js}"></script>
 <script type="text/javascript" th:src="@{/assets/js/jquery.slimscroll.min.js}"></script>
-<<<<<<< Updated upstream
 
 <script type="text/javascript">
     $(function(){
@@ -334,7 +289,5 @@
         });
     });
 </script>
-=======
->>>>>>> Stashed changes
 </body>
 </html>
