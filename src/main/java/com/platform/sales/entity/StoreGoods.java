@@ -5,10 +5,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import javax.persistence.*;
 
 @Entity
-public class Store_goods {
+public class StoreGoods {
     @Id
-    @Autowired
-    private int store_goods_id;//无实际意义
+    @GeneratedValue
+    private Integer store_goods_id;//无实际意义
     private float price;//借卖方商品售价
     @ManyToOne
     private Stores stores;//商店ID

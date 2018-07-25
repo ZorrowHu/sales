@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-public class Store_order {
+public class StoreOrder {
 
     @Id
     @GeneratedValue
@@ -15,11 +15,11 @@ public class Store_order {
     private Stores store;       //店铺ID
     private Date pay_time;      //支付时间
     @ManyToOne
-    private Ship_addr ship;     //收货地址
+    private ShipAddr ship;     //收货地址
     private String status;      //订单状态
     private Float total_price;  //订单总价
 
-    public Store_order() {
+    public StoreOrder() {
     }
 
     public Integer getId() {
@@ -54,11 +54,11 @@ public class Store_order {
         this.pay_time = pay_time;
     }
 
-    public Ship_addr getShip() {
+    public ShipAddr getShip() {
         return ship;
     }
 
-    public void setShip(Ship_addr ship) {
+    public void setShip(ShipAddr ship) {
         this.ship = ship;
     }
 

@@ -3,7 +3,7 @@ package com.platform.sales.entity;
 import javax.persistence.*;
 
 @Entity
-public class Ship_addr {
+public class ShipAddr {
 
     @Id
     @GeneratedValue
@@ -19,7 +19,7 @@ public class Ship_addr {
     private String phone;       //电话
     private String email;       //邮箱
 
-    public Ship_addr() {
+    public ShipAddr() {
     }
 
     public Integer getShip_id() {

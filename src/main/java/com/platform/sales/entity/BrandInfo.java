@@ -6,20 +6,21 @@ import javax.persistence.Id;
 import javax.persistence.OneToOne;
 
 @Entity
-public class Brand_info {
+public class BrandInfo {
     @Id
     @GeneratedValue
     private Integer id;             //主键，无实际意义
-    private String br_name;         //品牌商名称
-    private String br_description;  //简介
+    private String brName;         //品牌商名称
+    private String brDescription;  //简介
     @OneToOne
     private Users users;            //一个品牌对应一个Users
     @OneToOne
     private Account account;        //一个品牌对应一个钱包
     private String image;           //商标
 
-    public Brand_info() {
+    public BrandInfo() {
     }
+
 
     public Integer getId() {
         return id;
@@ -29,20 +30,20 @@ public class Brand_info {
         this.id = id;
     }
 
-    public String getBr_name() {
-        return br_name;
+    public String getBrName() {
+        return brName;
     }
 
-    public void setBr_name(String br_name) {
-        this.br_name = br_name;
+    public void setBrName(String brName) {
+        this.brName = brName;
     }
 
-    public String getBr_description() {
-        return br_description;
+    public String getBrDescription() {
+        return brDescription;
     }
 
-    public void setBr_description(String br_description) {
-        this.br_description = br_description;
+    public void setBrDescription(String brDescription) {
+        this.brDescription = brDescription;
     }
 
     public Users getUsers() {

@@ -1,9 +1,9 @@
 package com.platform.sales.controller;
 
-import com.platform.sales.entity.Brand_repos;
+import com.platform.sales.entity.BrandRepos;
 import com.platform.sales.entity.Type;
 import com.platform.sales.entity.Users;
-import com.platform.sales.repository.Brand_reposRepository;
+import com.platform.sales.repository.BrandReposRepository;
 import com.platform.sales.repository.TypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,19 +17,19 @@ import java.util.List;
 public class BrandreposController {
 
         @Autowired
-        Brand_reposRepository brand_reposRepository;
+        BrandReposRepository brandReposRepository;
         @Autowired
         TypeRepository typeRepository;
         @GetMapping("/index")
         public String index(Model model) {
-                List<Brand_repos> repository =  brand_reposRepository.findAll();
-                model.addAttribute("Lists",  repository);
+                List<BrandRepos> repository =  brandReposRepository.findAll();
+                model.addAttribute("ListsFirst",  repository);
                 return "brand/index";
         }
 
         @PostMapping("/index")
         public String index(String keyword, Model model) {
-                List<Brand_repos> repository =  brand_reposRepository.findBrand_reposByGoodName(keyword);
+                List<BrandRepos> repository =  brandReposRepository.findBrandReposByGoodName(keyword);
                 model.addAttribute("Lists",  repository);
                 model.addAttribute("Message", "关键字搜索");
                 return "brand/index";
@@ -41,34 +41,34 @@ public class BrandreposController {
         }
 
         @PostMapping("/addgoods")
-        public String addgoods(Brand_repos brand_repos){
+        public String addgoods(BrandRepos brand_repos){
                 Users brand = new Users();
                 brand.setUserId(1);
                 brand_repos.setBrand(brand);            //default user_id
                 brand_repos.setStatus("新入仓");       //default status
 
-                Type type = typeRepository.findById(brand_repos.getType().getType_id()).get();
+                Type type = typeRepository.findById(brand_repos.getType().getTypeId()).get();
                 brand_repos.setType(type);
 
-                brand_reposRepository.save(brand_repos);
+                brandReposRepository.save(brand_repos);
                 return "redirect:/brand/index";
         }
 
         @GetMapping("/delgoods/{id}")
         public String delgoods(@PathVariable("id") Integer id){
-                brand_reposRepository.deleteById(id);
+                brandReposRepository.deleteById(id);
                 return "redirect:/brand/index";
         }
 
         @GetMapping("/uptgoods/{id}")
         public String uptgoods(@PathVariable("id") Integer id, Model model){
-                Brand_repos good = brand_reposRepository.findById(id).get();
+                BrandRepos good = brandReposRepository.findById(id).get();
                 model.addAttribute("good", good);
                 return "brand/update";
         }
 
         @PostMapping("/doupdate/{id}")
-        public String doupdate(@PathVariable("id") Integer id, Brand_repos good){
+        public String doupdate(@PathVariable("id") Integer id, BrandRepos good){
                 good.setGoodId(id);
 
                 Users brand = new Users();
@@ -76,10 +76,10 @@ public class BrandreposController {
                 good.setBrand(brand);            //default user_id
                 good.setStatus("新入仓");       //default status
 
-                Type type = typeRepository.findById(good.getType().getType_id()).get();
+                Type type = typeRepository.findById(good.getType().getTypeId()).get();
                 good.setType(type);
 
-                brand_reposRepository.save(good);
+                brandReposRepository.save(good);
                 return "redirect:/brand/index";
         }
 

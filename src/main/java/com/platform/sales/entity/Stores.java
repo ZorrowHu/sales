@@ -3,14 +3,15 @@ package com.platform.sales.entity;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
 @Entity
 public class Stores {
     @Id
-    @Autowired
-    private int store_id;//id，无实际意义
+    @GeneratedValue
+    private Integer store_id;//id，无实际意义
     private String store_name;//店铺名字
     @ManyToOne
     private Users user;//用户id
