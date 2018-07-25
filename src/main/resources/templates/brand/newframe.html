@@ -183,29 +183,6 @@
     </div>
 </div>
 
-<script type="text/javascript">
-    $(function(){
-        $("#type_primary").change(function(){
-            var type_primary = $("#type_primary").val();
-            $.ajax({
-                type:"POST",
-                url : "brandrest/getsecondary",
-                data:{
-                    primary : type_primary
-                },
-                dataType : "json",
-                success:function(data){
-                    $("#type_secondary").empty();
-                    $("#type_secondary").append("<option value=''>----Secondary----</option>");
-                    $.each(data.tasks,function(value){
-                        $("#type_secondary").append( "<option value='"+ value+"'>"+value+"</option>");
-                    });
-                }
-            });
-        });
-    });
-</script>
-
 <script type="text/javascript" th:src="@{/assets/js/jquery.min.js}"></script>
 <script type="text/javascript" th:src="@{/assets/js/jquery-ui.min.js}"></script>
 <script type="text/javascript" th:src="@{/assets/js/raphael-min.js}"></script>
@@ -222,5 +199,28 @@
 <script type='text/javascript' th:src='@{/assets/js/jquery.gritter.min.js}'></script>
 <script type="text/javascript" th:src="@{/assets/js/realm.js}"></script>
 <script type="text/javascript" th:src="@{/assets/js/jquery.slimscroll.min.js}"></script>
+<script type="text/javascript">
+    $(function(){
+        $("#type_primary").change(function(){
+            var type_primary = $("#type_primary").val();
+            $.ajax({
+                type:"POST",
+                url : "brandrest/getsecondary",
+                data:{
+                    primary : type_primary
+                },
+                dataType : "json",
+                success:function(data){
+                    $("#type_secondary").empty();
+                    $("#type_secondary").append("<option value=''>----Secondary----</option>");
+                    $.each(data.tasks,function(index,item){
+                        $("#type_secondary").append( "<option value='"+ item.prim+"'>"+item.secon+"</option>");
+                    });
+                }
+            });
+        });
+    });
+</script>
+
 </body>
 </html>
