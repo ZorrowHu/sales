@@ -1,6 +1,5 @@
 package com.platform.sales.entity;
 
-import javax.annotation.Generated;
 import javax.persistence.*;
 
 @Entity
@@ -15,9 +14,7 @@ public class Users {
 
         public Users() { }
 
-        public Integer getUserId() {
-                return userId;
-        }
+        public Integer getUserId() { return userId; }
 
         public String getUserName() {
                 return userName;

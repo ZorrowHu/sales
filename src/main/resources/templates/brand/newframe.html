@@ -90,16 +90,16 @@
                             <div class="widget-body">
                                 <div class="widget-forms clearfix">
                                         <div class="control-group">
-                                            <label class="control-label">Primary</label>
+                                            <label class="control-label">一级类别</label>
                                             <div class="controls">
                                                 <select tabindex="1" class="span7" id="type_primary" th:each="primary : ${primaries}">
-                                                    <option value="Category 0">----Please choose the primary type----</option>>
+                                                    <option value="Category 0">----请选择商品的一级类别----</option>>
                                                     <option th:value="${primary}" th:text="${primary}">First Dropdown</option>
                                                 </select>
                                             </div>
                                         </div>
                                         <div class="control-group">
-                                            <label class="control-label">Secondary</label>
+                                            <label class="control-label">二级类别</label>
                                             <div class="controls">
                                                 <select tabindex="1" class="span7" id="type_secondary">
                                                     <option value=""></option>
@@ -107,7 +107,7 @@
                                             </div>
                                         </div>
                                         <div class="control-group">
-                                            <label class="control-label">Tertiary</label>
+                                            <label class="control-label">三级类别</label>
                                             <div class="controls">
                                                 <select tabindex="1" class="span7" id="type_tertiary">
                                                     <option value=""></option>
@@ -115,7 +115,7 @@
                                             </div>
                                         </div>
                                         <div class="control-group">
-                                            <label class="control-label">Goods</label>
+                                            <label class="control-label">该类别下商品</label>
                                             <div class="controls">
                                                 <select tabindex="1" class="span7" id="type_goods" name="goodId">
                                                     <option value=""></option>
@@ -170,7 +170,7 @@
                     $("#type_secondary").empty();
                     $("#type_tertiary").empty();
                     $("#type_goods").empty();
-                    $("#type_secondary").append("<option value=''>----Please choose the secondary type----</option>");
+                    $("#type_secondary").append("<option value=''>----请选择二级类别----</option>");
                     for (i = 0; i < data.length; i++) {
                         //alert(data[i]);
                         $("#type_secondary").append( "<option value='"+data[i]+"'>"+data[i]+"</option>");
@@ -197,7 +197,7 @@
                 success:function(data){
                     $("#type_tertiary").empty();
                     $("#type_goods").empty();
-                    $("#type_tertiary").append("<option value=''>----Please choose the tertiary type----</option>");
+                    $("#type_tertiary").append("<option value=''>----请选择三级类别----</option>");
                     for (i = 0; i < data.length; i++) {
                         //alert(data[i]);
                         $("#type_tertiary").append( "<option value='"+data[i]+"'>"+data[i]+"</option>");
@@ -224,7 +224,7 @@
                 },
                 success:function(data){
                     $("#type_goods").empty();
-                    $("#type_goods").append("<option value=''>----Please choose the goods according to the types above----</option>");
+                    $("#type_goods").append("<option value=''>----请选择根据以上所选类别所检索出的商品----</option>");
                     var obj = eval(data);
                     //alert(obj1[0].goodName);
                     for (i = 0; i < obj.length; i++) {

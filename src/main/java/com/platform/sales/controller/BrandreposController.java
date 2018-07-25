@@ -5,11 +5,13 @@ import com.platform.sales.entity.Type;
 import com.platform.sales.entity.Users;
 import com.platform.sales.repository.BrandReposRepository;
 import com.platform.sales.repository.TypeRepository;
+import com.platform.sales.repository.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,35 +24,53 @@ public class BrandreposController {
         BrandReposRepository brandReposRepository;
         @Autowired
         TypeRepository typeRepository;
+        @Autowired
+        UsersRepository usersRepository;
 
         @GetMapping("/index")
-        public String index(Model model) {
-                List<BrandRepos> repository =  brandReposRepository.findAll();
+        public String index(Model model, HttpSession session) {
+                Users users = (Users) session.getAttribute("user");
+                //user is the actual complete model of the current user
+                Users user = usersRepository.findByUserNameAndUserRole(users.getUserName(),users.getUserRole());
+                List<BrandRepos> repository =  brandReposRepository.findAllByBrand(user);
                 model.addAttribute("Lists",  repository);
                 return "brand/index";
         }
 
         @PostMapping("/index")
-        public String index(String keyword, Model model) {
-                List<BrandRepos> repository =  brandReposRepository.findBrandreposByGoodName(keyword);
+        public String index(String keyword, Model model, HttpSession session) {
+                Users users = (Users) session.getAttribute("user");
+                Users user = usersRepository.findByUserNameAndUserRole(users.getUserName(),users.getUserRole());
+                List<BrandRepos> repository =  brandReposRepository.findBrandreposByGoodNameAndBrand(keyword, user);
                 model.addAttribute("Lists",  repository);
                 model.addAttribute("Message", "关键字搜索");
                 return "brand/index";
         }
 
         @GetMapping("/newgoods")
-        public String newgoods(){
+        public String newgoods(Model model){
+                List<String> primaries = typeRepository.getPrimary();
+                model.addAttribute("primaries", primaries);
+
                 return "brand/newgoods";
         }
 
-        @PostMapping("/addgoods")
-        public String addgoods(BrandRepos brandrepos){
-                Users brand = new Users();
-                brand.setUserId(1);
-                brandrepos.setBrand(brand);            //default user_id
+
+        //@PostMapping("/addgoods")
+        @RequestMapping(value="/addgoods", method=RequestMethod.POST)
+        public String addgoods(BrandRepos brandrepos,
+                               @RequestParam("type_primary") String primary,
+                               @RequestParam("type_secondary") String secondary,
+                               @RequestParam("type_tertiary") String tertiary,
+                                HttpSession session
+                                 ){
+                Users users = (Users) session.getAttribute("user");
+                Users user = usersRepository.findByUserNameAndUserRole(users.getUserName(),users.getUserRole());
+
+                brandrepos.setBrand(user);            //default user_id
                 brandrepos.setStatus("新入仓");       //default status
 
-                Type type = typeRepository.findById(brandrepos.getType().getTypeId()).get();
+                Type type = typeRepository.findTypeByContent1AndContent2AndContent3(primary, secondary, tertiary);
                 brandrepos.setType(type);
 
                 brandReposRepository.save(brandrepos);
@@ -58,14 +78,18 @@ public class BrandreposController {
         }
 
         @GetMapping("/delgoods/{id}")
-        public String delgoods(@PathVariable("id") Integer id){
-                brandReposRepository.deleteById(id);
+        public String delgoods(@PathVariable("id") Integer id, HttpSession session){
+                Users users = (Users) session.getAttribute("user");
+                Users user = usersRepository.findByUserNameAndUserRole(users.getUserName(),users.getUserRole());
+                brandReposRepository.deleteByGoodIdAndBrand(id, user);
                 return "redirect:/brand/index";
         }
 
         @GetMapping("/uptgoods/{id}")
-        public String uptgoods(@PathVariable("id") Integer id, Model model){
-                BrandRepos good = brandReposRepository.findById(id).get();
+        public String uptgoods(@PathVariable("id") Integer id, Model model, HttpSession session){
+                Users users = (Users) session.getAttribute("user");
+                Users user = usersRepository.findByUserNameAndUserRole(users.getUserName(),users.getUserRole());
+                BrandRepos good = brandReposRepository.findByGoodIdAndBrand(id, user);
                 List<String> primaries = typeRepository.getPrimary();
                 List<String> secondaries = typeRepository.getSecondary(good.getType().getContent1());
                 List<String> tertiaries = typeRepository.getTertiary(good.getType().getContent1(), good.getType().getContent2());
@@ -81,27 +105,37 @@ public class BrandreposController {
         public String doupdate(@PathVariable("id") Integer id, BrandRepos good,
                                @RequestParam("type_primary") String primary,
                                @RequestParam("type_secondary") String secondary,
-                               @RequestParam("type_tertiary") String tertiary
+                               @RequestParam("type_tertiary") String tertiary,
+                               HttpSession session
                                ){
                 good.setGoodId(id);
+                Users users = (Users) session.getAttribute("user");
+                Users user = usersRepository.findByUserNameAndUserRole(users.getUserName(),users.getUserRole());
 
+                BrandRepos temp = brandReposRepository.findByGoodIdAndBrand(id, user);
                 Type type = typeRepository.findTypeByContent1AndContent2AndContent3(primary,secondary,tertiary);
                 good.setType(type);
+                good.setStatus(temp.getStatus());
+                good.setBrand(temp.getBrand());
 
                 brandReposRepository.save(good);
                 return "redirect:/brand/index";
         }
 
         @GetMapping("/mainframe")
-        public String mainframe(Model model) {
-                List<BrandRepos> Lists = brandReposRepository.findBrandreposByStatusNot("新入仓");
+        public String mainframe(Model model, HttpSession session) {
+                Users users = (Users) session.getAttribute("user");
+                Users user = usersRepository.findByUserNameAndUserRole(users.getUserName(),users.getUserRole());
+                List<BrandRepos> Lists = brandReposRepository.findBrandreposByStatusNotAndBrand("新入仓", user);
                 model.addAttribute("Lists", Lists);
                 return "brand/mainframe";
         }
         @PostMapping("/mainframe")
-        public String mainframe(String keyword, Model model) {
+        public String mainframe(String keyword, Model model, HttpSession session) {
+                Users users = (Users) session.getAttribute("user");
+                Users user = usersRepository.findByUserNameAndUserRole(users.getUserName(),users.getUserRole());
                 //find out all goods that is not newly added tot the repository
-                List<BrandRepos> Lists = brandReposRepository.findBrandreposByGoodNameAndStatusNot(keyword, "新入仓");
+                List<BrandRepos> Lists = brandReposRepository.findBrandreposByGoodNameAndStatusNotAndBrand(keyword, "新入仓", user);
                 Map<String,String> taskMap=new HashMap<String,String>();
                 for (BrandRepos list : Lists){
                         //list.getType().getContent3();
@@ -121,31 +155,39 @@ public class BrandreposController {
         }
 
         @GetMapping("/newframe")
-        public String newframe(Model model){
-                List<BrandRepos> Lists = brandReposRepository.findBrandreposByStatusNot("新入仓");
+        public String newframe(Model model, HttpSession session){
+                Users users = (Users) session.getAttribute("user");
+                Users user = usersRepository.findByUserNameAndUserRole(users.getUserName(),users.getUserRole());
+                List<BrandRepos> Lists = brandReposRepository.findBrandreposByStatusNotAndBrand("新入仓", user);
                 List<String> primaries = typeRepository.getPrimary();
                 model.addAttribute("primaries", primaries);
                 return "brand/newframe";
         }
 
         @RequestMapping(value="/addframe", method=RequestMethod.POST)
-        public String addframe(@RequestParam("goodId") Integer goodId){
-                BrandRepos good = brandReposRepository.findById(goodId).get();
+        public String addframe(@RequestParam("goodId") Integer goodId, HttpSession session){
+                Users users = (Users) session.getAttribute("user");
+                Users user = usersRepository.findByUserNameAndUserRole(users.getUserName(),users.getUserRole());
+                BrandRepos good = brandReposRepository.findByGoodIdAndBrand(goodId, user);
                 good.setStatus("已入仓");
                 brandReposRepository.save(good);
                 return "redirect:/brand/mainframe";
         }
 
         @GetMapping("/loadgoods/{id}")
-        public String loadgoods(@PathVariable("id") Integer id){
-                BrandRepos good = brandReposRepository.findById(id).get();
+        public String loadgoods(@PathVariable("id") Integer id, HttpSession session){
+                Users users = (Users) session.getAttribute("user");
+                Users user = usersRepository.findByUserNameAndUserRole(users.getUserName(),users.getUserRole());
+                BrandRepos good = brandReposRepository.findByGoodIdAndBrand(id, user);
                 good.setStatus("已上架");
                 brandReposRepository.save(good);
                 return "redirect:/brand/mainframe";
         }
         @GetMapping("/unloadgoods/{id}")
-        public String unloadgoods(@PathVariable("id") Integer id){
-                BrandRepos good = brandReposRepository.findById(id).get();
+        public String unloadgoods(@PathVariable("id") Integer id, HttpSession session){
+                Users users = (Users) session.getAttribute("user");
+                Users user = usersRepository.findByUserNameAndUserRole(users.getUserName(),users.getUserRole());
+                BrandRepos good = brandReposRepository.findByGoodIdAndBrand(id, user);
                 good.setStatus("已下架");
                 brandReposRepository.save(good);
                 return "redirect:/brand/mainframe";

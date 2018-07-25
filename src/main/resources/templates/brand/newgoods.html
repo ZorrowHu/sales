@@ -112,10 +112,28 @@
                                     </div>
                                 </div>
                                 <div class="control-group">
-                                    <label class="control-label">商品类别</label>
+                                    <label class="control-label">一级类别</label>
                                     <div class="controls">
-                                        <input class="span7" type="text" placeholder="请输入商品类别" name="type.typeId">
-                                        <span class="help-inline"></span>
+                                        <select tabindex="1" class="span7" id="type_primary" th:each="primary : ${primaries}" name="type_primary">
+                                            <option value="Category 0">----请选择商品的一级类别----</option>>
+                                            <option th:value="${primary}" th:text="${primary}">First Dropdown</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="control-group">
+                                    <label class="control-label">二级类别</label>
+                                    <div class="controls">
+                                        <select tabindex="1" class="span7" id="type_secondary" name="type_secondary">
+                                            <option value=""></option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="control-group">
+                                    <label class="control-label">三级类别</label>
+                                    <div class="controls">
+                                        <select tabindex="1" class="span7" id="type_tertiary" name="type_tertiary">
+                                            <option value=""></option>
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="control-group">
@@ -134,18 +152,6 @@
                     </form>
                 </div>
             </div>
-
-
-
-
-
-
-
-
-
-
-
-
         </div><!--/.fluid-container-->
     </div><!-- wrap ends-->
 </div>
@@ -167,5 +173,59 @@
 <script type='text/javascript' th:src='@{/assets/js/jquery.gritter.min.js}'></script>
 <script type="text/javascript" th:src="@{/assets/js/realm.js}"></script>
 <script type="text/javascript" th:src="@{/assets/js/jquery.slimscroll.min.js}"></script>
+
+<script type="text/javascript">
+    $(function(){
+        $("#type_primary").change(function(){
+            var type_primary = $("#type_primary").val();
+            //alert(type_primary);
+            $.ajax({
+                type:"POST",
+                url : "/brandrest/getsecondary",
+                async : false,
+                data:{
+                    primary : type_primary
+                },
+                success:function(data){
+                    $("#type_secondary").empty();
+                    $("#type_tertiary").empty();
+                    $("#type_goods").empty();
+                    $("#type_secondary").append("<option value=''>----请选择二级类别----</option>");
+                    for (i = 0; i < data.length; i++) {
+                        //alert(data[i]);
+                        $("#type_secondary").append( "<option value='"+data[i]+"'>"+data[i]+"</option>");
+                    }
+                }
+            });
+        });
+    });
+</script>
+<script type="text/javascript">
+    $(function(){
+        $("#type_secondary").change(function(){
+            var type_primary = $("#type_primary").val();
+            var type_secondary = $("#type_secondary").val();
+            //alert(type_primary);
+            $.ajax({
+                type:"POST",
+                url : "/brandrest/gettertiary",
+                async : false,
+                data:{
+                    primary : type_primary,
+                    secondary : type_secondary
+                },
+                success:function(data){
+                    $("#type_tertiary").empty();
+                    $("#type_goods").empty();
+                    $("#type_tertiary").append("<option value=''>----请选择三级类别----</option>");
+                    for (i = 0; i < data.length; i++) {
+                        //alert(data[i]);
+                        $("#type_tertiary").append( "<option value='"+data[i]+"'>"+data[i]+"</option>");
+                    }
+                }
+            });
+        });
+    });
+</script>
 </body>
 </html>
