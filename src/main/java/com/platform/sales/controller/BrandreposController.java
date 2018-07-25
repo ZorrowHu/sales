@@ -29,7 +29,7 @@ public class BrandreposController {
 
         @PostMapping("/index")
         public String index(String keyword, Model model) {
-                List<BrandRepos> repository =  brandReposRepository.findBrandReposByGoodName(keyword);
+                List<BrandRepos> repository =  brandReposRepository.findBrand_reposByGoodName(keyword);
                 model.addAttribute("Lists",  repository);
                 model.addAttribute("Message", "关键字搜索");
                 return "brand/index";
@@ -71,11 +71,6 @@ public class BrandreposController {
         public String doupdate(@PathVariable("id") Integer id, BrandRepos good){
                 good.setGoodId(id);
 
-                Users brand = new Users();
-                brand.setUserId(1);
-                good.setBrand(brand);            //default user_id
-                good.setStatus("新入仓");       //default status
-
                 Type type = typeRepository.findById(good.getType().getTypeId()).get();
                 good.setType(type);
 
@@ -84,7 +79,37 @@ public class BrandreposController {
         }
 
         @GetMapping("/mainframe")
-        public String mainframe() {
+        public String mainframe(Model model) {
+                List<BrandRepos> Lists = brandReposRepository.findBrand_reposByStatusNot("新入仓");
+                model.addAttribute("Lists", Lists);
                 return "brand/mainframe";
+        }
+        @PostMapping("/mainframe")
+        public String mainframe(String keyword, Model model) {
+                //find out all goods that is not newly added tot the repository
+                List<BrandRepos> Lists = brandReposRepository.findBrand_reposByGoodNameAndStatusNot(keyword, "新入仓");
+                model.addAttribute("Lists", Lists);
+                return "brand/mainframe";
+        }
+
+        @GetMapping("/delframe/{id}")
+        public String delframe(@PathVariable("id") Integer id){
+                BrandRepos goods = brandReposRepository.findById(id).get();
+                goods.setStatus("新入仓");
+                brandReposRepository.save(goods);
+                return "redirect:/brand/mainframe";
+        }
+
+        @GetMapping("/newframe")
+        public String newframe(Model model){
+                List<BrandRepos> Lists = brandReposRepository.findBrand_reposByStatusNot("新入仓");
+                List<String> primaries = typeRepository.getPrimary();
+                model.addAttribute("primaries", primaries);
+                return "/brand/newframe";
+        }
+
+        @PostMapping("/addframe")
+        public String addframe(BrandRepos goods){
+                return "redirect:/brand/mainframe";
         }
 }

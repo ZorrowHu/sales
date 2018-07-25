@@ -145,63 +145,34 @@
                         <div class="widget-body">
                             <div class="row-fluid">
                                 <form th:action="@{/brand/mainframe}" method="post">
-                                    <div align="right">
-                                        <input type="text" class="input-medium search-query" style="width:240px" ><button type="submit" class="btn btn-primary  ">搜索</button>
+                                    <div>
+                                        <div style="float:left">
+                                            <a th:href="@{/brand/mainframe}" class="btn btn-primary">查看全部信息</a>
+                                        </div>
+                                        <div style="float:right">
+                                            <input type="text" class="input-medium search-query" style="width:240px" name="keyword"><button type="submit" class="btn btn-primary  ">搜索</button>
+                                        </div>
                                     </div>
                                 </form>
-                                <br/>
+                                <br/><br/>
                                 <table class="table table-bordered">
                                     <thead>
                                     <tr>
-                                        <th>User</th>
-                                        <th>Group</th>
-                                        <th>Registered</th>
-                                        <th>Status</th>
-                                        <th>Action</th>
+                                        <th>商品名称</th>
+                                        <th>商品类别</th>
+                                        <th>状态</th>
+                                        <th>操作</th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr>
-                                        <td>Amie</td>
-                                        <td>Admin</td>
-                                        <td>20-05-2012</td>
-                                        <td><span class="label label-success">Active</span></td>
+                                    <tr th:each="list : ${Lists}">
+                                        <td th:text="${list.goodName}">Amie</td>
+                                        <td th:text="${list.type.type_id}">Admin</td>
+                                        <td><span class="label label-success" th:text="${list.status}">Active</span></td>
                                         <td>
                                             <div class="btn-group">
-                                                    <a href="#" class="btn"> Edit</a>
-                                                    <a href="#" class="btn"> Delete</a>
-                                                <a href="#" class="btn"> 入仓 </a>
-                                                <a href="#" class="btn"> 出仓 </a>
-                                                <a href="#" class="btn"> 上架 </a>
-                                                <a href="#" class="btn"> 下架 </a>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Amie</td>
-                                        <td>Admin</td>
-                                        <td>20-05-2012</td>
-                                        <td><span class="label label-success">Active</span></td>
-                                        <td>
-                                            <div class="btn-group">
-                                                <a href="#" class="btn"> Edit</a>
-                                                <a href="#" class="btn"> Delete</a>
-                                                <a href="#" class="btn"> 入仓 </a>
-                                                <a href="#" class="btn"> 出仓 </a>
-                                                <a href="#" class="btn"> 上架 </a>
-                                                <a href="#" class="btn"> 下架 </a>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>Amie</td>
-                                        <td>Admin</td>
-                                        <td>20-05-2012</td>
-                                        <td><span class="label label-success">Active</span></td>
-                                        <td>
-                                            <div class="btn-group">
-                                                <a href="#" class="btn"> Edit</a>
-                                                <a href="#" class="btn"> Delete</a>
+                                                <a href="#" class="btn"> 修改</a>
+                                                <a th:href="@{'/brand/delframe/'+${list.goodId}}" class="btn"> 删除</a>
                                                 <a href="#" class="btn"> 入仓 </a>
                                                 <a href="#" class="btn"> 出仓 </a>
                                                 <a href="#" class="btn"> 上架 </a>
@@ -213,7 +184,7 @@
                                 </table>
                                 <br/><br/>
                             <div align="right">
-                                <a  class="btn btn-primary">添加</a>
+                                <a  class="btn btn-primary" th:href="@{/brand/newframe}">添加</a>
                             </div>
                             </div><!--/widget-body-->
                         </div> <!-- /widget -->

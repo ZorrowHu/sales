@@ -2,7 +2,7 @@
 <html lang="en"  xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
-    <title>品牌商</title>
+    <title>Realm - Dashboard</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="author" content="Bluth Company">
     <link rel="shortcut icon" th:href="@{/assets/ico/favicon.html}">
@@ -18,6 +18,7 @@
     <![endif]-->
 </head>
 <body>
+
 <div id="wrap">
     <div class="navbar navbar-fixed-top">
         <div class="navbar-inner">
@@ -117,77 +118,79 @@
             </div>
         </div>
         <!-- /Side menu -->
+
+        <!-- Main window -->
         <div class="main_container" id="tables_page">
             <div class="row-fluid">
                 <ul class="breadcrumb">
                     <li><a href="#">后台管理页面</a> <span class="divider">/</span></li>
                     <li><a href="#">品牌商</a> <span class="divider">/</span></li>
-                    <li class="active">商品信息管理</li>
+                    <li class="active">商品主图</li>
                 </ul>
                 <h2 class="heading">
-                    商品信息管理表
+                    商品主图管理表
                 </h2>
             </div>
 
-            <div class="row-fluid">
-                <div class="widget widget-padding span12">
-                    <div class="widget-header">
-                        <i class="icon-table"></i>
-                        <h5>商品信息管理</h5>
-                        <div class="widget-buttons">
-                            <!--<a href="http://twitter.github.com/bootstrap/base-css.html#tables" data-title="Documentation" class="tip" target="_blank"><i class="icon-external-link"></i></a>-->
-                            <!--<a href="#" data-title="Collapse" data-collapsed="false" class="tip collapse"><i class="icon-chevron-up"></i></a>-->
+                    <div class="row-fluid">
+                        <div class="widget widget-padding span12">
+                            <div class="widget-header">
+                                <i class="icon-list-alt"></i><h5>新增主图</h5>
+                                <div class="widget-buttons">
+                                    <a href="#" data-title="Collapse" data-collapsed="false" class="tip collapse"><i class="icon-chevron-up"></i></a>
+                                </div>
+                            </div>
+                            <div class="widget-body">
+                                <div class="widget-forms clearfix">
+                                    <form class="form-horizontal" th:action="@{/brand/addframe}" method="post">
+                                        <div class="control-group">
+                                            <label class="control-label">Primary</label>
+                                            <div class="controls">
+                                                <select tabindex="1" class="span7"  th:each="primary : ${primaries}">
+                                                    <option value="Category 1" th:text="${primary}">First Dropdown</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="control-group">
+                                            <label class="control-label">Secondary</label>
+                                            <div class="controls">
+                                                <select tabindex="1" class="span7">
+                                                    <option value=""></option>
+                                                    <option value="Category 1">First Dropdown</option>
+                                                    <option value="Category 2">Second Dropdown</option>
+                                                    <option value="Category 3">Third Dropdown</option>
+                                                    <option value="Category 4">Fourth Dropdown</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="control-group">
+                                            <label class="control-label">Tertiary</label>
+                                            <div class="controls">
+                                                <select tabindex="1" class="span7">
+                                                    <option value=""></option>
+                                                    <option value="Category 1">First Dropdown</option>
+                                                    <option value="Category 2">Second Dropdown</option>
+                                                    <option value="Category 3">Third Dropdown</option>
+                                                    <option value="Category 4">Fourth Dropdown</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="widget-footer">
+                                <button class="btn btn-primary" type="submit">添加</button>
+                                <button class="btn" type="button">取消</button>
+                            </div>
                         </div>
                     </div>
-                    <div class="widget-body">
-                        <div class="row-fluid">
-                            <form th:action="@{/brand/index}" method="post">
-                                <div>
-                                    <div style="float:left">
-                                        <a th:href="@{/brand/index}" class="btn btn-primary">查看全部信息</a>
-                                    </div>
-                                    <div style="float:right">
-                                        <input type="text" class="input-medium search-query" style="width:240px" name="keyword"><button type="submit" class="btn btn-primary  ">搜索</button>
-                                    </div>
-                                </div>
-                            </form>
-                            <br/><br/>
-                                <table class="table table-bordered">
-                                    <thead>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>商品名称</th>
-                                        <th>商品价格</th>
-                                        <th>商品库存</th>
-                                        <th>操作</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr th:each="list : ${Lists}">
-                                        <td th:text="${list.goodId}">此处会被覆盖</td>
-                                        <td th:text="${list.goodName}">此处会被覆盖</td>
-                                        <td th:text="${list.price}">此处会被覆盖</td>
-                                        <td th:text="${list.quantity}">此处会被覆盖</td>
-                                        <td>
-                                            <div class="btn-group">
-                                                <a th:href="@{'/brand/uptgoods/'+${list.goodId}}" class="btn"> 修改</a>
-                                                <a th:href="@{'/brand/delgoods/'+${list.goodId}}" class="btn"> 删除</a>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            <br/><br/>
-                            <div align="right">
-                                <a  class="btn btn-primary" th:href="@{/brand/newgoods}">添加</a>
-                            </div>
-                    </div><!--/widget-body-->
-                </div> <!-- /widget -->
-            </div> <!-- /row-fluid -->
-        </div>
-    </div><!--/.fluid-container-->
-</div><!-- wrap ends-->
+                </div> <!-- /row-fluid -->
+            </div>
+        </div><!-- wrap ends-->
+    </div>
 </div>
+
+
 
 
 <script type="text/javascript" th:src="@{/assets/js/jquery.min.js}"></script>
