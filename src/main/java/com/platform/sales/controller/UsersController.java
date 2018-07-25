@@ -51,11 +51,11 @@ public class UsersController {
             // 下列判断根据登陆者的身份信息，跳转到不同的页面
             switch (user.getUserRole()){
                 case "管理员":
-                    return "administrator/index";
+                    return "redirect:/administrator/index";
                 case "品牌商":
-                    return "brand/index";
+                    return "redirect:/brand/index";
                 case "借卖方":
-                    return "Stores/index";
+                    return "redirect:/Stores/index";
             }
         }
         // 默认为登陆错误
@@ -87,10 +87,14 @@ public class UsersController {
                            @RequestParam String password,
                            @RequestParam String userRole,
                            HttpSession session,
-                           RedirectAttributes redirectAttributes){
+                           RedirectAttributes redirectAttributes) {
 
         Users user = usersService.userRegister(userName, userRole);
-        if (user != null){  // 当用户名已被占用，就重载到注册页并显示错误信息
+
+        if (userName == null || password == null){  // 当用户输入空白的信息
+            redirectAttributes.addFlashAttribute("message", "请不要输入空白信息，用户名密码均为必填");
+            return "redirect:/user/register";
+        }else if (user != null){  // 当用户名已被占用，就重载到注册页并显示错误信息
             user.setPassword("");   // 将用户密码设空以免泄露信息
             redirectAttributes.addFlashAttribute("message", "该用户名已被占用，请输入其他用户名！");
             return "redirect:/user/register";
