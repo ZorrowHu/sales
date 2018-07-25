@@ -83,7 +83,8 @@
                             <a href="#" data-title="Collapse" data-collapsed="false" class="tip collapse"><i class="icon-chevron-up"></i></a>
                         </div>
                     </div>
-                    <form class="form-horizontal" role="form" th:action="@{'/brand/doupdate/'+ ${good.getGoodId()}}" method="post">                        <input type="hidden" name="goodId">
+                    <form class="form-horizontal" role="form" th:action="@{'/brand/doupdate/'+ ${good.getGoodId()}}" method="post">
+                        <input type="hidden" name="goodId">
                         <div class="widget-body">
                             <div class="widget-forms clearfix">
                                 <div class="control-group">
@@ -110,8 +111,8 @@
                                 <div class="control-group">
                                 <label class="control-label">一级类别</label>
                                 <div class="controls">
-                                    <select tabindex="1" class="span7" id="type_primary">
-                                        <option value="Category 0">----Please choose the primary type----</option>
+                                    <select tabindex="1" class="span7" id="type_primary" name="type_primary">
+                                        <option value="Category 0">----请选择商品的一级类别----</option>
                                         <option th:each="primary : ${primaries}" th:selected="${good.getType().content1==primary}" th:value="${primary}" th:text="${primary}">First Dropdown</option>
                                     </select>
                                 </div>
@@ -119,8 +120,8 @@
                             <div class="control-group">
                                 <label class="control-label">二级类别</label>
                                 <div class="controls">
-                                    <select tabindex="1" class="span7" id="type_secondary">
-                                        <option value="Category 0">----Please choose the secondary type----</option>
+                                    <select tabindex="1" class="span7" id="type_secondary" name="type_secondary">
+                                        <option value="Category 0">----请选择商品的二级类别----</option>
                                         <option th:each="secondary : ${secondaries}" th:selected="${good.getType().content2==secondary}" th:value="${secondary}" th:text="${secondary}">Second Dropdown</option>
                                     </select>
                                 </div>
@@ -128,8 +129,8 @@
                             <div class="control-group">
                                 <label class="control-label">三级类别</label>
                                 <div class="controls">
-                                    <select tabindex="1" class="span7" id="type_tertiary">
-                                        <option value="Category 0">----Please choose the tertiary type----</option>>
+                                    <select tabindex="1" class="span7" id="type_tertiary" name="type_tertiary">
+                                        <option value="Category 0">----请选择商品的三级类别----</option>>
                                         <option th:each="tertiary : ${tertiaries}" th:selected="${good.getType().content3==tertiary}" th:value="${tertiary}" th:text="${tertiary}">Third Dropdown</option>
                                     </select>
                                 </div>
@@ -189,7 +190,7 @@
                     $("#type_secondary").empty();
                     $("#type_tertiary").empty();
                     $("#type_goods").empty();
-                    $("#type_secondary").append("<option value=''>----Please choose the secondary type----</option>");
+                    $("#type_secondary").append("<option value=''>----请选择商品的耳机类别----</option>");
                     for (i = 0; i < data.length; i++) {
                         //alert(data[i]);
                         $("#type_secondary").append( "<option value='"+data[i]+"'>"+data[i]+"</option>");
@@ -216,7 +217,7 @@
                 success:function(data){
                     $("#type_tertiary").empty();
                     $("#type_goods").empty();
-                    $("#type_tertiary").append("<option value=''>----Please choose the tertiary type----</option>");
+                    $("#type_tertiary").append("<option value=''>----请选择商品的三级类别----</option>");
                     for (i = 0; i < data.length; i++) {
                         //alert(data[i]);
                         $("#type_tertiary").append( "<option value='"+data[i]+"'>"+data[i]+"</option>");

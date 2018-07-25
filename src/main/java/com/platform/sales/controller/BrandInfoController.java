@@ -43,7 +43,12 @@ public class BrandInfoController {
     public String brandInfo(HttpSession session,Model model){
         Users users = (Users) session.getAttribute("user");
         BrandInfo brandInfo = brandInfoService.findByUserId(users.getUserId());
+        Account brandacnt = brandAccountService.findByUserId(users.getUserId());
         if(brandInfo == null){
+            if(brandacnt != null)
+                model.addAttribute("account", brandacnt.getAccountId());
+            else
+                model.addAttribute("account", "-1");
             return "/brand/newbrandinfo";
         }else{
             model.addAttribute("brandinfo",brandInfo);
@@ -73,6 +78,13 @@ public class BrandInfoController {
     public String brandAccount(HttpSession session, Model model){
         Users users = (Users) session.getAttribute("user");
         Account account = brandAccountService.findByUserId(users.getUserId());
+        if(account == null){
+            Account brandacnt = new Account();
+            brandacnt.setBalance(new Float(0));
+            brandacnt.setPayPwd("");
+            brandacnt.setUser(users);
+            account = brandAccountService.update(brandacnt);
+        }
         if(account.getPayPwd().equals("") && account.getBalance() == 0){
             model.addAttribute("account",account);
             return "/brand/newaccount";
@@ -90,14 +102,15 @@ public class BrandInfoController {
     }
 
     //提现
-    @GetMapping("/withdraw/{id}")
-    public String withdraw(@PathVariable("id") Integer id, Model model){
-        Account account = brandAccountService.findByUserId(id);
+    @GetMapping("/withdraw")
+    public String withdraw(HttpSession session, Model model){
+        Users users = (Users) session.getAttribute("user");
+        Account account = brandAccountService.findByUserId(users.getUserId());
         model.addAttribute("account", account);
         return "/brand/withdraw";
     }
 
-    @PostMapping("withdraw")
+    @PostMapping("/withdraw")
     public String withdraw(Account account,Model model){
         Account acnt = brandAccountService.findByUserId(account.getUser().getUserId());
         if(acnt.getPayPwd().equals(account.getPayPwd())){
@@ -114,7 +127,7 @@ public class BrandInfoController {
                 record.setStatus("待审核");
                 record.setType("提现");
                 brandRecordService.create(record);
-                return "redirect:/brand/brandaccount/" + acnt.getUser().getUserId();
+                return "redirect:/brand/brandaccount";
             }else{
                 model.addAttribute("error","余额不足！");
                 return "/brand/withdraw";
@@ -129,12 +142,13 @@ public class BrandInfoController {
     }
 
     //流水表
-    @GetMapping("/withdrawrecord/{id}")
-    public String withdrawRecord(@PathVariable("id") Integer id, Model model){
-        List<Record> records = brandRecordService.findByUserAndOp(id);
+    @GetMapping("/withdrawrecord")
+    public String withdrawRecord(HttpSession session, Model model){
+        Users users = (Users) session.getAttribute("user");
+        List<Record> records = brandRecordService.findByUserAndOp(users.getUserId());
         if(records.isEmpty())
             model.addAttribute("empty","无");
-        model.addAttribute("id", id);
+        model.addAttribute("id", users.getUserId());
         model.addAttribute("records", records);
         return "/brand/withdrawrecord";
     }

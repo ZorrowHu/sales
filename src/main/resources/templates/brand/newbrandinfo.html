@@ -98,7 +98,7 @@
                                             <td>
                                                 <div class="col-sm-8">
                                                     <input type="hidden" name="users.userId" th:value="${session.user.getUserId()}"/>
-                                                    <input type="hidden" name="account.accountId" value="-1"/>
+                                                    <input type="hidden" name="account.accountId" th:value="${account}"/>
                                                     <label th:text="${session.user.getUserId()}"></label>
                                                 </div>
                                             </td>

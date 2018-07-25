@@ -100,13 +100,13 @@
                                             <td th:text="${brandaccount.user.userId}"></td>
                                             <td th:text="${brandaccount.balance}"></td>
                                             <td>
-                                                <a th:href="@{'/brand/withdraw/'+${brandaccount.user.userId}}" class="btn btn-success">提现</a>
+                                                <a th:href="@{/brand/withdraw}" class="btn btn-success">提现</a>
                                             </td>
                                         </tr>
                                         <tr>
                                             <td colspan="2">
                                                 <div class="col-sm-offset-2 col-sm-10">
-                                                    <a th:href="@{'/brand/withdrawrecord/'+${brandaccount.user.userId}}" class="btn btn-warning">提现流水</a>
+                                                    <a th:href="@{/brand/withdrawrecord}" class="btn btn-warning">提现流水</a>
                                                 </div>
                                             </td>
                                         </tr>
