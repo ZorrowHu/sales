@@ -35,7 +35,7 @@ public class BrandreposRestController {
         @PostMapping("/getgoodsbytype")
         public List<BrandRepos> getgoodsbytype(String primary, String secondary, String tertiary){
                 Type type = typeRepository.findTypeByContent1AndAndContent2AndContent3(primary, secondary, tertiary);
-                List<BrandRepos> goods = brandReposRepository.findBrandreposByTypeAndStatusNot(type, "新入仓");
+                List<BrandRepos> goods = brandReposRepository.findBrandreposByTypeAndStatus(type, "新入仓");
                 return goods;
         }
 }

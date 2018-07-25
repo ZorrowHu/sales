@@ -15,6 +15,6 @@ public interface BrandReposRepository extends JpaRepository<BrandRepos, Integer>
         List<BrandRepos> findBrandreposByGoodName(String name);
         List<BrandRepos> findBrandreposByStatusNot(String status);
         List<BrandRepos> findBrandreposByGoodNameAndStatusNot(String name, String status);
-        List<BrandRepos> findBrandreposByTypeAndStatusNot(Type type, String status);
+        List<BrandRepos> findBrandreposByTypeAndStatus(Type type, String status);
 
 }
