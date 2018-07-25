@@ -5,6 +5,7 @@ import com.platform.sales.repository.TypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,15 +22,19 @@ public class BrandreposRestController {
         @PostMapping("/getsecondary")
         public Map<String, Object> getsecondary(String primary){
                 Map<String, Object> jsonMap = new HashMap<String, Object>();
-                //Map<String, String> taskMap = new HashMap<String, String>();
-                List<String> lists = typeRepository.getSecondary(primary);
-                for(String list : lists){
+                List<String> secondaries = typeRepository.getSecondary(primary);
+                List list = new ArrayList();
+                ;
+
+                for(String secondary : secondaries){
                         Map<String,String> taskMap=new HashMap<String,String>();
 
-                        taskMap.put("secondary", list);
+                        taskMap.put("primary", primary);
+                        taskMap.put("secondary", secondary);
+                        list.add(taskMap);
                         //list.add(taskMap);
                 }
-                jsonMap.put("tasks", lists);
+                jsonMap.put("tasks", list);
                 return jsonMap;
         }
 }
