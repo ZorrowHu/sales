@@ -10,7 +10,7 @@ public class Users {
         private Integer userId;             //用户id
         private String userName;        //用户名
         private String password;          //密码
-        private String userRole;           //用户角色
+        private String userRole;           //用户角色(借卖方、品牌商、消费者、管理员)
 
         public Users() { }
 
