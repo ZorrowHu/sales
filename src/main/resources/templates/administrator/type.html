@@ -57,6 +57,7 @@
         <div class="sidebar-nav nav-collapse collapse">
             <div class="user_side clearfix">
                 <img th:src="@{../assets/img/admin.jpg}" alt="Odinn god of Thunder">
+                <h5 th:text="${session.user.getUserRole()}"></h5>
                 <h5 th:text="${session.user.getUserName()}"></h5>
                 <!--<h5>admin</h5>-->
                 <!--<a href="#"><i class="icon-cog"></i> Settings</a>        -->
@@ -68,8 +69,8 @@
                     </div>
                     <div id="collapse1" class="accordion-body collapse">
                         <div class="accordion-inner">
-                            <a class="accordion-toggle active" href="/administrator/type"><i class="icon-star"></i> 商品类别管理</a>
-                            <a class="accordion-toggle" href="/administrator/cash"><i class="icon-list-alt"></i> 平台流水管理</a>
+                            <a class="accordion-toggle active" th:href="@{../administrator/type}"><i class="icon-star"></i> 商品类别管理</a>
+                            <a class="accordion-toggle" th:href="@{../administrator/cash}"><i class="icon-list-alt"></i> 平台流水管理</a>
                         </div>
                     </div>
                 </div>
@@ -84,7 +85,6 @@
                 <div class="col-lg-offset-1 col-lg-10">
                     <div class="panel panel-primary">
                         <!-- Default panel contents -->
-                        <div class="panel-heading">学生信息管理界面</div>
                         <div class="panel-body">
                             <p>
                             <div class="alert alert-success">
@@ -92,7 +92,7 @@
                                 <a th:href="@{/administrator/add}" class="alert-link">添加商品类型</a>
                             </div>
                             </p>
-                            <table class="table">
+                            <table class="table table-bordered">
                                 <thead>
                                 <tr>
                                     <th>一级目录</th>

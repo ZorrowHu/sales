@@ -57,6 +57,7 @@
         <div class="sidebar-nav nav-collapse collapse">
             <div class="user_side clearfix">
                 <img th:src="@{../../assets/img/admin.jpg}" alt="Odinn god of Thunder">
+                <h5 th:text="${session.user.getUserRole()}"></h5>
                 <h5 th:text="${session.user.getUserName()}"></h5>
                 <!--<h5>admin</h5>-->
                 <!--<a href="#"><i class="icon-cog"></i> Settings</a>        -->
@@ -68,8 +69,8 @@
                     </div>
                     <div id="collapse1" class="accordion-body collapse">
                         <div class="accordion-inner">
-                            <a class="accordion-toggle active" href="/administrator/type"><i class="icon-star"></i> 商品类别管理</a>
-                            <a class="accordion-toggle" href="/administrator/cash"><i class="icon-list-alt"></i> 平台流水管理</a>
+                            <a class="accordion-toggle active" th:href="@{../../administrator/type}"><i class="icon-star"></i> 商品类别管理</a>
+                            <a class="accordion-toggle" th:href="@{../../administrator/cash}"><i class="icon-list-alt"></i> 平台流水管理</a>
                         </div>
                     </div>
                 </div>
@@ -86,36 +87,33 @@
                         <!-- Default panel contents -->
                         <div class="col-lg-12">
                             <div class="alert alert-info">
-                                修改学生信息
+                                修改商品类型信息
                             </div>
                         </div>
                         <div class="col-lg-offset-2 col-lg-6">
                             <form class="form-horizontal" role="form" action="../../administrator/update" method="post">
                                 <input type="hidden" name="typeId" th:value="${Type.getTypeId()}" >
-                                <div class="form-group">
-                                    <label for="inputEmail3" class="col-sm-2 control-label">一级菜单</label>
-                                    <div class="col-sm-8">
-                                        <input type="text" name="content1" th:value="${Type.content1}" class="form-control" id="inputEmail3">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="inputPassword3" class="col-sm-2 control-label">二级菜单</label>
-                                    <div class="col-sm-8">
-                                        <input type="text" name="content2" th:value="${Type.content2}" class="form-control" id="inputPassword3">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="inputPhone" class="col-sm-2 control-label">三级菜单</label>
-                                    <div class="col-sm-8">
-                                        <input type="text" name="content3" th:value="${Type.content3}" class="form-control" id="inputPhone">
-                                    </div>
-                                </div>
 
-                                <div class="form-group">
-                                    <div class="col-sm-offset-2 col-sm-10">
-                                        <button type="submit" class="btn btn-success">提交修改</button>
-                                    </div>
-                                </div>
+                                <table class="table table-bordered">
+                                    <thead>
+                                    <tr>
+                                        <td>一级目录</td>
+                                        <td>二级目录</td>
+                                        <td>三级目录</td>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td><input type="text" name="content1" class="form-control" th:value="${Type.content1}"></td>
+                                        <td><input type="text" name="content2" class="form-control" th:value="${Type.content2}"></td>
+                                        <td><input type="text" name="content3" class="form-control" th:value="${Type.content3}"></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3"><button type="submit" class="btn btn-success">修改商品类型</button></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+
                             </form>
                         </div>
                     </div>

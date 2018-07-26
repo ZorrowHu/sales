@@ -1,17 +1,16 @@
 package com.platform.sales.controller;
 
+import com.platform.sales.entity.Account;
 import com.platform.sales.entity.Record;
 import com.platform.sales.entity.Type;
 import com.platform.sales.repository.RecordAdminRepository;
+import com.platform.sales.surface.BrandAccountService;
 import com.platform.sales.surface.TypeService;
-import com.platform.sales.surface.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -21,6 +20,8 @@ public class AdministratorController {
 
     @Autowired
     private TypeService typeService;
+    @Autowired
+    private BrandAccountService accountService;
     @Autowired
     private RecordAdminRepository recordAdminRepository;
 
@@ -33,17 +34,66 @@ public class AdministratorController {
         return "administrator/index";
     }
 
-    @GetMapping("/cash/{status}")
-    public String getCashs(@PathVariable("status") String status,
+    /**
+     * 根据参数status查找对应的流水信息并显示
+     * @param status
+     * @param model
+     * @return
+     */
+    @RequestMapping("/cash")
+    public String getCashs(@RequestParam(value = "status", required = false, defaultValue = "全部") String status,
                            Model model){
-        if (status == "全部"){    // 当参数为全部时显示所有的流水
+        if (status.equals("全部")){    // 当参数为全部时显示所有的流水
             List<Record> records = recordAdminRepository.findAll();
             model.addAttribute("Records", records);
         }else{  // 根据传递的状态参数显示流水
-            List<Record> records = recordAdminRepository.findByStatus(status);
+            List<Record> records = recordAdminRepository.findAllByStatus(status);
             model.addAttribute("Records", records);
         }
         return "administrator/cash";
+    }
+
+    /**
+     * 通过id查找流水，并完成状态更改以及对应账户的余额增加
+     * @param id
+     * @return
+     */
+    @GetMapping("pass/{id}")
+    public String pass(@PathVariable("id") Integer id,
+                       RedirectAttributes redirectAttributes){
+        Record record = recordAdminRepository.findById(id).get();   // 找到对应的财务流水
+        Account account = accountService.findByUserId(record.getOp().getUserId());  // 找到对应用户的钱包
+        switch (record.getType()){
+            case "充值":
+                account.setBalance(account.getBalance() + record.getMoney());   // 充值：钱包余额增加
+                record.setStatus("已通过");    // 将操作完成的流水状态设置为已通过
+                break;
+            case "提现":   // 提现：余额充足时可提现，余额不足时不通过
+                if (account.getBalance() < record.getMoney()){
+                    redirectAttributes.addFlashAttribute("message", "该用户余额不足，禁止提现,已默认不通过！");
+                    redirectAttributes.addFlashAttribute("ErrId", id + "");
+                    record.setStatus("未通过");
+                }else {
+                    account.setBalance(account.getBalance() - record.getMoney());
+                    record.setStatus("已通过");    // 将操作完成的流水状态设置为已通过
+                }
+                break;
+        }
+        recordAdminRepository.save(record); // 将改变状态后的流水信息存表
+        return "redirect:/administrator/cash";
+    }
+
+    /**
+     * 通过id查找流水，并完成状态更改以及对应账户的余额减少
+     * @param id
+     * @return
+     */
+    @GetMapping("fail/{id}")
+    public String fail(@PathVariable("id") Integer id){
+        Record record = recordAdminRepository.findById(id).get();   // 找到对应的财务流水
+        record.setStatus("未通过");    // 将操作完成的流水状态设置为未通过
+        recordAdminRepository.save(record); // 将改变状态后的流水信息存表
+        return "redirect:/administrator/cash";
     }
 
     /**
