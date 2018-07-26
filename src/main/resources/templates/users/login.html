@@ -46,20 +46,22 @@
 										<input class="btn-block" name="password" type="password" id="inputPassword" placeholder="密码">
 									</div>
 								</div>
+								<div class="control-group ">
+									<label>角色类型:</label>
+									<div class="controls">
+										<select name="userRole" class="control-group">
+											<option value="借卖方">借卖方</option>
+											<option value="品牌商">品牌商</option>
+											<option value="管理员">管理员</option>
+										</select>
+									</div>
+								</div>
 								<div>
 									<strong class="alert alert-warning"
 											th:unless="${#strings.isEmpty(message)}"
 											th:text="${message}"></strong>
 								</div>
-								<!-- <div class="control-group">
-                                    <div class="controls clearfix">
-                                        <label style="width:auto" class="checkbox pull-left">
-                                            <input type="checkbox"> Remember me
-                                        </label>
-                                        <a style="padding: 5px 0px 0px 5px;" href="#" class="pull-right">Forgot Password?</a>
-                                    </div>
-                                </div> -->
-								<button type="submit" class="btn pull-right">登录</button>
+								<button type="submit" class="btn btn-large btn-block">登录</button>
 							</form>
 						</div>
 					</div>

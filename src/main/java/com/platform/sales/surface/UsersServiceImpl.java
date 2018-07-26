@@ -34,8 +34,13 @@ public class UsersServiceImpl implements UsersService {
     }
 
     @Override
-    public Users userLogin(String name, String pwd) {
-        return usersRepository.login(name, pwd);
+    public Users userLogin(String name, String pwd, String role) {
+        return usersRepository.login(name, pwd, role);
+    }
+
+    @Override
+    public Users consumerLogin(String name, String pwd) {
+        return usersRepository.consumerLogin(name, pwd);
     }
 
     @Override

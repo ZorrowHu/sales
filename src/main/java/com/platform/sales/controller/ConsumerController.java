@@ -51,7 +51,7 @@ public class ConsumerController {
                         HttpSession session,
                         RedirectAttributes redirectAttributes){
 
-        Users user = usersService.userLogin(userName, password);    // 根据传过来的账户密码查询相应用户
+        Users user = usersService.consumerLogin(userName, password);    // 根据传过来的账户密码查询相应用户
         if (user != null && user.getUserRole().equals("消费者")){
             user.setPassword("");   // 将密码设空以免泄露
             session.setAttribute("user", user);

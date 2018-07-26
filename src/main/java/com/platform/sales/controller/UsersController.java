@@ -41,15 +41,16 @@ public class UsersController {
     @PostMapping("/login")
     public String login(@RequestParam String userName,
                         @RequestParam String password,
+                        @RequestParam String userRole,
                         HttpSession session,
                         RedirectAttributes redirectAttributes){
 
-        Users user = usersService.userLogin(userName, password);    // 根据传过来的账户密码查询相应用户
-        if (user != null && !user.getUserRole().equals("消费者")){
+        Users user = usersService.userLogin(userName, password, userRole);    // 根据传过来的账户密码查询相应用户
+        if (user != null){
             user.setPassword("");   // 将密码设空以免泄露
             session.setAttribute("user", user);
             // 下列判断根据登陆者的身份信息，跳转到不同的页面
-            switch (user.getUserRole()){
+            switch (userRole){
                 case "管理员":
                     return "redirect:/administrator/index";
                 case "品牌商":
