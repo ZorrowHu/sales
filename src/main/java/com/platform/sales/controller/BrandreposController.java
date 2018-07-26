@@ -10,8 +10,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+
 
 import javax.servlet.http.HttpSession;
+import java.io.*;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -62,6 +67,7 @@ public class BrandreposController {
                                @RequestParam("type_primary") String primary,
                                @RequestParam("type_secondary") String secondary,
                                @RequestParam("type_tertiary") String tertiary,
+                               @RequestParam("filamge") MultipartFile file,
                                 HttpSession session
                                  ){
                 Users users = (Users) session.getAttribute("user");
@@ -72,6 +78,32 @@ public class BrandreposController {
 
                 Type type = typeRepository.findTypeByContent1AndContent2AndContent3(primary, secondary, tertiary);
                 brandrepos.setType(type);
+
+                if (!file.isEmpty()) {
+                        try {
+                                String pathName = "src/main/resources/static/goodsimg/";
+                                Long stamp = new Date().getTime();
+                                String prefix = stamp.toString();
+                                String fileName = prefix + file.getOriginalFilename();
+
+                                brandrepos.setImage(fileName);
+
+                                BufferedOutputStream out = new BufferedOutputStream(
+                                        new FileOutputStream(new File(pathName + fileName)));
+                                out.write(file.getBytes());
+                                out.flush();
+                                out.close();
+                        } catch (FileNotFoundException e) {
+                                e.printStackTrace();
+                                //return "上传失败," + e.getMessage();
+                        } catch (IOException e) {
+                                e.printStackTrace();
+                                //return "上传失败," + e.getMessage();
+                        }
+                        //return "上传成功";
+                } else {
+                        //return "上传失败，因为文件是空的.";
+                }
 
                 brandReposRepository.save(brandrepos);
                 return "redirect:/brand/index";
@@ -106,6 +138,7 @@ public class BrandreposController {
                                @RequestParam("type_primary") String primary,
                                @RequestParam("type_secondary") String secondary,
                                @RequestParam("type_tertiary") String tertiary,
+                               @RequestParam("filamge") MultipartFile file,
                                HttpSession session
                                ){
                 good.setGoodId(id);
@@ -117,7 +150,34 @@ public class BrandreposController {
                 good.setType(type);
                 good.setStatus(temp.getStatus());
                 good.setBrand(temp.getBrand());
+                if (!file.isEmpty()) {
+                        try {
+                                String pathName = "src/main/resources/static/goodsimg/";
+                                Long stamp = new Date().getTime();
+                                String prefix = stamp.toString();
+                                String fileName = prefix + file.getOriginalFilename();
 
+                                good.setImage(fileName);
+
+                                String existFileName = temp.getImage();
+                                File existFile = new File(pathName + existFileName);
+                                existFile.delete();
+                                BufferedOutputStream out = new BufferedOutputStream(
+                                        new FileOutputStream(new File(pathName + fileName)));
+                                out.write(file.getBytes());
+                                out.flush();
+                                out.close();
+                        } catch (FileNotFoundException e) {
+                                e.printStackTrace();
+                                //return "上传失败," + e.getMessage();
+                        } catch (IOException e) {
+                                e.printStackTrace();
+                                //return "上传失败," + e.getMessage();
+                        }
+                        //return "上传成功";
+                } else {
+                        //return "上传失败，因为文件是空的.";
+                }
                 brandReposRepository.save(good);
                 return "redirect:/brand/index";
         }
@@ -136,12 +196,7 @@ public class BrandreposController {
                 Users user = usersRepository.findByUserNameAndUserRole(users.getUserName(),users.getUserRole());
                 //find out all goods that is not newly added tot the repository
                 List<BrandRepos> Lists = brandReposRepository.findBrandreposByGoodNameAndStatusNotAndBrand(keyword, "新入仓", user);
-                Map<String,String> taskMap=new HashMap<String,String>();
-                for (BrandRepos list : Lists){
-                        //list.getType().getContent3();
-                        //taskMap.put(list.getGoodId(), typeRepository.findById(list.getType().getTypeId()).get().getContent3());
 
-                }
                 model.addAttribute("Lists", Lists);
                 return "brand/mainframe";
         }

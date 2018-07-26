@@ -86,20 +86,58 @@
                         <h5>我的订单</h5>
                     </div>
                     <div class="widget-body">
+
+                        <div class="row-fluid">
+
+                        </div>
+
                         <div class="row-fluid">
                             <div class="col-lg-offset-2 col-lg-6">
+                                <form th:action="@{/brand/selectorder}" method="post">
+                                    <div class="col-lg-6 form-control">
+                                        <label class="label">订单状态</label>
+                                        <select name="status" class="form-control">
+                                            <option value="0">全  部</option>
+                                            <option value="待发货">待发货</option>
+                                            <option value="已发货">已发货</option>
+                                            <option value="已完成">已完成</option>
+                                            <option value="已取消">已取消</option>
+                                        </select>
+                                        <button type="submit" class="btn btn-success">查询</button>
+                                    </div>
+                                </form>
                                 <table class="table table-striped">
                                 <thead>
                                 <tr>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
+                                    <th>订单编号</th>
+                                    <th>商品ID</th>
+                                    <th>借买方ID</th>
+                                    <th>消费者ID</th>
+                                    <th>数量</th>
+                                    <th>总价</th>
+                                    <th>支付时间</th>
+                                    <th>状态</th>
+                                    <th>操作</th>
                                 </tr>
                                 </thead>
                                 <tbody>
+                                <tr th:each="Order:${brandorder}">
+                                    <td th:text="${Order.orderId}"></td>
+                                    <td th:text="${Order.goods.goodId}"></td>
+                                    <td th:text="${Order.seller.userId}"></td>
+                                    <td th:text="${Order.consumer.userId}"></td>
+                                    <td th:text="${Order.quantity}"></td>
+                                    <td th:text="${Order.totalPrice}"></td>
+                                    <td th:text="${Order.payTime}"></td>
+                                    <td th:text="${Order.status}"></td>
+                                    <td>
+                                        <a th:href="@{/brand/updateorder}" class="btn btn-warning">发货</a>
+                                        <a th:href="@{/brand/cancelorder}" class="btn btn-danger">取消</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td th:text="${empty}" colspan="9"></td>
+                                </tr>
                                 </tbody>
                                 </table>
                             </div>

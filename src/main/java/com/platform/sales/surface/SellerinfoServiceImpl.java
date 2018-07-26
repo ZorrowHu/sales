@@ -1,5 +1,6 @@
 package com.platform.sales.surface;
 
+import com.platform.sales.entity.Account;
 import com.platform.sales.entity.SellerInfo;
 import com.platform.sales.entity.Users;
 import com.platform.sales.repository.SellerinfoRepository;

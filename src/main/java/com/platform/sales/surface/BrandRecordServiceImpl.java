@@ -1,6 +1,7 @@
 package com.platform.sales.surface;
 
 import com.platform.sales.entity.Record;
+import com.platform.sales.entity.Users;
 import com.platform.sales.repository.BrandRecordRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,11 +25,21 @@ public class BrandRecordServiceImpl implements BrandRecordService {
 
     @Override
     public List<Record> findByUser(Integer id) {
-        return brandRecordRepository.findAllByUsersUserIdAndOpUserIdIsNot(id,id);
+        return brandRecordRepository.findAllByUsersUserIdAndOpUserIdNot(id,id);
     }
 
     @Override
     public List<Record> findByOp(Integer id) {
         return brandRecordRepository.findAllByOpUserIdAndUsersUserIdNot(id, id);
+    }
+
+    @Override
+    public List<Record> findByUser(Users user) {
+        return brandRecordRepository.findAllByUsersAndOpNot(user,user);
+    }
+
+    @Override
+    public List<Record> findByOp(Users user) {
+        return brandRecordRepository.findAllByOpAndUsersNot(user,user);
     }
 }
