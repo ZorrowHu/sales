@@ -174,4 +174,10 @@ public class SellerinfoController {
         model.addAttribute("records", records);
         return "/seller/record";
     }
+
+    @GetMapping("/seller/sellerorder")
+    public String getSellerorder(Model model,HttpSession session){
+        return "/seller/sellerorder";
+    }
+
 }
