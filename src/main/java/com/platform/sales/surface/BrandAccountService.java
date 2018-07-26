@@ -7,4 +7,6 @@ public interface BrandAccountService {
     Account findByUserId(Integer id);
 
     Account update(Account account);
+
+    void deleteByUserId(Integer id);
 }

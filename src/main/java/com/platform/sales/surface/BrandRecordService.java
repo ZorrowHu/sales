@@ -18,5 +18,7 @@ public interface BrandRecordService {
 
     List<Record> findByOp(Users user);
 
+    void delByUserOrOp(Integer id_1, Integer id_2);
+
     List<Record> findAllByUser_UserId(Integer id);
 }

@@ -7,8 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -54,8 +56,11 @@ public class BrandInfoController {
     }
 
     //修改信息
-    @PostMapping("/updateBrandinfo")
-    public String updateBrandInfo(HttpSession session, BrandInfo brandInfo, Model model){
+    @RequestMapping(value = "/updateBrandinfo",method = RequestMethod.POST)
+    public String updateBrandInfo(
+            @RequestParam("filamge") MultipartFile file,
+            HttpSession session,
+            BrandInfo brandInfo, Model model){
         //分配一个钱包
         if(brandInfo.getAccount().getAccountId() == -1){
             Users users = (Users) session.getAttribute("user");
@@ -65,6 +70,31 @@ public class BrandInfoController {
             brandacnt.setUser(users);
             Account acnt = brandAccountService.update(brandacnt);
             brandInfo.setAccount(acnt);
+        }
+        if (!file.isEmpty()) {
+            try {
+                String pathName = "src/main/resources/static/brandimg/";
+                Long stamp = new Date().getTime();
+                String prefix = stamp.toString();
+                String fileName = prefix + file.getOriginalFilename();
+
+                brandInfo.setImage(fileName);
+
+                BufferedOutputStream out = new BufferedOutputStream(
+                        new FileOutputStream(new File(pathName + fileName)));
+                out.write(file.getBytes());
+                out.flush();
+                out.close();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+                //return "上传失败," + e.getMessage();
+            } catch (IOException e) {
+                e.printStackTrace();
+                //return "上传失败," + e.getMessage();
+            }
+            //return "上传成功";
+        } else {
+            //return "上传失败，因为文件是空的.";
         }
         BrandInfo newbrandInfo = brandInfoService.update(brandInfo);
         model.addAttribute("brandinfo", newbrandInfo);

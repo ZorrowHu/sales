@@ -19,5 +19,7 @@ public interface BrandRecordRepository extends JpaRepository<Record,Integer> {
 
     List<Record> findAllByOpAndUsersNot(Users op, Users user);
 
+    void deleteAllByUsersUserIdOrOpUserId(Integer id_1, Integer id_2);
+
     List<Record> findAllByUsers_UserId(Integer id);
 }
