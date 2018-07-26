@@ -48,13 +48,13 @@
             <div class="accordion" id="accordion2">
                 <div class="accordion-group">
                     <div class="accordion-heading">
-                        <a class="accordion-toggle b_C3F7A7 collapsed" data-toggle="collapse" data-parent="#accordion2" href="#collapse1"><i class="icon-magic"></i> <span>管理员业务</span></a>
+                        <a class="accordion-toggle b_C3F7A7 collapsed" data-toggle="collapse" data-parent="#accordion2" href="#collapse1"><i class="icon-user"></i> <span>管理员业务</span></a>
                     </div>
                     <div id="collapse1" class="accordion-body collapse">
                         <div class="accordion-inner">
-                            <a class="accordion-toggle active" th:href="@{../../administrator/type}"><i class="icon-star"></i> 商品类别管理</a>
+                            <a class="accordion-toggle" th:href="@{../../administrator/type}"><i class="icon-star"></i> 商品类别管理</a>
                             <a class="accordion-toggle" th:href="@{../../administrator/cash}"><i class="icon-list-alt"></i> 平台流水管理</a>
-                            <a class="accordion-toggle" th:href="@{../../administrator/brand}"><i class="icon-user"></i> 品牌商角色管理</a>
+                            <a class="accordion-toggle active" th:href="@{../../administrator/brand}"><i class="icon-user"></i> 品牌商角色管理</a>
                             <a class="accordion-toggle" th:href="@{../../administrator/seller}"><i class="icon-user"></i> 借卖方角色管理</a>
                         </div>
                     </div>
@@ -70,37 +70,37 @@
                 <div class="col-lg-offset-1 col-lg-10">
                     <div class="panel panel-primary">
                         <!-- Default panel contents -->
-                        <div class="col-lg-12">
+                        <div class="panel-body">
                             <p>
                             <div class="alert alert-success">
-                                修改商品类型信息
+                                修改品牌商角色信息
                             </div>
                             </p>
-                        </div>
-                        <div class="col-lg-offset-2 col-lg-6">
-                            <form class="form-horizontal" role="form" action="../../administrator/updateType" method="post">
-                                <input type="hidden" name="typeId" th:value="${Type.getTypeId()}" >
-
+                            <form class="form-horizontal" role="form" action="../../administrator/updateSeller" method="post">
+                                <input type="hidden" name="sellerId" th:value="${seller.getSellerId()}">
                                 <table class="table table-bordered">
                                     <thead>
                                     <tr>
-                                        <th>一级目录</th>
-                                        <th>二级目录</th>
-                                        <th>三级目录</th>
+                                        <th>借卖方用户名</th>
+                                        <th>借卖方密码</th>
+                                        <th>借卖方交易名</th>
+                                        <th>借卖方邮箱</th>
+                                        <th>借卖方电话</th>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     <tr>
-                                        <td><input type="text" name="content1" class="form-control" th:value="${Type.content1}"></td>
-                                        <td><input type="text" name="content2" class="form-control" th:value="${Type.content2}"></td>
-                                        <td><input type="text" name="content3" class="form-control" th:value="${Type.content3}"></td>
+                                        <td><input type="text" name="userName" class="form-control" th:value="${seller.user.getUserName()}"></td>
+                                        <td><input type="text" name="password" class="form-control" th:value="${seller.user.getPassword()}"></td>
+                                        <td><input type="text" name="sellerName" class="form-control" th:value="${seller.getUserName()}"></td>
+                                        <td><input type="text" name="sellerEmail" class="form-control" th:value="${seller.getMail()}"></td>
+                                        <td><input type="text" name="sellerPhone" class="form-control" th:value="${seller.getPhone()}"></td>
                                     </tr>
                                     <tr>
-                                        <td colspan="3"><button type="submit" class="btn btn-success">修改商品类型</button></td>
+                                        <td colspan="3"><button type="submit" class="btn btn-success">修改角色信息</button></td>
                                     </tr>
                                     </tbody>
                                 </table>
-
                             </form>
                         </div>
                     </div>

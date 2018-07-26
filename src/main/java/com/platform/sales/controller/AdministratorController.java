@@ -3,6 +3,7 @@ package com.platform.sales.controller;
 import com.platform.sales.entity.*;
 import com.platform.sales.repository.BrandInfoRepository;
 import com.platform.sales.repository.RecordAdminRepository;
+import com.platform.sales.repository.SellerinfoRepository;
 import com.platform.sales.repository.UsersRepository;
 import com.platform.sales.surface.BrandAccountService;
 import com.platform.sales.surface.BrandInfoService;
@@ -30,6 +31,8 @@ public class AdministratorController {
     private BrandInfoRepository brandInfoRepository;
     @Autowired
     private UsersRepository usersRepository;
+    @Autowired
+    private SellerinfoRepository sellerinfoRepository;
 
     /**
      * 跳转到管理员首页
@@ -216,7 +219,11 @@ public class AdministratorController {
 
     /**
      * 保存修改后的品牌商角色信息并跳转回品牌商角色管理页
-     * @param
+     * @param brandId
+     * @param userName
+     * @param password
+     * @param brandName
+     * @param brandDesc
      * @return
      */
     @PostMapping("/updateBrand")
@@ -237,6 +244,12 @@ public class AdministratorController {
         return "redirect:/administrator/brand";
     }
 
+    @GetMapping("/deleteBrand/{id}")
+    public String deleteBrand(@PathVariable("id") Integer id){
+//        brandInfoRepository.delete(brandInfoRepository.findById(id).get());
+        return "redirect:/administrator/brand";
+    }
+
 
 
 /**
@@ -244,11 +257,49 @@ public class AdministratorController {
  *  以下为借卖方角色管理方法
  */
 
-
+    /**
+     * 跳转到借卖方角色管理页并显示所有借卖方角色
+     * @param model
+     * @return
+     */
     @GetMapping("/seller")
-    public String sellerIndex(){
-
+    public String sellerIndex(Model model){
+        List<SellerInfo> sellers = sellerinfoRepository.findAll();
+        model.addAttribute("sellers", sellers);
         return "administrator/seller";
+    }
+
+    /**
+     * 根据id查找需要修改的借卖方信息并显示
+     * @param id
+     * @param model
+     * @return
+     */
+    @GetMapping("/updateSeller/{id}")
+    public String updateSellerPage(@PathVariable("id") Integer id,
+                                   Model model){
+        SellerInfo seller = sellerinfoRepository.findById(id).get();
+        model.addAttribute("seller", seller);
+        return "administrator/updateSeller";
+    }
+
+    @PostMapping("/updateSeller")
+    public String updateSeller(@RequestParam Integer sellerId,
+                               @RequestParam String userName,
+                               @RequestParam String password,
+                               @RequestParam String sellerName,
+                               @RequestParam String sellerEmail,
+                               @RequestParam String sellerPhone){
+        SellerInfo seller = sellerinfoRepository.findById(sellerId).get();
+        Users user = usersRepository.findById(seller.getUser().getUserId()).get();
+        seller.setUserName(sellerName);
+        seller.setMail(sellerEmail);
+        seller.setPhone(sellerPhone);
+        user.setUserName(userName);
+        user.setPassword(password);
+        sellerinfoRepository.save(seller);
+        usersRepository.save(user);
+        return "redirect:/administrator/seller";
     }
 
 }

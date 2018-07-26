@@ -73,9 +73,35 @@
                         <div class="panel-body">
                             <p>
                             <div class="alert alert-success">
-                                欢迎你！亲爱的管理员
+                                在这里，你可以查看所有借卖方的角色信息，并可以对其进行操作
                             </div>
                             </p>
+
+                            <table class="table table-bordered table-hover">
+                                <thead>
+                                <tr>
+                                    <th>借卖方用户名</th>
+                                    <th>借卖方交易名</th>
+                                    <th>借卖方邮箱</th>
+                                    <th>借卖方电话</th>
+                                    <th>操作</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="seller:${sellers}">
+                                    <td th:text="${seller.getUser().getUserName()}"></td>
+                                    <td th:text="${seller.getUserName()}"></td>
+                                    <td th:text="${seller.getMail()}"></td>
+                                    <td th:text="${seller.getPhone()}"></td>
+                                    <td>
+                                        <a th:href="@{'updateSeller/'+${seller.getSellerId()}}" title="修改">修改<i class="fa fa-edit text-navy"></i></a>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;
+                                        <a th:href="@{'deleteSeller/'+${seller.getSellerId()}}" title="删除">删除<i class="fa fa-trash-o text-navy"></i></a>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+
                         </div>
                     </div>
                 </div>

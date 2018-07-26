@@ -71,9 +71,11 @@
                     <div class="panel panel-primary">
                         <!-- Default panel contents -->
                         <div class="panel-body">
+                            <p>
                             <div class="alert alert-success">
                                 在这里，你可以查看所有品牌商的角色信息，并可以对其进行操作
                             </div>
+                            </p>
                             <table class="table table-bordered table-hover">
                                 <thead>
                                 <tr>
@@ -91,7 +93,7 @@
                                     <td>
                                         <a th:href="@{'updateBrand/'+${Brand.getId()}}" title="修改">修改<i class="fa fa-edit text-navy"></i></a>
                                         &nbsp;&nbsp;&nbsp;&nbsp;
-                                        <a href="#" title="删除">删除<i class="fa fa-trash-o text-navy"></i></a>
+                                        <a th:href="@{'deleteBrand/'+${Brand.getId()}}" title="删除">删除<i class="fa fa-trash-o text-navy"></i></a>
                                     </td>
                                 </tr>
                                 </tbody>
