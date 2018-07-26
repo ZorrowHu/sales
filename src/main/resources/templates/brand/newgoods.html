@@ -86,7 +86,7 @@
                             <a href="#" data-title="Collapse" data-collapsed="false" class="tip collapse"><i class="icon-chevron-up"></i></a>
                         </div>
                     </div>
-                    <form class="form-horizontal" role="form" th:action="@{/brand/addgoods}" method="post">
+                    <form class="form-horizontal" role="form" th:action="@{/brand/addgoods}" method="post" enctype="multipart/form-data" >
                         <input type="hidden" name="goodId">
                         <div class="widget-body">
                             <div class="widget-forms clearfix">
@@ -139,8 +139,11 @@
                                 <div class="control-group">
                                     <label class="control-label">商品图片</label>
                                     <div class="controls">
-                                        <input class="span7" type="text" placeholder="请输入商品图片" name="image">
-                                        <span class="help-inline"></span>
+                                        <input id="lefile" type="file" style="display:none">
+                                        <div class="input-append">
+                                            <input id="photoCover" class="input-large" type="file" style="height:30px;width:425.94px;" placeholder="请打开商品图片" name="filamge">
+                                            <!--<a class="btn" onclick="$('input[id=lefile]').click();">打开图片</a>-->
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -174,6 +177,11 @@
 <script type="text/javascript" th:src="@{/assets/js/realm.js}"></script>
 <script type="text/javascript" th:src="@{/assets/js/jquery.slimscroll.min.js}"></script>
 
+<script type="text/javascript">
+    $('input[id=lefile]').change(function() {
+        $('#photoCover').val($(this).val());
+    });
+</script>
 <script type="text/javascript">
     $(function(){
         $("#type_primary").change(function(){

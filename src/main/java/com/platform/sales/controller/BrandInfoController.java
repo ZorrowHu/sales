@@ -1,22 +1,12 @@
 package com.platform.sales.controller;
 
-import com.platform.sales.entity.Account;
-import com.platform.sales.entity.BrandInfo;
-import com.platform.sales.entity.Record;
-import com.platform.sales.entity.Users;
-import com.platform.sales.surface.BrandAccountService;
-import com.platform.sales.surface.BrandInfoService;
-import com.platform.sales.surface.BrandRecordService;
-import com.platform.sales.surface.UsersService;
-import org.apache.catalina.User;
+import com.platform.sales.entity.*;
+import com.platform.sales.repository.BrandReposRepository;
+import com.platform.sales.surface.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.Date;
@@ -38,6 +28,12 @@ public class BrandInfoController {
     @Autowired
     private UsersService usersService;
 
+    @Autowired
+    private BrandReposRepository brandReposRepository;
+
+    @Autowired
+    private BrandOrderService brandOrderService;
+
     //我的信息
     @GetMapping("/brandinfo")
     public String brandInfo(HttpSession session,Model model){
@@ -56,6 +52,7 @@ public class BrandInfoController {
         }
     }
 
+    //修改信息
     @PostMapping("/updateBrandinfo")
     public String updateBrandInfo(HttpSession session, BrandInfo brandInfo, Model model){
         //分配一个钱包
@@ -94,6 +91,7 @@ public class BrandInfoController {
         }
     }
 
+    //修改原始支付密码
     @PostMapping("/brandaccount")
     public String updateAccount(Account account, Model model){
         Account newaccount = brandAccountService.update(account);
@@ -114,20 +112,25 @@ public class BrandInfoController {
     public String withdraw(Account account,Model model){
         Account acnt = brandAccountService.findByUserId(account.getUser().getUserId());
         if(acnt.getPayPwd().equals(account.getPayPwd())){
-            if(acnt.getBalance() >= account.getBalance()){
-                Float rest = acnt.getBalance() - account.getBalance();
-                acnt.setBalance(rest);
-                brandAccountService.update(acnt);
-                //创建流水单
-                Record record = new Record();
-                record.setUsers(acnt.getUser());
-                record.setOp(acnt.getUser());
-                record.setMoney(account.getBalance());
-                record.setTime(new Date());
-                record.setStatus("待审核");
-                record.setType("提现");
-                brandRecordService.create(record);
-                return "redirect:/brand/brandaccount";
+            if(acnt.getBalance() >= account.getBalance() && acnt.getBalance() > 0){
+                if(account.getBalance() > 0){
+                    Float rest = acnt.getBalance() - account.getBalance();
+                    acnt.setBalance(rest);
+                    brandAccountService.update(acnt);
+                    //创建流水单
+                    Record record = new Record();
+                    record.setUsers(acnt.getUser());
+                    record.setOp(acnt.getUser());
+                    record.setMoney(account.getBalance());
+                    record.setTime(new Date());
+                    record.setStatus("待审核");
+                    record.setType("提现");
+                    brandRecordService.create(record);
+                    return "redirect:/brand/brandaccount";
+                }else{
+                    model.addAttribute("error","提现金额必须大于0！");
+                    return "/brand/withdraw";
+                }
             }else{
                 model.addAttribute("error","余额不足！");
                 return "/brand/withdraw";
@@ -136,7 +139,7 @@ public class BrandInfoController {
             if(account.getPayPwd().equals(""))
                 model.addAttribute("error","密码不能为空！");
             else
-                model.addAttribute("error","密码错误");
+                model.addAttribute("error","密码错误！");
             return "/brand/withdraw";
         }
     }
@@ -145,8 +148,11 @@ public class BrandInfoController {
     @GetMapping("/record")
     public String withdrawRecord(HttpSession session, Model model){
         Users users = (Users) session.getAttribute("user");
-        List<Record> records_1 = brandRecordService.findByUser(users.getUserId());
-        List<Record> records_2 = brandRecordService.findByOp(users.getUserId());
+
+        List<Record> records_1 = brandRecordService.findByUser(users);
+        List<Record> records_2 = brandRecordService.findByOp(users);
+//        List<Record> records_1 = brandRecordService.findByUser(users.getUserId());
+//        List<Record> records_2 = brandRecordService.findByOp(users.getUserId());
         List<Record> records = brandRecordService.findByUserAndOp(users.getUserId());
         records.addAll(records_1);
         records.addAll(records_2);
@@ -155,10 +161,8 @@ public class BrandInfoController {
             if(record.getUsers().getUserId() == users.getUserId()
                     && record.getOp().getUserId() == users.getUserId()){
                 record.setType("提现");
-            }else if (record.getUsers().getUserId() == users.getUserId()){
-                record.setType("转出");
-            }else if(record.getOp().getUserId() == users.getUserId()){
-                record.setType("转入");
+            }else{
+                record.setType("转账");
             }
         }
         if(records.isEmpty())
@@ -170,7 +174,49 @@ public class BrandInfoController {
 
     //订单管理
     @GetMapping("/brandorder")
-    public String brandOrder(){
+    public String brandOrder(HttpSession session, Model model){
+        Users user = (Users) session.getAttribute("user");
+        List<BrandRepos> goods = brandReposRepository.findAllByBrand(user);
+        List<OrderInfo> brandOrder = null;
+        for(int i = 0; i < goods.size(); i++){
+            List<OrderInfo> order = brandOrderService.findByGoods(goods.get(i));
+            brandOrder.addAll(order);
+        }
+        if(brandOrder == null)
+            model.addAttribute("empty","无");
+        model.addAttribute("brandorder",brandOrder);
         return "/brand/brandorder";
     }
+
+    @RequestMapping(value = "/selectorder",method = RequestMethod.POST)
+    public String selectOrder(@RequestParam("status") String select, HttpSession session,Model model){
+        Users user = (Users) session.getAttribute("user");
+        List<BrandRepos> goods = brandReposRepository.findAllByBrand(user);
+        List<OrderInfo> brandOrder = null;
+        if(select.equals("0")){
+            for(int i = 0; i < goods.size(); i++){
+                List<OrderInfo> order = brandOrderService.findByGoods(goods.get(i));
+                brandOrder.addAll(order);
+            }
+            if(brandOrder == null)
+                model.addAttribute("empty","无");
+            model.addAttribute("brandorder",brandOrder);
+            model.addAttribute("select", select);
+            return "/brand/brandorder";
+        }else {
+            for (int i = 0; i < goods.size(); i++) {
+                List<OrderInfo> order = brandOrderService.findByStatusAndGoods(select, goods.get(i));
+                brandOrder.addAll(order);
+            }
+            if(brandOrder == null)
+                model.addAttribute("empty","无");
+            model.addAttribute("brandorder",brandOrder);
+            model.addAttribute("select", select);
+            return "/brand/brandorder";
+        }
+    }
+//
+//    订单发货
+//
+//    订单取消
 }
