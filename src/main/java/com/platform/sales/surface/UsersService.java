@@ -22,6 +22,9 @@ public interface UsersService {
     // 根据登录信息查询用户
     Users userLogin(String name, String pwd);
 
-    // 根据注册信息查询用户
+    // 根据注册信息(名字、角色)查询用户
     Users userRegister(String name, String role);
+
+    // 根据名字查用户
+    Users findByName(String name);
 }
