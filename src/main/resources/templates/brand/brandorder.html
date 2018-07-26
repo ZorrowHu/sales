@@ -111,8 +111,8 @@
                                 <tr>
                                     <th>订单编号</th>
                                     <th>商品ID</th>
-                                    <th>借买方ID</th>
-                                    <th>消费者ID</th>
+                                    <th>借买方</th>
+                                    <th>消费者</th>
                                     <th>数量</th>
                                     <th>总价</th>
                                     <th>支付时间</th>
@@ -124,8 +124,8 @@
                                 <tr th:each="Order:${brandorder}">
                                     <td th:text="${Order.orderId}"></td>
                                     <td th:text="${Order.goods.goodId}"></td>
-                                    <td th:text="${Order.seller.userId}"></td>
-                                    <td th:text="${Order.consumer.userId}"></td>
+                                    <td th:text="${Order.seller.userName}"></td>
+                                    <td th:text="${Order.consumer.userName}"></td>
                                     <td th:text="${Order.quantity}"></td>
                                     <td th:text="${Order.totalPrice}"></td>
                                     <td th:text="${Order.payTime}"></td>

@@ -91,20 +91,12 @@
                                     <table class="table table-striped">
                                         <tbody>
                                         <tr>
-                                            <td>ID</td>
+                                            <td>品牌名称</td>
                                             <td>
                                                 <div class="col-sm-8">
                                                     <input type="hidden" name="id" th:value="${brandinfo.id}"/>
                                                     <input type="hidden" name="users.userId" th:value="${brandinfo.users.userId}"/>
                                                     <input type="hidden" name="account.accountId" th:value="${brandinfo.account.accountId}"/>
-                                                    <label th:text="${brandinfo.users.userId}"></label>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>品牌名称</td>
-                                            <td>
-                                                <div class="col-sm-8">
                                                     <input type="text" name="brName" th:value="${brandinfo.brName}" class="form-control">
                                                 </div>
                                             </td>
@@ -112,7 +104,6 @@
                                         <tr>
                                             <td>商标</td>
                                             <td>
-                                                <img th:src="@{/brandimg/15325997103453.jpg}">
                                                 <img th:src="@{'/brandimg/'+${brandinfo.image}}" width="100px" height="100px">
                                                 <input type="hidden" name="image" th:value="${brandinfo.image}"></input>
                                                 <input id="photoCover" class="input-large" type="file" style="height:30px;width:425.94px;" placeholder="请打开商品图片" name="filamge">

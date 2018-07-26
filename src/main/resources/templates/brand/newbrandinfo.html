@@ -94,19 +94,11 @@
                                         </thead>
                                         <tbody>
                                         <tr>
-                                            <td>ID</td>
+                                            <td>品牌名称</td>
                                             <td>
                                                 <div class="col-sm-8">
                                                     <input type="hidden" name="users.userId" th:value="${session.user.getUserId()}"/>
                                                     <input type="hidden" name="account.accountId" th:value="${account}"/>
-                                                    <label th:text="${session.user.getUserId()}"></label>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>品牌名称</td>
-                                            <td>
-                                                <div class="col-sm-8">
                                                     <input type="text" name="brName" class="form-control">
                                                 </div>
                                             </td>

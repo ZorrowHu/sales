@@ -44,12 +44,12 @@ public class BrandRecordServiceImpl implements BrandRecordService {
     }
 
     @Override
-<<<<<<< HEAD
     public void delByUserOrOp(Integer id_1, Integer id_2) {
         brandRecordRepository.deleteAllByUsersUserIdOrOpUserId(id_1, id_2);
-=======
+    }
+
+    @Override
     public List<Record> findAllByUser_UserId(Integer id) {
         return brandRecordRepository.findAllByUsers_UserId(id);
->>>>>>> 9f960e1538900463b275ad013ec23608852cc212
     }
 }
