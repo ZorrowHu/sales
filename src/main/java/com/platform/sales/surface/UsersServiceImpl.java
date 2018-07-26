@@ -42,4 +42,9 @@ public class UsersServiceImpl implements UsersService {
     public Users userRegister(String name, String role) {
         return usersRepository.register(name, role);
     }
+
+    @Override
+    public Users findByName(String name) {
+        return usersRepository.findByUserName(name);
+    }
 }

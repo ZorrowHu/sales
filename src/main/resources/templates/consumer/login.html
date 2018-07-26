@@ -29,7 +29,7 @@
 							<h5>登录进入Platform商城</h5>
 						</div>
 						<div class="widget-body clearfix" style="padding:25px;">
-							<form action="/consumer/index">
+							<form method="post" action="/consumer/login">
 								<!-- <div style="padding:10px 0">
                                    <a style="" href="#" class="btn btn-large btn-block btn-primary"><i class="icon-facebook-sign"></i> Login with Facebook</a>
                                 </div> -->
@@ -38,13 +38,18 @@
                                 </div> -->
 								<div class="control-group">
 									<div class="controls">
-										<input class="btn-block" type="text" id="inputEmail" placeholder="用户名">
+										<input class="btn-block" name="userName" type="text" id="inputEmail" placeholder="用户名">
 									</div>
 								</div>
 								<div class="control-group">
 									<div class="controls">
-										<input class="btn-block" type="password" id="inputPassword" placeholder="密码">
+										<input class="btn-block" name="password" type="password" id="inputPassword" placeholder="密码">
 									</div>
+								</div>
+								<div>
+									<strong class="alert alert-warning"
+											th:unless="${#strings.isEmpty(message)}"
+											th:text="${message}"></strong>
 								</div>
 								<!-- <div class="control-group">
                                     <div class="controls clearfix">

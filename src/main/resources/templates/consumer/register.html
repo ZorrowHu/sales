@@ -39,25 +39,16 @@
                                     <label for="form_username">用户名:</label>
                                     <div class="controls"><input class="btn-block" type="text" name="userName" id="form_username"></div>
                                 </div>
+                                <div>
+                                    <strong class="alert alert-warning"
+                                            th:unless="${#strings.isEmpty(message)}"
+                                            th:text="${message}"></strong>
+                                </div>
 
                                 <div class="control-group ">
                                     <label for="form_password">密码:</label>
                                     <div class="controls"><input class="btn-block" type="password" name="password" id="form_password"></div>
                                 </div>
-
-                                <!--<div class="control-group ">-->
-                                    <!--<label for="form_password2">确认密码:</label>-->
-                                    <!--<div class="controls"><input class="btn-block" type="password" name="password" id="form_password2"></div>-->
-                                <!--</div>-->
-
-                                <!--<div class="control-group ">-->
-                                    <!--<label for="form_email">邮箱:</label>-->
-                                    <!--<div class="controls"><input class="btn-block" type="text" name="email" id="form_email"></div>-->
-                                <!--</div>-->
-
-                                <!--<div class="control-group ">-->
-                                    <!--<iframe src="http://www.facebook.com/plugins/like.php?href=http%3A%2F%2Fwww.mbl.is&amp;send=false&amp;layout=standard&amp;width=280&amp;show_faces=false&amp;font&amp;colorscheme=light&amp;action=like&amp;height=35&amp;appId=242977562501330" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:280px; height:35px;" allowTransparency="true"></iframe>-->
-                                <!--</div>-->
 
                                 <button type="submit" class="btn btn-large btn-block">注册并登录</button>
                             </form>
