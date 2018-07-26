@@ -114,7 +114,7 @@ public class BrandInfoController {
     public String withdraw(Account account,Model model){
         Account acnt = brandAccountService.findByUserId(account.getUser().getUserId());
         if(acnt.getPayPwd().equals(account.getPayPwd())){
-            if(acnt.getBalance() >= account.getBalance()){
+            if(acnt.getBalance() >= account.getBalance() && acnt.getBalance() != 0){
                 Float rest = acnt.getBalance() - account.getBalance();
                 acnt.setBalance(rest);
                 brandAccountService.update(acnt);
@@ -145,8 +145,11 @@ public class BrandInfoController {
     @GetMapping("/record")
     public String withdrawRecord(HttpSession session, Model model){
         Users users = (Users) session.getAttribute("user");
-        List<Record> records_1 = brandRecordService.findByUser(users.getUserId());
-        List<Record> records_2 = brandRecordService.findByOp(users.getUserId());
+
+        List<Record> records_1 = brandRecordService.findByUser(users);
+        List<Record> records_2 = brandRecordService.findByOp(users);
+//        List<Record> records_1 = brandRecordService.findByUser(users.getUserId());
+//        List<Record> records_2 = brandRecordService.findByOp(users.getUserId());
         List<Record> records = brandRecordService.findByUserAndOp(users.getUserId());
         records.addAll(records_1);
         records.addAll(records_2);
@@ -155,10 +158,8 @@ public class BrandInfoController {
             if(record.getUsers().getUserId() == users.getUserId()
                     && record.getOp().getUserId() == users.getUserId()){
                 record.setType("提现");
-            }else if (record.getUsers().getUserId() == users.getUserId()){
-                record.setType("转出");
-            }else if(record.getOp().getUserId() == users.getUserId()){
-                record.setType("转入");
+            }else{
+                record.setType("转账");
             }
         }
         if(records.isEmpty())
