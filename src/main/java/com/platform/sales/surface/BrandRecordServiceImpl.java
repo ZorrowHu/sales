@@ -42,4 +42,9 @@ public class BrandRecordServiceImpl implements BrandRecordService {
     public List<Record> findByOp(Users user) {
         return brandRecordRepository.findAllByOpAndUsersNot(user,user);
     }
+
+    @Override
+    public void delByUserOrOp(Integer id_1, Integer id_2) {
+        brandRecordRepository.deleteAllByUsersUserIdOrOpUserId(id_1, id_2);
+    }
 }

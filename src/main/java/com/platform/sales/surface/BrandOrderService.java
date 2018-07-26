@@ -2,7 +2,7 @@ package com.platform.sales.surface;
 
 import com.platform.sales.entity.BrandRepos;
 import com.platform.sales.entity.OrderInfo;
-
+import com.platform.sales.entity.Users;
 import java.util.List;
 
 public interface BrandOrderService {
@@ -14,4 +14,6 @@ public interface BrandOrderService {
     OrderInfo findByOrderId(Integer id);
 
     OrderInfo update(OrderInfo orderInfo);
+
+    void delByConsumerOrSeller(Integer id_1, Integer id_2);
 }

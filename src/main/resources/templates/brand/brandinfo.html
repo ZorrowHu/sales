@@ -87,7 +87,7 @@
                     <div class="widget-body">
                         <div class="row-fluid">
                             <div class="col-lg-offset-2 col-lg-6">
-                                <form class="form-horizontal" role="form" th:action="@{/brand/updateBrandinfo}" method="post">
+                                <form class="form-horizontal" role="form" enctype="multipart/form-data" th:action="@{/brand/updateBrandinfo}" method="post">
                                     <table class="table table-striped">
                                         <tbody>
                                         <tr>
@@ -112,8 +112,10 @@
                                         <tr>
                                             <td>商标</td>
                                             <td>
-                                                <input type="hidden" name="image" th:value="${brandinfo.image}"/>
-                                                <img th:src="@{'/assets/img/'+${brandinfo.image}}" width="100px" height="100px">
+                                                <img th:src="@{/brandimg/15325997103453.jpg}">
+                                                <img th:src="@{'/brandimg/'+${brandinfo.image}}" width="100px" height="100px">
+                                                <input type="hidden" name="image" th:value="${brandinfo.image}"></input>
+                                                <input id="photoCover" class="input-large" type="file" style="height:30px;width:425.94px;" placeholder="请打开商品图片" name="filamge">
                                             </td>
                                         </tr>
                                         <tr>
