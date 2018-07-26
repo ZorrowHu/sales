@@ -251,10 +251,10 @@ public class AdministratorController {
     public String deleteBrand(@PathVariable("id") Integer id){
         BrandInfo brand = brandInfoRepository.findById(id).get();
         Users user = usersRepository.findById(brandInfoRepository.findById(id).get().getUsers().getUserId()).get();
-        recordAdminRepository.deleteAllByUsersOrOp(user, user);   // 删除品牌商对应的流水信息
-        brandReposRepository.deleteAllByBrand(user);    // 删除品牌商对应的商品
-        usersRepository.delete(user);  // 删除品牌商对应的角色
-        brandInfoRepository.delete(brand); // 删除品牌商信息
+        recordAdminRepository.deleteAllByUsersOrOp(user, user); // 删除品牌商对应的流水信息
+        brandReposRepository.deleteAllByBrand(user);            // 删除品牌商对应的商品
+        usersRepository.delete(user);                           // 删除品牌商对应的角色
+        brandInfoRepository.delete(brand);                      // 删除品牌商信息
         return "redirect:/administrator/brand";
     }
 
@@ -319,7 +319,7 @@ public class AdministratorController {
     public String deleteSeller(@PathVariable("id") Integer id){
         SellerInfo seller = sellerinfoRepository.findById(id).get();
         Users user = usersRepository.findById(seller.getUser().getUserId()).get();
-        usersRepository.delete(user);  // 删除借卖方对应的角色
+        usersRepository.delete(user);           // 删除借卖方对应的角色
         sellerinfoRepository.delete(seller); // 删除借卖方信息
         return "redirect:/administrator/seller";
     }
