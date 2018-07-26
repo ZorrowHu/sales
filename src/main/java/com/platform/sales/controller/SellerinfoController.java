@@ -178,7 +178,7 @@ public class SellerinfoController {
     @GetMapping("/record")
     public String withdrawRecord(HttpSession session, Model model){
         Users users = (Users) session.getAttribute("user");
-        List<Record> records = recordService.findByUser(users.getUserId());
+        List<Record> records = recordService.findAllByUser_UserId(users.getUserId());
         if(records.isEmpty())
             model.addAttribute("empty","无");
         model.addAttribute("id", users.getUserId());
