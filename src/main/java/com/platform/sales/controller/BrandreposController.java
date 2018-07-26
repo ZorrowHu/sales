@@ -162,7 +162,6 @@ public class BrandreposController {
                                 String existFileName = temp.getImage();
                                 File existFile = new File(pathName + existFileName);
                                 existFile.delete();
-
                                 BufferedOutputStream out = new BufferedOutputStream(
                                         new FileOutputStream(new File(pathName + fileName)));
                                 out.write(file.getBytes());
@@ -197,12 +196,7 @@ public class BrandreposController {
                 Users user = usersRepository.findByUserNameAndUserRole(users.getUserName(),users.getUserRole());
                 //find out all goods that is not newly added tot the repository
                 List<BrandRepos> Lists = brandReposRepository.findBrandreposByGoodNameAndStatusNotAndBrand(keyword, "新入仓", user);
-                Map<String,String> taskMap=new HashMap<String,String>();
-                for (BrandRepos list : Lists){
-                        //list.getType().getContent3();
-                        //taskMap.put(list.getGoodId(), typeRepository.findById(list.getType().getTypeId()).get().getContent3());
 
-                }
                 model.addAttribute("Lists", Lists);
                 return "brand/mainframe";
         }
