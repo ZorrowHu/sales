@@ -1,9 +1,6 @@
 package com.platform.sales.controller;
 
-import com.platform.sales.entity.Account;
-import com.platform.sales.entity.Record;
-import com.platform.sales.entity.SellerInfo;
-import com.platform.sales.entity.Users;
+import com.platform.sales.entity.*;
 import com.platform.sales.surface.BrandAccountService;
 import com.platform.sales.surface.BrandRecordService;
 import com.platform.sales.surface.SellerinfoService;
@@ -177,6 +174,8 @@ public class SellerinfoController {
 
     @GetMapping("/seller/sellerorder")
     public String getSellerorder(Model model,HttpSession session){
+        //先查询所有订单
+//        List<OrderInfo> lists = orderS
         return "/seller/sellerorder";
     }
 
