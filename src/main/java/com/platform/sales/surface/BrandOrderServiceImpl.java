@@ -22,4 +22,16 @@ public class BrandOrderServiceImpl implements BrandOrderService {
     public List<OrderInfo> findByStatusAndGoods(String status, BrandRepos goods) {
         return brandOrderRepository.findAllByStatusAndGoods(status,goods);
     }
+
+    @Override
+    public OrderInfo findByOrderId(Integer id) {
+        return brandOrderRepository.findByOrderId(id);
+    }
+
+    @Override
+    public OrderInfo update(OrderInfo orderInfo) {
+        return brandOrderRepository.save(orderInfo);
+    }
+
+
 }

@@ -10,4 +10,8 @@ public interface BrandOrderService {
     List<OrderInfo> findByGoods(BrandRepos goods);
 
     List<OrderInfo> findByStatusAndGoods(String status, BrandRepos goods);
+
+    OrderInfo findByOrderId(Integer id);
+
+    OrderInfo update(OrderInfo orderInfo);
 }
