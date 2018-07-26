@@ -1,11 +1,13 @@
 package com.platform.sales.controller;
 
-import com.platform.sales.entity.Account;
-import com.platform.sales.entity.Record;
-import com.platform.sales.entity.Type;
+import com.platform.sales.entity.*;
+import com.platform.sales.repository.BrandInfoRepository;
 import com.platform.sales.repository.RecordAdminRepository;
+import com.platform.sales.repository.UsersRepository;
 import com.platform.sales.surface.BrandAccountService;
+import com.platform.sales.surface.BrandInfoService;
 import com.platform.sales.surface.TypeService;
+import com.platform.sales.surface.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,6 +26,10 @@ public class AdministratorController {
     private BrandAccountService accountService;
     @Autowired
     private RecordAdminRepository recordAdminRepository;
+    @Autowired
+    private BrandInfoRepository brandInfoRepository;
+    @Autowired
+    private UsersRepository usersRepository;
 
     /**
      * 跳转到管理员首页
@@ -33,6 +39,11 @@ public class AdministratorController {
     public String index(){
         return "administrator/index";
     }
+
+
+/**
+ * 以下为流水信息管理的方法
+ */
 
     /**
      * 根据参数status查找对应的流水信息并显示
@@ -96,6 +107,12 @@ public class AdministratorController {
         return "redirect:/administrator/cash";
     }
 
+
+/**
+ * 以上为流水信息方法
+ * 以下为商品类型管理方法
+ */
+
     /**
      * 跳转到商品类型信息管理的首页，并加载所有类型
      * @param model
@@ -109,12 +126,12 @@ public class AdministratorController {
     }
 
     /**
-     * 跳转到增加信息页面
+     * 跳转到增加类型信息页面
      * @return
      */
-    @GetMapping("/add")
-    public String addPage(){
-        return "administrator/add";
+    @GetMapping("/addType")
+    public String addTypePage(){
+        return "administrator/addType";
     }
 
     /**
@@ -122,7 +139,7 @@ public class AdministratorController {
      * @param type
      * @return
      */
-    @PostMapping("/add")
+    @PostMapping("/addType")
     public String addType(Type type){
         typeService.addType(type);
         return "redirect:/administrator/type";
@@ -133,35 +150,105 @@ public class AdministratorController {
      * @param id
      * @return
      */
-    @GetMapping("/delete/{id}")
+    @GetMapping("/deleteType/{id}")
     public String deleteType(@PathVariable("id") Integer id){
         typeService.deleteById(id);
         return "redirect:/administrator/type";
     }
 
     /**
-     * 跳转到更改页面
+     * 跳转到更改类型页面
      * @param id
      * @param model
      * @return
      */
-    @GetMapping("update/{id}")
-    public String modifStu(@PathVariable("id") Integer id,
+    @GetMapping("updateType/{id}")
+    public String modifTypePage(@PathVariable("id") Integer id,
                            Model model){
         Type type = typeService.findById(id);
         model.addAttribute("Type",type);
-        return "administrator/update";
+        return "administrator/updateType";
     }
 
     /**
-     * 保存表单提交的修改过后的信息
+     * 保存表单提交的修改过后的类型信息
      * @param type
      * @return
      */
-    @PostMapping("update")
+    @PostMapping("updateType")
     public String modifType(Type type ){
         typeService.updateType(type);
         return "redirect:/administrator/type";
+    }
+
+
+
+/**
+ * 以上为商品类型信息管理方法
+ * 以下为品牌商角色管理方法
+ */
+
+    /**
+     * 跳转到品牌商角色管理页
+     * @param model
+     * @return
+     */
+    @GetMapping("/brand")
+    public String brandIndex(Model model){
+        List<BrandInfo> brands = brandInfoRepository.findAll();
+        model.addAttribute("Brands", brands);
+        return "administrator/brand";
+    }
+
+    /**
+     * 根据id查找并显示需要更改的品牌商角色信息
+     * @param id
+     * @param model
+     * @return
+     */
+    @GetMapping("/updateBrand/{id}")
+    public String updateBrandPage(@PathVariable("id") Integer id,
+                                  Model model){
+        BrandInfo brand = brandInfoRepository.findById(id).get();
+        model.addAttribute("brand", brand);
+        return "administrator/updateBrand";
+    }
+
+    /**
+     * 保存修改后的品牌商角色信息并跳转回品牌商角色管理页
+     * @param
+     * @return
+     */
+    @PostMapping("/updateBrand")
+    public String updateBrand(@RequestParam Integer brandId,
+                              @RequestParam String userName,
+                              @RequestParam String password,
+                              @RequestParam String brandName,
+                              @RequestParam String brandDesc){
+        BrandInfo brand = brandInfoRepository.findById(brandId).get();  // 找到对应的品牌商
+        Users user = usersRepository.findById(brand.getUsers().getUserId()).get(); // 找到对应的用户
+        // 设置更改后的品牌商角色信息并保存
+        brand.setBrName(brandName);
+        brand.setBrDescription(brandDesc);
+        user.setUserName(userName);
+        user.setPassword(password);
+        brandInfoRepository.save(brand);
+        usersRepository.save(user);
+        return "redirect:/administrator/brand";
+    }
+
+
+
+/**
+ * 以上为品牌商角色管理方法
+ *  以下为借卖方角色管理方法
+ */
+
+
+    @GetMapping("/seller")
+    public String sellerIndex(){
+
+        return "administrator/seller";
     }
 
 }

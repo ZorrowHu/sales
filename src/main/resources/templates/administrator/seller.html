@@ -48,14 +48,14 @@
             <div class="accordion" id="accordion2">
                 <div class="accordion-group">
                     <div class="accordion-heading">
-                        <a class="accordion-toggle b_C3F7A7 collapsed" data-toggle="collapse" data-parent="#accordion2" href="#collapse1"><i class="icon-magic"></i> <span>管理员业务</span></a>
+                        <a class="accordion-toggle b_C3F7A7 collapsed" data-toggle="collapse" data-parent="#accordion2" href="#collapse1"><i class="icon-user"></i> <span>管理员业务</span></a>
                     </div>
                     <div id="collapse1" class="accordion-body collapse">
                         <div class="accordion-inner">
-                            <a class="accordion-toggle active" th:href="@{../administrator/type}"><i class="icon-star"></i> 商品类别管理</a>
+                            <a class="accordion-toggle" th:href="@{../administrator/type}"><i class="icon-star"></i> 商品类别管理</a>
                             <a class="accordion-toggle" th:href="@{../administrator/cash}"><i class="icon-list-alt"></i> 平台流水管理</a>
                             <a class="accordion-toggle" th:href="@{../administrator/brand}"><i class="icon-user"></i> 品牌商角色管理</a>
-                            <a class="accordion-toggle" th:href="@{../administrator/seller}"><i class="icon-user"></i> 借卖方角色管理</a>
+                            <a class="accordion-toggle active" th:href="@{../administrator/seller}"><i class="icon-user"></i> 借卖方角色管理</a>
                         </div>
                     </div>
                 </div>
@@ -73,33 +73,9 @@
                         <div class="panel-body">
                             <p>
                             <div class="alert alert-success">
-                                在这里，你可以对商品类型信息进行查看/修改/删除/查询操作，如果需要添加商品类型信息请点击
-                                <a th:href="@{/administrator/addType}" class="alert-link">添加商品类型</a>
+                                欢迎你！亲爱的管理员
                             </div>
                             </p>
-                            <table class="table table-bordered">
-                                <thead>
-                                <tr>
-                                    <th>一级目录</th>
-                                    <th>二级目录</th>
-                                    <th>三级目录</th>
-                                    <th>操作</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr th:each="Type:${Types}">
-                                    <td th:text="${Type.getContent1()}" ></td>
-                                    <td th:text="${Type.getContent2()}" ></td>
-                                    <td th:text="${Type.getContent3()}" ></td>
-                                    <td>
-                                        <a th:href="@{'updateType/'+${Type.getTypeId()}}" title="修改">修改<i class="fa fa-edit text-navy"></i></a>
-                                        &nbsp;&nbsp;&nbsp;&nbsp;
-                                        <a th:href="@{'deleteType/'+${Type.getTypeId()}}" title="删除">删除<i class="fa fa-trash-o text-navy"></i></a>
-                                    </td>
-                                </tr>
-
-                                </tbody>
-                            </table>
                         </div>
                     </div>
                 </div>

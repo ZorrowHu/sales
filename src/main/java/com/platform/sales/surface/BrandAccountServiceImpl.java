@@ -20,4 +20,9 @@ public class BrandAccountServiceImpl implements BrandAccountService{
     public Account update(Account account) {
         return brandAccountRepository.save(account);
     }
+
+    @Override
+    public void deleteByUserId(Integer id) {
+        brandAccountRepository.deleteAccountByAccountId(id);
+    }
 }

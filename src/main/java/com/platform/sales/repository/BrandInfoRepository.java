@@ -10,4 +10,7 @@ public interface BrandInfoRepository extends JpaRepository<BrandInfo,Integer> {
     //根据users.userId查找品牌商信息
     BrandInfo findByUsersUserId(Integer id);
 
+    //根据userId删除记录
+    void deleteBrandInfoByUsersUserId(Integer id);
+
 }
