@@ -1,14 +1,8 @@
 package com.platform.sales.controller;
 
 import com.platform.sales.entity.*;
-import com.platform.sales.repository.BrandInfoRepository;
-import com.platform.sales.repository.RecordAdminRepository;
-import com.platform.sales.repository.SellerinfoRepository;
-import com.platform.sales.repository.UsersRepository;
-import com.platform.sales.surface.BrandAccountService;
-import com.platform.sales.surface.BrandInfoService;
-import com.platform.sales.surface.TypeService;
-import com.platform.sales.surface.UsersService;
+import com.platform.sales.repository.*;
+import com.platform.sales.surface.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -33,6 +27,10 @@ public class AdministratorController {
     private UsersRepository usersRepository;
     @Autowired
     private SellerinfoRepository sellerinfoRepository;
+    @Autowired
+    private BrandRecordService brandRecordService;
+    @Autowired
+    private BrandReposRepository brandReposRepository;
 
     /**
      * 跳转到管理员首页
@@ -244,9 +242,19 @@ public class AdministratorController {
         return "redirect:/administrator/brand";
     }
 
+    /**
+     * 根据id删除对应的角色信息，并且需要删除数据库中所有与其相关的裙带数据
+     * @param id
+     * @return
+     */
     @GetMapping("/deleteBrand/{id}")
     public String deleteBrand(@PathVariable("id") Integer id){
-//        brandInfoRepository.delete(brandInfoRepository.findById(id).get());
+        BrandInfo brand = brandInfoRepository.findById(id).get();
+        Users user = usersRepository.findById(brandInfoRepository.findById(id).get().getUsers().getUserId()).get();
+        recordAdminRepository.deleteAllByUsersOrOp(user, user);   // 删除品牌商对应的流水信息
+        brandReposRepository.deleteAllByBrand(user);    // 删除品牌商对应的商品
+        usersRepository.delete(user);  // 删除品牌商对应的角色
+        brandInfoRepository.delete(brand); // 删除品牌商信息
         return "redirect:/administrator/brand";
     }
 
@@ -254,7 +262,7 @@ public class AdministratorController {
 
 /**
  * 以上为品牌商角色管理方法
- *  以下为借卖方角色管理方法
+ * 以下为借卖方角色管理方法
  */
 
     /**
@@ -299,6 +307,20 @@ public class AdministratorController {
         user.setPassword(password);
         sellerinfoRepository.save(seller);
         usersRepository.save(user);
+        return "redirect:/administrator/seller";
+    }
+
+    /**
+     * 根据id删除对应的角色信息，并且需要删除数据库中所有与其相关的裙带数据
+     * @param id
+     * @return
+     */
+    @GetMapping("/deleteSeller/{id}")
+    public String deleteSeller(@PathVariable("id") Integer id){
+        SellerInfo seller = sellerinfoRepository.findById(id).get();
+        Users user = usersRepository.findById(seller.getUser().getUserId()).get();
+        usersRepository.delete(user);  // 删除借卖方对应的角色
+        sellerinfoRepository.delete(seller); // 删除借卖方信息
         return "redirect:/administrator/seller";
     }
 
