@@ -23,4 +23,5 @@ public interface BrandReposRepository extends JpaRepository<BrandRepos, Integer>
 
         @Transactional
         void deleteByGoodIdAndBrand(Integer id, Users user);
+        void deleteAllByBrand(Users user);
 }
