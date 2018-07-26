@@ -1,5 +1,6 @@
 package com.platform.sales.repository;
 
+import com.platform.sales.entity.Account;
 import com.platform.sales.entity.SellerInfo;
 import com.platform.sales.entity.Users;
 import org.springframework.data.jpa.repository.JpaRepository;

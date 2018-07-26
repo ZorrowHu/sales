@@ -113,12 +113,16 @@
                                     <tr th:each="list : ${Lists}">
                                         <td th:text="${list.goodName}">Amie</td>
                                         <td th:text="${list.getType().getContent3()}">Admin</td>
-                                        <td><span class="label label-success" th:text="${list.status}">Active</span></td>
+                                        <td>
+                                            <span class="label label-success" th:if="${list.status} eq '已上架'" th:text="${list.status}">Active</span>
+                                            <span class="label label-warning" th:if="${list.status} eq '已下架'"  th:text="${list.status}">Active</span>
+                                            <span class="label label-danger" th:if="${list.status} eq '已入仓'" th:text="${list.status}">Active</span>
+                                        </td>
                                         <td>
                                             <div class="btn-group">
                                                 <a th:href="@{'/brand/delframe/'+${list.goodId}}" class="btn"> 删除</a>
-                                                <a th:href="@{'/brand/loadgoods/'+${list.goodId}}" class="btn"> 上架 </a>
-                                                <a th:href="@{'/brand/unloadgoods/'+${list.goodId}}" class="btn"> 下架 </a>
+                                                <a th:if ="${list.status} ne '已上架' " th:href="@{'/brand/loadgoods/'+${list.goodId}}" class="btn"><span class="label label-success"> 上架 </span> </a>
+                                                <a th:if ="${list.status} ne '已下架' and ${list.status} ne '已入仓'" th:href="@{'/brand/unloadgoods/'+${list.goodId}}" class="btn"><span class="label label-warning">  下架 </span> </a>
                                             </div>
                                         </td>
                                     </tr>
