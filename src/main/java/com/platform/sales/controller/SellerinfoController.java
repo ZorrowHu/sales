@@ -97,42 +97,35 @@ public class SellerinfoController {
     }
     @PostMapping("/withdraw")
     public String doWithdraw(Account account,Model model,HttpSession session){
-        String error = "";
-        Users user = (Users)session.getAttribute("user");
-        //查表获得该用户钱包中的金额
-        Account checkAccount = accountService.findByUserId(user.getUserId());
-        if(account.getPayPwd().equals("")){
-            error="密码不能为空！";
-            model.addAttribute("error",error);
-            return "redirect:/seller/withdraw";
+        Account acnt = accountService.findByUserId(account.getUser().getUserId());
+        if(acnt.getPayPwd().equals(account.getPayPwd())){
+            if(acnt.getBalance() >= account.getBalance() && account.getBalance() >= 0){
+                if(account.getBalance() > 0){
+                    //创建流水单
+                    Record record = new Record();
+                    record.setUsers(acnt.getUser());
+                    record.setOp(acnt.getUser());
+                    record.setMoney(account.getBalance());
+                    record.setTime(new Date());
+                    record.setStatus("待审核");
+                    record.setType("提现");
+                    recordService.create(record);
+                    return "redirect:/seller/sellerAccount";
+                }else{
+                    model.addAttribute("error","提现金额必须大于0！");
+                    return "/seller/withdraw";
+                }
+            }else{
+                model.addAttribute("error","余额不足！");
+                return "/seller/withdraw";
+            }
+        }else {
+            if(account.getPayPwd().equals(""))
+                model.addAttribute("error","密码不能为空！");
+            else
+                model.addAttribute("error","密码错误！");
+            return "/seller/withdraw";
         }
-        if(!account.getPayPwd().equals(checkAccount.getPayPwd())){
-            error="密码错误！";
-            model.addAttribute("error",error);
-            return "redirect:/seller/withdraw";
-        }
-        if(account.getBalance()<=0){
-            error="提现金额应大于等于0！";
-            model.addAttribute("error",error);
-            return "redirect:/seller/withdraw";
-        }
-        if(account.getBalance()<checkAccount.getBalance()){
-            error="余额不足！";
-            model.addAttribute("error",error);
-            return "redirect:/seller/withdraw";
-        }
-        //获得User的内容
-//        List<Users> list = sellerinfoService.getUser(account.getUser().getUserId());
-//        Users trueuser = list.get(0);
-        Record record = new Record();
-        record.setType("提现");
-        record.setMoney(account.getBalance());
-        record.setOp(account.getUser());
-        record.setStatus("待审核");
-        record.setTime(new Date());
-        record.setUsers(account.getUser());
-        recordService.create(record);
-        return "redirect:/seller/sellerAccount";
     }
     @GetMapping("/recharge")
     //访问充值页面
@@ -145,34 +138,30 @@ public class SellerinfoController {
     }
     @PostMapping("/recharge")
     public String doRecharge(Account account,Model model,HttpSession session){
-        String error = "";
-        Users user = (Users)session.getAttribute("user");
-        //查表获得该用户钱包中的金额
-        Account checkAccount = accountService.findByUserId(user.getUserId());
-        if(account.getPayPwd().equals("")){
-            error="密码不能为空！";
-            model.addAttribute("error",error);
-            return "redirect:/seller/recharge";
+        Account acnt = accountService.findByUserId(account.getUser().getUserId());
+        if(acnt.getPayPwd().equals(account.getPayPwd())){
+                if(account.getBalance() > 0){
+                    //创建流水单
+                    Record record = new Record();
+                    record.setUsers(acnt.getUser());
+                    record.setOp(acnt.getUser());
+                    record.setMoney(account.getBalance());
+                    record.setTime(new Date());
+                    record.setStatus("待审核");
+                    record.setType("充值");
+                    recordService.create(record);
+                    return "redirect:/seller/sellerAccount";
+                }else{
+                    model.addAttribute("error","充值金额必须大于0！");
+                    return "/seller/recharge";
+                }
+        }else {
+            if(account.getPayPwd().equals(""))
+                model.addAttribute("error","密码不能为空！");
+            else
+                model.addAttribute("error","密码错误！");
+            return "/seller/recharge";
         }
-        if(!account.getPayPwd().equals(checkAccount.getPayPwd())){
-            error="密码错误！";
-            model.addAttribute("error",error);
-            return "redirect:/seller/recharge";
-        }
-        if(account.getBalance()<=0){
-            error="充值金额应大于等于0！";
-            model.addAttribute("error",error);
-            return "redirect:/seller/withdraw";
-        }
-        Record record = new Record();
-        record.setType("充值");
-        record.setMoney(account.getBalance());
-        record.setOp(user);
-        record.setStatus("待审核");
-        record.setTime(new Date());
-        record.setUsers(user);
-        recordService.create(record);
-        return "redirect:/seller/sellerAccount";
     }
     //流水表
     @GetMapping("/record")
