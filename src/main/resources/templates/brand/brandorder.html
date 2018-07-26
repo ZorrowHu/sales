@@ -106,13 +106,13 @@
                                         <button type="submit" class="btn btn-success">查询</button>
                                     </div>
                                 </form>
-                                <table class="table table-striped">
+                                <table class="table table-striped table-bordered">
                                 <thead>
                                 <tr>
                                     <th>订单编号</th>
                                     <th>商品ID</th>
-                                    <th>借买方ID</th>
-                                    <th>消费者ID</th>
+                                    <th>借买方</th>
+                                    <th>消费者</th>
                                     <th>数量</th>
                                     <th>总价</th>
                                     <th>支付时间</th>
@@ -124,19 +124,16 @@
                                 <tr th:each="Order:${brandorder}">
                                     <td th:text="${Order.orderId}"></td>
                                     <td th:text="${Order.goods.goodId}"></td>
-                                    <td th:text="${Order.seller.userId}"></td>
-                                    <td th:text="${Order.consumer.userId}"></td>
+                                    <td th:text="${Order.seller.userName}"></td>
+                                    <td th:text="${Order.consumer.userName}"></td>
                                     <td th:text="${Order.quantity}"></td>
                                     <td th:text="${Order.totalPrice}"></td>
                                     <td th:text="${Order.payTime}"></td>
                                     <td th:text="${Order.status}"></td>
                                     <td>
-                                        <a th:href="@{/brand/updateorder}" class="btn btn-warning">发货</a>
-                                        <a th:href="@{/brand/cancelorder}" class="btn btn-danger">取消</a>
+                                        <a th:if="${Order.status} eq '待发货'" th:href="@{'/brand/deliverorder/'+${Order.orderId}}" class="btn btn-warning">发货</a>
+                                        <a th:if="${Order.status ne '已取消'}" th:href="@{'/brand/cancelorder/'+${Order.orderId}}" class="btn btn-danger">取消</a>
                                     </td>
-                                </tr>
-                                <tr>
-                                    <td th:text="${empty}" colspan="9"></td>
                                 </tr>
                                 </tbody>
                                 </table>

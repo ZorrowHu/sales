@@ -20,4 +20,9 @@ public class BrandInfoServiceImpl implements BrandInfoService{
     public BrandInfo update(BrandInfo brandInfo) {
         return brandInfoRepository.save(brandInfo);
     }
+
+    @Override
+    public void deleteByUserId(Integer id) {
+        brandInfoRepository.deleteBrandInfoByUsersUserId(id);
+    }
 }

@@ -90,14 +90,14 @@
                                 <table class="table table-striped">
                                     <thead>
                                     <tr>
-                                        <th>账户ID</th>
+                                        <th>用户</th>
                                         <th>余额</th>
                                         <th>操作</th>
                                     </tr>
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <td th:text="${brandaccount.user.userId}"></td>
+                                            <td th:text="${brandaccount.user.userName}"></td>
                                             <td th:text="${brandaccount.balance}"></td>
                                             <td>
                                                 <a th:href="@{/brand/withdraw}" class="btn btn-success">提现</a>

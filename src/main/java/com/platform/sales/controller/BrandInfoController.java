@@ -7,8 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
+import java.io.*;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -53,8 +56,11 @@ public class BrandInfoController {
     }
 
     //修改信息
-    @PostMapping("/updateBrandinfo")
-    public String updateBrandInfo(HttpSession session, BrandInfo brandInfo, Model model){
+    @RequestMapping(value = "/updateBrandinfo",method = RequestMethod.POST)
+    public String updateBrandInfo(
+            @RequestParam("filamge") MultipartFile file,
+            HttpSession session,
+            BrandInfo brandInfo, Model model){
         //分配一个钱包
         if(brandInfo.getAccount().getAccountId() == -1){
             Users users = (Users) session.getAttribute("user");
@@ -64,6 +70,31 @@ public class BrandInfoController {
             brandacnt.setUser(users);
             Account acnt = brandAccountService.update(brandacnt);
             brandInfo.setAccount(acnt);
+        }
+        if (!file.isEmpty()) {
+            try {
+                String pathName = "src/main/resources/static/brandimg/";
+                Long stamp = new Date().getTime();
+                String prefix = stamp.toString();
+                String fileName = prefix + file.getOriginalFilename();
+
+                brandInfo.setImage(fileName);
+
+                BufferedOutputStream out = new BufferedOutputStream(
+                        new FileOutputStream(new File(pathName + fileName)));
+                out.write(file.getBytes());
+                out.flush();
+                out.close();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+                //return "上传失败," + e.getMessage();
+            } catch (IOException e) {
+                e.printStackTrace();
+                //return "上传失败," + e.getMessage();
+            }
+            //return "上传成功";
+        } else {
+            //return "上传失败，因为文件是空的.";
         }
         BrandInfo newbrandInfo = brandInfoService.update(brandInfo);
         model.addAttribute("brandinfo", newbrandInfo);
@@ -114,9 +145,6 @@ public class BrandInfoController {
         if(acnt.getPayPwd().equals(account.getPayPwd())){
             if(acnt.getBalance() >= account.getBalance() && acnt.getBalance() > 0){
                 if(account.getBalance() > 0){
-                    Float rest = acnt.getBalance() - account.getBalance();
-                    acnt.setBalance(rest);
-                    brandAccountService.update(acnt);
                     //创建流水单
                     Record record = new Record();
                     record.setUsers(acnt.getUser());
@@ -151,20 +179,18 @@ public class BrandInfoController {
 
         List<Record> records_1 = brandRecordService.findByUser(users);
         List<Record> records_2 = brandRecordService.findByOp(users);
-//        List<Record> records_1 = brandRecordService.findByUser(users.getUserId());
-//        List<Record> records_2 = brandRecordService.findByOp(users.getUserId());
         List<Record> records = brandRecordService.findByUserAndOp(users.getUserId());
         records.addAll(records_1);
         records.addAll(records_2);
-        for (int i = 0; i < records.size(); i++){
-            Record record = records.get(i);
-            if(record.getUsers().getUserId() == users.getUserId()
-                    && record.getOp().getUserId() == users.getUserId()){
-                record.setType("提现");
-            }else{
-                record.setType("转账");
-            }
-        }
+//        for (int i = 0; i < records.size(); i++){
+//            Record record = records.get(i);
+//            if(record.getUsers().getUserId() == users.getUserId()
+//                    && record.getOp().getUserId() == users.getUserId()){
+//                record.setType("提现");
+//            }else{
+//                record.setType("转账");
+//            }
+//        }
         if(records.isEmpty())
             model.addAttribute("empty","无");
         model.addAttribute("id", users.getUserId());
@@ -177,13 +203,11 @@ public class BrandInfoController {
     public String brandOrder(HttpSession session, Model model){
         Users user = (Users) session.getAttribute("user");
         List<BrandRepos> goods = brandReposRepository.findAllByBrand(user);
-        List<OrderInfo> brandOrder = null;
+        List<OrderInfo> brandOrder = new ArrayList<OrderInfo>();
         for(int i = 0; i < goods.size(); i++){
             List<OrderInfo> order = brandOrderService.findByGoods(goods.get(i));
             brandOrder.addAll(order);
         }
-        if(brandOrder == null)
-            model.addAttribute("empty","无");
         model.addAttribute("brandorder",brandOrder);
         return "/brand/brandorder";
     }
@@ -192,14 +216,12 @@ public class BrandInfoController {
     public String selectOrder(@RequestParam("status") String select, HttpSession session,Model model){
         Users user = (Users) session.getAttribute("user");
         List<BrandRepos> goods = brandReposRepository.findAllByBrand(user);
-        List<OrderInfo> brandOrder = null;
+        List<OrderInfo> brandOrder = new ArrayList<OrderInfo>();
         if(select.equals("0")){
             for(int i = 0; i < goods.size(); i++){
                 List<OrderInfo> order = brandOrderService.findByGoods(goods.get(i));
                 brandOrder.addAll(order);
             }
-            if(brandOrder == null)
-                model.addAttribute("empty","无");
             model.addAttribute("brandorder",brandOrder);
             model.addAttribute("select", select);
             return "/brand/brandorder";
@@ -208,15 +230,43 @@ public class BrandInfoController {
                 List<OrderInfo> order = brandOrderService.findByStatusAndGoods(select, goods.get(i));
                 brandOrder.addAll(order);
             }
-            if(brandOrder == null)
-                model.addAttribute("empty","无");
             model.addAttribute("brandorder",brandOrder);
             model.addAttribute("select", select);
             return "/brand/brandorder";
         }
     }
-//
-//    订单发货
-//
-//    订单取消
+
+    //订单发货
+    @GetMapping("/deliverorder/{id}")
+    public String deliverOrder(@PathVariable("id") Integer id,HttpSession session,Model model){
+        OrderInfo orderInfo = brandOrderService.findByOrderId(id);
+        orderInfo.setStatus("已发货");
+        brandOrderService.update(orderInfo);
+        Users user = (Users) session.getAttribute("user");
+        List<BrandRepos> goods = brandReposRepository.findAllByBrand(user);
+        List<OrderInfo> brandOrder = new ArrayList<OrderInfo>();
+        for(int i = 0; i < goods.size(); i++){
+            List<OrderInfo> order = brandOrderService.findByGoods(goods.get(i));
+            brandOrder.addAll(order);
+        }
+        model.addAttribute("brandorder",brandOrder);
+        return "/brand/brandorder";
+    }
+
+   // 订单取消
+   @GetMapping("/cancelorder/{id}")
+   public String cancelOrder(@PathVariable("id") Integer id,HttpSession session,Model model){
+       OrderInfo orderInfo = brandOrderService.findByOrderId(id);
+       orderInfo.setStatus("已取消");
+       brandOrderService.update(orderInfo);
+       Users user = (Users) session.getAttribute("user");
+       List<BrandRepos> goods = brandReposRepository.findAllByBrand(user);
+       List<OrderInfo> brandOrder = new ArrayList<OrderInfo>();
+       for(int i = 0; i < goods.size(); i++){
+           List<OrderInfo> order = brandOrderService.findByGoods(goods.get(i));
+           brandOrder.addAll(order);
+       }
+       model.addAttribute("brandorder",brandOrder);
+       return "/brand/brandorder";
+   }
 }

@@ -5,11 +5,11 @@
     <title>Platform</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="author" content="Bluth Company">
-    <link rel="shortcut icon" th:href="@{../../assets/ico/favicon.html}">
-    <link th:href="@{../../assets/css/bootstrap.css}" rel="stylesheet">
-    <link th:href="@{../../assets/css/theme.css}" rel="stylesheet">
-    <link th:href="@{../../assets/css/font-awesome.min.css}" rel="stylesheet">
-    <link th:href="@{../../assets/css/alertify.css}" rel="stylesheet">
+    <link rel="shortcut icon" th:href="@{../assets/ico/favicon.html}">
+    <link th:href="@{../assets/css/bootstrap.css}" rel="stylesheet">
+    <link th:href="@{../assets/css/theme.css}" rel="stylesheet">
+    <link th:href="@{../assets/css/font-awesome.min.css}" rel="stylesheet">
+    <link th:href="@{../assets/css/alertify.css}" rel="stylesheet">
     <!-- <link href="http://fonts.useso.com/css?family=Open+Sans:400,700" rel="stylesheet" type="text/css"> -->
     <link rel="Favicon Icon" th:href="@{../assets/ico/favicon.ico}">
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
@@ -23,7 +23,7 @@
         <div class="navbar-inner">
             <div class="container-fluid">
                 <div class="logo">
-                    <img th:src="@{../../assets/img/logo.png}" alt="Realm Admin Template">
+                    <img th:src="@{../assets/img/logo.png}" alt="Realm Admin Template">
                 </div>
                 <a class="btn btn-navbar visible-phone" data-toggle="collapse" data-target=".nav-collapse">
                     <span class="icon-bar"></span>
@@ -37,16 +37,9 @@
                 </a>
                 <div class="top-menu visible-desktop">
                     <ul class="pull-right">
-                        <li><a th:href="@{../../user/login}"><i class="icon-off"></i> Logout</a></li>
+                        <li><a th:href="@{../user/login}"><i class="icon-off"></i> Logout</a></li>
                     </ul>
                 </div>
-                <!--<div class="top-menu visible-phone visible-tablet">-->
-                <!--<ul class="pull-right">  -->
-                <!--<li><a title="link to View all Messages page, no popover in phone view or tablet" href="#"><i class="icon-envelope"></i></a></li>-->
-                <!--<li><a title="link to View all Notifications page, no popover in phone view or tablet" href="#"><i class="icon-globe"></i></a></li>-->
-                <!--<li><a th:href="@{/user/login}"><i class="icon-off"></i></a></li>-->
-                <!--</ul>-->
-                <!--</div>-->
             </div>
         </div>
     </div>
@@ -56,7 +49,8 @@
         <!-- Side menu -->
         <div class="sidebar-nav nav-collapse collapse">
             <div class="user_side clearfix">
-                <img th:src="@{../../assets/img/admin.jpg}" alt="Odinn god of Thunder">
+                <img th:src="@{../assets/img/admin.jpg}" alt="Odinn god of Thunder">
+                <h5 th:text="${session.user.getUserRole()}"></h5>
                 <h5 th:text="${session.user.getUserName()}"></h5>
                 <!--<h5>admin</h5>-->
                 <!--<a href="#"><i class="icon-cog"></i> Settings</a>        -->
@@ -68,8 +62,10 @@
                     </div>
                     <div id="collapse1" class="accordion-body collapse">
                         <div class="accordion-inner">
-                            <a class="accordion-toggle" href="../administrator/type"><i class="icon-star"></i> 商品类别管理</a>
-                            <a class="accordion-toggle active" href="../administrator/cash"><i class="icon-list-alt"></i> 平台流水管理</a>
+                            <a class="accordion-toggle" th:href="@{../administrator/type}"><i class="icon-star"></i> 商品类别管理</a>
+                            <a class="accordion-toggle active" th:href="@{../administrator/cash}"><i class="icon-list-alt"></i> 平台流水管理</a>
+                            <a class="accordion-toggle" th:href="@{../administrator/brand}"><i class="icon-user"></i> 品牌商角色管理</a>
+                            <a class="accordion-toggle" th:href="@{../administrator/seller}"><i class="icon-user"></i> 借卖方角色管理</a>
                         </div>
                     </div>
                 </div>
@@ -85,55 +81,72 @@
                     <div class="panel panel-primary">
                         <!-- Default panel contents -->
                         <div class="panel-body">
-                            <p>
                             <div class="alert alert-success">
-                                在这里，你可以对账户流水信息进行操作
+                                在这里，你可以通过分类来查询账户流水信息，并可以对其进行操作
                             </div>
-                            </p>
+                            <div class="control-group">
+                                <form class="form-horizontal" role="form" th:action="@{../administrator/cash}" method="post">
+                                    <table class="table">
+                                        <tr>
+                                            <td>
+                                                <div class="controls">
+                                                    <select tabindex="1" name="status">
+                                                        <option value="全部">全部</option>
+                                                        <option value="待审核">待审核</option>
+                                                        <option value="已通过">已通过</option>
+                                                        <option value="未通过">未通过</option>
+                                                    </select>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="controls">
+                                                    <button type="submit" class="btn btn-success">查询</button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </form>
+                            </div>
 
-                            <table class="table">
-                                <thead>
-                                <tr>
-                                    <th>
-                                        <p>通过分类来管理订单</p>
-                                    </th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr>
-                                    <td>
-                                        <a th:href="@{'../../administrator/cash/'+'全部'}" title="全部订单">全部订单<i class="fa fa-edit text-navy"></i></a>
-                                        &nbsp;&nbsp;&nbsp;&nbsp;
-                                        <a th:href="@{'../../administrator/cash/'+'待审核'}" title="待审核">待审核<i class="fa fa-edit text-navy"></i></a>
-                                        &nbsp;&nbsp;&nbsp;&nbsp;
-                                        <a th:href="@{'../../administrator/cash/'+'已通过'}" title="已通过">已通过<i class="fa fa-edit text-navy"></i></a>
-                                        &nbsp;&nbsp;&nbsp;&nbsp;
-                                        <a th:href="@{'../../administrator/cash/'+'未通过'}" title="未通过">未通过<i class="fa fa-edit text-navy"></i></a>
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
-
-                            <table class="table">
+                            <table class="table table-bordered table-hover">
                                 <thead>
                                 <tr>
                                     <th>发起人</th>
+                                    <th>受理人</th>
                                     <th>发起时间</th>
                                     <th>业务类型</th>
                                     <th>金额</th>
+                                    <th>状态</th>
                                     <th>操作</th>
+                                    <th>备注</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 <tr th:each="Records:${Records}">
-                                    <td th:text="${Records.op.getUserId()}"></td>
+                                    <td th:text="${Records.op.getUserName()}"></td>
+                                    <td th:text="${Records.users.getUserName()}"></td>
                                     <td th:text="${Records.time}"></td>
                                     <td th:text="${Records.type}"></td>
                                     <td th:text="${Records.money}"></td>
-                                    <td th:if="${Records.op.getUserId() eq ${Records.users.getUserId()}} && ${Records.op.getUserRole()} ne '消费者'">
-                                        <a th:href="@{index}" title="通过">通过<i class="fa fa-edit text-navy"></i></a>
+                                    <td th:text="${Records.status}"></td>
+                                    <td>
+                                        <a th:if="${Records.getStatus()} eq '待审核'"
+                                           th:href="@{'../../administrator/pass/'+${Records.recordId}}"
+                                           title="通过">通过<i class="fa fa-edit text-navy"></i></a>
                                         &nbsp;&nbsp;&nbsp;&nbsp;
-                                        <a th:href="@{index}" title="不通过">不通过<i class="fa fa-trash-o text-navy"></i></a>
+                                        <a th:if="${Records.getStatus()} eq '待审核'"
+                                           th:href="@{'../../administrator/fail/'+${Records.recordId}}"
+                                           title="不通过">不通过<i class="fa fa-trash-o text-navy"></i></a>
+                                    </td>
+                                    <td>
+                                        <div>
+                                            <strong class=""
+                                                    th:unless="${#strings.isEmpty(message)}"
+                                                    th:if="${Records.recordId} eq ${ErrId}"
+                                                    th:text="${message}"></strong>
+                                        </div>
                                     </td>
                                 </tr>
                                 </tbody>
