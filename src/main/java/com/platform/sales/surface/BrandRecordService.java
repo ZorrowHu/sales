@@ -17,4 +17,6 @@ public interface BrandRecordService {
     List<Record> findByUser(Users user);
 
     List<Record> findByOp(Users user);
+
+    List<Record> findAllByUser_UserId(Integer id);
 }

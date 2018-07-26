@@ -42,4 +42,9 @@ public class BrandRecordServiceImpl implements BrandRecordService {
     public List<Record> findByOp(Users user) {
         return brandRecordRepository.findAllByOpAndUsersNot(user,user);
     }
+
+    @Override
+    public List<Record> findAllByUser_UserId(Integer id) {
+        return brandRecordRepository.findAllByUsers_UserId(id);
+    }
 }
