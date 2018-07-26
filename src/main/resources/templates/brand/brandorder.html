@@ -92,51 +92,15 @@
                                 <thead>
                                 <tr>
                                     <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                        <tr>
-                                            <td>ID</td>
-                                            <td>
-                                                <div class="col-sm-8">
-                                                    <input type="hidden" name="id" th:value="${brandinfo.id}"/>
-                                                    <input type="hidden" name="users.userId" th:value="${brandinfo.users.userId}"/>
-                                                    <input type="hidden" name="account.accountId" th:value="${brandinfo.account.accountId}"/>
-                                                    <label th:text="${brandinfo.users.userId}"></label>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>品牌名称</td>
-                                            <td>
-                                                <div class="col-sm-8">
-                                                    <input type="text" name="brName" th:value="${brandinfo.brName}" class="form-control">
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>商标</td>
-                                            <td>
-                                                <input type="hidden" name="image" th:value="${brandinfo.image}"/>
-                                                <img th:src="@{'/assets/img/'+${brandinfo.image}}" width="100px" height="100px">
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>简介</td>
-                                            <td>
-                                                <div class="col-sm-8">
-                                                    <input type="text" name="brDescription" th:value="${brandinfo.brDescription}" class="form-control">
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="2">
-                                                <div class="col-sm-offset-2 col-sm-10">
-                                                    <button type="submit" class="btn btn-success">保存</button>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        </tbody>
+                                </tbody>
                                 </table>
                             </div>
                         </div><!--/widget-body-->
