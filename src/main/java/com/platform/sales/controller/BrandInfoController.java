@@ -1,11 +1,13 @@
 package com.platform.sales.controller;
 
+import com.platform.sales.config.FileUtil;
 import com.platform.sales.entity.*;
 import com.platform.sales.repository.BrandReposRepository;
 import com.platform.sales.surface.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -73,24 +75,18 @@ public class BrandInfoController {
         }
         if (!file.isEmpty()) {
             try {
-                String pathName = "src/main/resources/static/brandimg/";
+
+                String pathName = FileUtil.getUpLoadFilePath("brandimg/");
+
                 Long stamp = new Date().getTime();
                 String prefix = stamp.toString();
                 String fileName = prefix + file.getOriginalFilename();
 
-                brandInfo.setImage(fileName);
+                FileUtil.uploadFile(file.getBytes(),pathName,fileName);
 
-                BufferedOutputStream out = new BufferedOutputStream(
-                        new FileOutputStream(new File(pathName + fileName)));
-                out.write(file.getBytes());
-                out.flush();
-                out.close();
-            } catch (FileNotFoundException e) {
+                brandInfo.setImage(fileName);
+            } catch (Exception e) {
                 e.printStackTrace();
-                //return "上传失败," + e.getMessage();
-            } catch (IOException e) {
-                e.printStackTrace();
-                //return "上传失败," + e.getMessage();
             }
             //return "上传成功";
         } else {
@@ -160,7 +156,10 @@ public class BrandInfoController {
                     return "/brand/withdraw";
                 }
             }else{
-                model.addAttribute("error","余额不足！");
+                if(account.getBalance() <= 0)
+                    model.addAttribute("error","提现金额必须大于0！");
+                else
+                    model.addAttribute("error","余额不足！");
                 return "/brand/withdraw";
             }
         }else {

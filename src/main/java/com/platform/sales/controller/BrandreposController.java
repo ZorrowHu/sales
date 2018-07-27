@@ -162,6 +162,7 @@ public class BrandreposController {
                                 String existFileName = temp.getImage();
                                 File existFile = new File(pathName + existFileName);
                                 existFile.delete();
+
                                 BufferedOutputStream out = new BufferedOutputStream(
                                         new FileOutputStream(new File(pathName + fileName)));
                                 out.write(file.getBytes());
