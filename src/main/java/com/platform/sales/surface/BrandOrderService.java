@@ -15,5 +15,4 @@ public interface BrandOrderService {
 
     OrderInfo update(OrderInfo orderInfo);
 
-    List<OrderInfo>  findAllBySeller_UserId(Integer id);
 }
