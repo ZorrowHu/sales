@@ -1,6 +1,7 @@
 package com.platform.sales.surface;
 
 import com.platform.sales.entity.Account;
+import com.platform.sales.entity.Users;
 
 public interface BrandAccountService {
 
@@ -8,5 +9,5 @@ public interface BrandAccountService {
 
     Account update(Account account);
 
-    void deleteByUserId(Integer id);
+    void deleteByUserId(Users user);
 }
