@@ -103,6 +103,7 @@
                                 <table class="table table-bordered">
                                     <thead>
                                     <tr>
+                                        <th>商品图片</th>
                                         <th>商品名称</th>
                                         <th>商品类别</th>
                                         <th>状态</th>
@@ -111,6 +112,7 @@
                                     </thead>
                                     <tbody>
                                     <tr th:each="list : ${Lists}">
+                                        <td><img th:src="@{'/goodsimg/'+${list.getImage()}}" style="height: 60px; width: 60px"></td>
                                         <td th:text="${list.goodName}">Amie</td>
                                         <td th:text="${list.getType().getContent3()}">Admin</td>
                                         <td>
