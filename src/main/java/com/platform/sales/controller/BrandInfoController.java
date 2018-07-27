@@ -160,7 +160,10 @@ public class BrandInfoController {
                     return "/brand/withdraw";
                 }
             }else{
-                model.addAttribute("error","余额不足！");
+                if(account.getBalance() <= 0)
+                    model.addAttribute("error","提现金额必须大于0！");
+                else
+                    model.addAttribute("error","余额不足！");
                 return "/brand/withdraw";
             }
         }else {
