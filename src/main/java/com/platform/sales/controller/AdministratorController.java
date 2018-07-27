@@ -28,9 +28,13 @@ public class AdministratorController {
     @Autowired
     private SellerinfoRepository sellerinfoRepository;
     @Autowired
-    private BrandRecordService brandRecordService;
-    @Autowired
     private BrandReposRepository brandReposRepository;
+    @Autowired
+    private ShipAddrRepository shipAddrRepository;
+    @Autowired
+    private BrandAccountRepository brandAccountRepository;
+    @Autowired
+    private BrandOrderRepository brandOrderRepository;
 
     /**
      * 跳转到管理员首页
@@ -251,6 +255,9 @@ public class AdministratorController {
     public String deleteBrand(@PathVariable("id") Integer id){
         BrandInfo brand = brandInfoRepository.findById(id).get();
         Users user = usersRepository.findById(brandInfoRepository.findById(id).get().getUsers().getUserId()).get();
+        brandOrderRepository.deleteAllByGoods_Brand(user);
+        brandAccountRepository.deleteByUser(user);              // 删除品牌商对应的钱包
+        shipAddrRepository.deleteAllByUsers(user);              // 删除品牌商对应的收货地址信息
         recordAdminRepository.deleteAllByUsersOrOp(user, user); // 删除品牌商对应的流水信息
         brandReposRepository.deleteAllByBrand(user);            // 删除品牌商对应的商品
         usersRepository.delete(user);                           // 删除品牌商对应的角色
