@@ -15,5 +15,5 @@ public interface BrandOrderService {
 
     OrderInfo update(OrderInfo orderInfo);
 
-    void delByConsumerOrSeller(Integer id_1, Integer id_2);
+
 }
