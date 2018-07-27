@@ -173,7 +173,6 @@
                                         <div class="btn-group">
                                             <a th:href="@{'/Stores/updategoods/'+${StoreGoods.storeGoodsId}}" class="btn"> 修改</a>
                                             <a th:href="@{'/Stores/deletegoods/'+${StoreGoods.storeGoodsId}}" class="btn"> 下架</a>
-                                            <a  th:href="@{'/Stores/brandgoods/'+${StoreGoods.stores.storeId}}" class="btn btn-primary">添加商品</a>
                                         </div>
                                     </td>
                                 </tr>
@@ -181,7 +180,7 @@
                             </table>
                             <br/><br/>
                             <div align="right">
-
+                                <a  th:href="@{'/Stores/brandgoods/'+${store_id}}" class="btn btn-primary">添加商品</a>
                             </div>
                         </div><!--/widget-body-->
                     </div> <!-- /widget -->
