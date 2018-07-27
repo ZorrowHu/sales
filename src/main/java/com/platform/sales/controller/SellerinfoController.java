@@ -2,6 +2,7 @@ package com.platform.sales.controller;
 
 import com.platform.sales.entity.*;
 import com.platform.sales.surface.BrandAccountService;
+import com.platform.sales.surface.BrandOrderService;
 import com.platform.sales.surface.BrandRecordService;
 import com.platform.sales.surface.SellerinfoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,9 @@ public class SellerinfoController {
     //流水服务
     @Autowired
     BrandRecordService recordService ;
+    //订单服务
+    @Autowired
+    BrandOrderService orderService;
     //需要将借卖方注册时的user_id添加到页面属性中作为此方法的参数
     @GetMapping("/getInfo/{seller_id}")
     public String getInfo(@PathVariable("seller_id")Integer id, Model model){
@@ -175,7 +179,7 @@ public class SellerinfoController {
     @GetMapping("/seller/sellerorder")
     public String getSellerorder(Model model,HttpSession session){
         //先查询所有订单
-//        List<OrderInfo> lists = orderS
+//        List<OrderInfo> lists =
         return "/seller/sellerorder";
     }
 
