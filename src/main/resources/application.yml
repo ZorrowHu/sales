@@ -4,7 +4,8 @@ spring:
       driver-class-name: com.mysql.jdbc.Driver
       url: jdbc:mysql://localhost:3306/actor?useUnicode=true&characterEncoding=UTF-8&useSSL=false
       username: root
-      password: 
+      password: root
+>>>>>>> ddd33f9b13cd80c74119f8e8b6768e35aa408da7
 
   jpa:
       database: mysql

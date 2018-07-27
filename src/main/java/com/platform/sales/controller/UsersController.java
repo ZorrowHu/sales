@@ -91,7 +91,7 @@ public class UsersController {
         Users user = usersService.userRegister(userName, userRole);
 
         if (userName == "" || password == ""){  // 当用户输入空白的信息
-            redirectAttributes.addFlashAttribute("message", "请不要输入空白信息，用户名密码均为必填");
+            redirectAttributes.addFlashAttribute("message", "请不要输入空白信息");
             return "redirect:/user/register";
         }else if (user != null){  // 当用户名已被占用，就重载到注册页并显示错误信息
             user.setPassword("");   // 将用户密码设空以免泄露信息

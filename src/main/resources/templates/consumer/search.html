@@ -51,7 +51,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                     <label th:text="${session.user.getUserName()}"  ></label>，欢迎你！
                 </p>
                 <div class="cart box_1"  th:if="${session.user != null}">
-                    <a th:href="@{/consumer/checkout}" style="text-decoration: none; color: inherit;">
+                    <a href="#" style="text-decoration: none; color: inherit;">
                         <h3>
                             <div class="total">
                                 <span id="simpleCart_total" th:text="'￥' + ${totalPrice}"></span>
@@ -107,7 +107,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <div class="content">
     <div class="container">
         <div class="content-top">
-            <h1>最新 上架</h1>
+            <h1 th:text=" ${keyword + '   搜索结果'}"></h1>
             <div class="content-top1">
                 <div class="col-md-3 col-md2" th:each="good, index : ${goods}">
                     <div class="col-md1 ">
@@ -145,22 +145,22 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 
 <script type="text/javascript">
     function addcarts(index){
-            var userId = $("#userId"+index).val();
-            var storeGoodsId = $("#storeGoodsId"+index).val();
-            //alert(userId + ' ' + storeGoodsId);
-            $.ajax({
-                type:"POST",
-                url : "/conrest/addcart",
-                async : false,
-                data:{
-                    userId : userId,
-                    goodId : storeGoodsId
-                },
-                success:function(data){
-                    //$("#simpleCart_total").text = data;
-                    document.getElementById("simpleCart_total").innerText = "￥"+data;
-                }
-            });
+        var userId = $("#userId"+index).val();
+        var storeGoodsId = $("#storeGoodsId"+index).val();
+        //alert(userId + ' ' + storeGoodsId);
+        $.ajax({
+            type:"POST",
+            url : "/conrest/addcart",
+            async : false,
+            data:{
+                userId : userId,
+                goodId : storeGoodsId
+            },
+            success:function(data){
+                //$("#simpleCart_total").text = data;
+                document.getElementById("simpleCart_total").innerText = "￥"+data;
+            }
+        });
     }
 </script>
 <!--//footer-->
