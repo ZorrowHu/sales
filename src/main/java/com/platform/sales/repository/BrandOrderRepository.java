@@ -25,5 +25,7 @@ public interface BrandOrderRepository extends JpaRepository<OrderInfo,Integer> {
     // 根据userid查找所有的订单
     List<OrderInfo> findAllByStoreUserUserId(Integer id);
 
+    //根据消费者ID和订单状态查找对应订单信息
+    List<OrderInfo> findAllByStatusAndAndConsumer(String string, Users users);
 
 }
