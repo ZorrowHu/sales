@@ -124,7 +124,7 @@
                                 <tr th:each="Order:${brandorder}">
                                     <td th:text="${Order.orderId}"></td>
                                     <td th:text="${Order.goods.goodId}"></td>
-                                    <td th:text="${Order.seller.userName}"></td>
+                                    <td th:text="${Order.store.user.userName}"></td>
                                     <td th:text="${Order.consumer.userName}"></td>
                                     <td th:text="${Order.quantity}"></td>
                                     <td th:text="${Order.totalPrice}"></td>
