@@ -1,5 +1,8 @@
 package com.platform.sales.controller;
 
+import com.platform.sales.entity.*;
+import com.platform.sales.repository.*;
+
 import com.platform.sales.entity.OrderInfo;
 import com.platform.sales.entity.StoreGoods;
 import com.platform.sales.entity.Type;
@@ -15,6 +18,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -27,9 +32,13 @@ public class ConsumerController {
     @Autowired
     TypeRepository typeRepository;
     @Autowired
-    StoregoodsRepository storegoodsRepository;
+    private BrandOrderRepository brandOrderRepository;
     @Autowired
-    BrandOrderRepository brandOrderRepository;
+    private StoregoodsRepository storegoodsRepository;
+    @Autowired
+    private BrandAccountRepository brandAccountRepository;
+    @Autowired
+    private ShipAddrRepository shipAddrRepository;
 
     /**
      * 跳转到主页
@@ -242,6 +251,76 @@ public class ConsumerController {
         }
     }
 
+    /**
+     *购物车
+     * @param model
+     * @return
+     */
+    @GetMapping("/checkout")
+    public String checkout(Model model,HttpSession session){
+        Users consumer = (Users) session.getAttribute("user");
+        ShipAddr addr = shipAddrRepository.findByUsers(consumer);
+        ShipAddr newaddr = new ShipAddr();
+        if(addr == null){
+            newaddr.setUsers(consumer);
+            shipAddrRepository.save(newaddr);
+        }else
+            newaddr = addr;
+        List<OrderInfo> orders = brandOrderRepository.findAllByStatusAndAndConsumer("待支付",consumer);
+        model.addAttribute("orders",orders);
+        if(orders.size() == 0)
+            model.addAttribute("message","空空如也！！！");
+        return "/consumer/checkout";
+    }
+
+    @GetMapping("/pay")
+    public String pay(HttpSession session,Model model){
+        Users consumer = (Users) session.getAttribute("user");
+        ShipAddr addr = shipAddrRepository.findByUsers(consumer);
+        model.addAttribute("addr",addr);
+        return "/consumer/address";
+    }
+
+    @GetMapping("/cancelby/{id}")
+    public String cancelBy(@PathVariable("id") Integer id,HttpSession session, Model model){
+        brandOrderRepository.deleteById(id);
+        Users consumer = (Users) session.getAttribute("user");
+        List<OrderInfo> orders = brandOrderRepository.findAllByStatusAndAndConsumer("待支付",consumer);
+        if(orders.size() == 0)
+            model.addAttribute("message","空空如也！！！");
+        model.addAttribute("orders",orders);
+        return "/consumer/checkout";
+    }
+
+    @GetMapping("/cancel")
+    public String cancel(HttpSession session,Model model){
+        Users consumer = (Users) session.getAttribute("user");
+        List<OrderInfo> orders = brandOrderRepository.findAllByStatusAndAndConsumer("待支付",consumer);
+        for(int i = 0; i < orders.size(); i++){
+            brandOrderRepository.deleteById(orders.get(i).getOrderId());
+        }
+        model.addAttribute("message","空空如也！！！");
+        return "/consumer/checkout";
+    }
+
+    @PostMapping("/address")
+    public String address(HttpSession session,Model model,ShipAddr addr){
+        Users consumer = (Users) session.getAttribute("user");
+        List<OrderInfo> orders = brandOrderRepository.findAllByStatusAndAndConsumer("待支付",consumer);
+        Float total = new Float(0);
+        Date time = new Date();
+        for(int i = 0; i < orders.size(); i++){
+            orders.get(i).setStatus("已支付");
+            orders.get(i).setPayTime(time);
+            brandOrderRepository.save(orders.get(i));
+            total += orders.get(i).getTotalPrice();
+        }
+        ShipAddr getaddr = shipAddrRepository.findByUsers(consumer);
+        addr.setShipId(getaddr.getShipId());
+        shipAddrRepository.save(addr);
+        model.addAttribute("message","已支付"+total+"元！");
+        return "/consumer/checkout";
+    }
 
     /**
      * 跳转到历史订单首页并根据用户id查询其所有历史订单信息

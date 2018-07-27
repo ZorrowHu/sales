@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html   xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>我的历史订单</title>
+    <title>购物车</title>
     <link th:href="@{/frontend/css/bootstrap.css}" rel="stylesheet" type="text/css" media="all" />
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script th:src="@{/frontend/js/jquery.min.js}"></script>
@@ -101,64 +101,49 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
         </div>
     </div>
 </div>
-
-
-
+<!--//header-->
 <!--content-->
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-sm-12">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h3 class="panel-title">我的历史订单</h3>
-                </div>
-                <div class="panel-body">
-                    <table class="table table-hover table-striped table-bordered">
-                        <thead>
-                        <tr>
-                            <th>订单编号</th>
-                            <th>商品名称</th>
-                            <th>收货地址</th>
-                            <th>数量</th>
-                            <th>创建时间</th>
-                            <th>订单状态</th>
-                            <th>订单总价</th>
-                            <th>操作</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr th:each="order:${orders}"
-                            th:unless="${order.status} eq '待支付'">
-                            <td th:text="${#numbers.formatInteger(order.orderId, 8)}"></td>
-                            <td th:text="${order.goods.getGoodName()}"></td>
-                            <td th:text="${order.ship.getAddress()}"></td>
-                            <td th:text="${order.quantity}"></td>
-                            <td th:text="${#dates.format(order.payTime, 'yyyy-MM-dd   HH:mm')}"></td>
-                            <td th:switch="${order.status}">
-                                <span th:case="已支付" class="label label-info" th:text="${order.status}"></span>
-                                <span th:case="待发货" class="label label-warning" th:text="${order.status}"></span>
-                                <span th:case="已发货" class="label label-primary" th:text="${order.status}"></span>
-                                <span th:case="待退款" class="label label-danger" th:text="${order.status}"></span>
-                                <span th:case="已完成" class="label label-success" th:text="${order.status}"></span>
-                                <span th:case="已取消" class="label label-default" th:text="${order.status}"></span>
-                            </td>
-                            <td th:text="${order.totalPrice }"></td>
-                            <td>
-                                <a th:if="${order.status} eq '已支付'" th:href="@{'../refund/'+${order.orderId}}">
-                                    <span class="label label-success">取消订单并申请退款</span>
-                                </a>
-                                <a th:if="${order.status} eq '待发货'" th:href="@{'../refund/'+${order.orderId}}">
-                                    <span class="label label-success">取消订单并申请退款</span>
-                                </a>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div><!-- /.col-sm-12 -->
+<div class="container">
+    <div class="check-out">
+        <form>
+            <h3>结算</h3>
+            <table class="table table-hover">
+                <tr>
+                    <th>商品</th>
+                    <th>单价</th>
+                    <th>数量</th>
+                    <th>店铺</th>
+                    <th>总价</th>
+                    <th>操作</th>
+                </tr>
+                <tr th:each="orders:${orders}">
+                    <td class="ring-in">
+                        <img th:src="@{'/goodsimg/'+${orders.goods.image}}" class="img-responsive" width="80px" height="80px">
+                        <div class="sed">
+                            <h5 th:text="${orders.goods.goodName}"></h5>
+                        </div>
+                        <div class="clearfix"> </div>
+                    </td>
+                    <td th:text="${orders.totalPrice / orders.quantity}"></td>
+                    <td th:text="${orders.quantity}"></td>
+                    <td th:text="${orders.store.storeName}"></td>
+                    <td th:text="${orders.totalPrice}"></td>
+                    <td><a th:href="@{'/consumer/cancelby/'+${orders.orderId}}" class="btn btn-danger">取消</a></td>
+                </tr>
+                <tr>
+                    <td colspan="5" align="center" th:text="${message}"></td>
+                    <td th:text="${totalPrice}"></td>
+                </tr>
+                <tr>
+                    <td><a th:if="${orders != null && orders.size() != 0}" th:href="@{/consumer/pay}" class="btn btn-warning">结算</a></td>
+                    <td><a th:if="${orders != null && orders.size() != 0}" th:href="@{/consumer/cancel}" class="btn btn-danger">清空</a></td>
+                    <td><a th:href="@{/consumer/index}" class="btn btn-danger">返回</a></td>
+                </tr>
+            </table>
+        </form>
     </div>
 </div>
+
 <!--//content-->
 <!--footer-->
 <div class="footer">
@@ -169,7 +154,6 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
         </div>
     </div>
 </div>
-
 <!--//footer-->
 </body>
 </html>
