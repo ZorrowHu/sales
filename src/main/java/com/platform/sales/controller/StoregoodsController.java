@@ -28,7 +28,7 @@ import java.util.List;
     private  StoresService storesService;
 
         @Autowired
-        private BrandReposService brandReposServ    ice;
+        private BrandReposService brandReposService;
 
         @Autowired
         BrandReposRepository brandReposRepository;
