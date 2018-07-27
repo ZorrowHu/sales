@@ -48,9 +48,9 @@
             <div class="accordion" id="accordion2">
                 <div class="accordion-group">
                     <div class="accordion-heading">
-                        <a class="accordion-toggle b_C3F7A7 collapsed" data-toggle="collapse" data-parent="#accordion2" href="#collapse1"><i class="icon-user"></i> <span>管理员业务</span></a>
+                        <a class="accordion-toggle b_C3F7A7 active" data-toggle="collapse" data-parent="#accordion2" href="#collapse1"><i class="icon-user"></i> <span>管理员业务</span></a>
                     </div>
-                    <div id="collapse1" class="accordion-body collapse">
+                    <div id="collapse1" class="accordion-body active in">
                         <div class="accordion-inner">
                             <a class="accordion-toggle" th:href="@{../../administrator/type}"><i class="icon-star"></i> 商品类别管理</a>
                             <a class="accordion-toggle" th:href="@{../../administrator/cash}"><i class="icon-list-alt"></i> 平台流水管理</a>
@@ -68,15 +68,15 @@
             <div class="row-fluid">
                 <!-- 页面内容写在这里 -->
                 <div class="col-lg-offset-1 col-lg-10">
-                    <div class="panel panel-primary">
-                        <!-- Default panel contents -->
-                        <div class="panel-body">
-                            <div class="alert alert-success">
-                                修改品牌商角色信息
-                            </div>
+                    <div class="widget widget-padding span12">
+                        <div class="widget-header">
+                            <i class="icon-table"></i>
+                            <h5>修改品牌商角色信息</h5>
+                        </div>
+                        <div class="widget-body">
                             <form class="form-horizontal" role="form" action="../../administrator/updateBrand" method="post">
                                 <input type="hidden" name="brandId" th:value="${brand.getId()}">
-                                <table class="table table-bordered">
+                                <table class="table table-bordered table-striped">
                                     <thead>
                                     <tr>
                                         <th>品牌商用户名</th>
@@ -93,7 +93,7 @@
                                         <td><input type="text" name="brandDesc" class="form-control" th:value="${brand.getBrDescription()}"></td>
                                     </tr>
                                     <tr>
-                                        <td colspan="3"><button type="submit" class="btn btn-success">修改角色信息</button></td>
+                                        <td colspan="4"><button type="submit" class="btn btn-success">修改角色信息</button></td>
                                     </tr>
                                     </tbody>
                                 </table>

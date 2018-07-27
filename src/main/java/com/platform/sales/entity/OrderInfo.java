@@ -12,7 +12,7 @@ public class OrderInfo {
         @ManyToOne
         private BrandRepos goods;  //商品ID
         @ManyToOne
-        private Users seller;       //借买方ID
+        private Stores store;      //店铺ID
         @ManyToOne
         private Users consumer;     //消费者ID
         @ManyToOne
@@ -41,14 +41,6 @@ public class OrderInfo {
 
         public void setGoods(BrandRepos goods) {
             this.goods = goods;
-        }
-
-        public Users getSeller() {
-            return seller;
-        }
-
-        public void setSeller(Users seller) {
-            this.seller = seller;
         }
 
         public Users getConsumer() {
@@ -98,4 +90,12 @@ public class OrderInfo {
         public void setShip(ShipAddr ship) {
             this.ship = ship;
         }
+
+    public Stores getStore() {
+        return store;
+    }
+
+    public void setStore(Stores store) {
+        this.store = store;
+    }
 }
