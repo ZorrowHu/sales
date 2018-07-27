@@ -29,4 +29,6 @@ public interface BrandReposRepository extends JpaRepository<BrandRepos, Integer>
         void deleteByGoodIdAndBrand(Integer id, Users user);
         @Transactional
         void deleteAllByBrand(Users user);
+        //通过商品id查找记录
+        BrandRepos findByGoodId(Integer id);
 }

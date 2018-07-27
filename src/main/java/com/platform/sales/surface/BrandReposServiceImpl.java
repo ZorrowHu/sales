@@ -14,5 +14,10 @@ public class BrandReposServiceImpl implements BrandReposService{
     public List<BrandRepos> findBrandReposByGoodName(String name) {
         return brandReposRepository.findBrandReposByGoodName(name);
     }
+
+    @Override
+    public BrandRepos findByGoodId(Integer id) {
+        return brandReposRepository.findByGoodId(id);
+    }
 }
 

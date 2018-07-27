@@ -17,7 +17,7 @@ import java.util.regex.Pattern;
 public class SellerinfoController {
     @Autowired
     SellerinfoService sellerinfoService;
-    //账户服务
+    //钱包账户服务
     @Autowired
     BrandAccountService accountService;
     //流水服务
@@ -28,6 +28,9 @@ public class SellerinfoController {
     StoresService storesService;
     @Autowired
     BrandOrderService orderService;
+    //品牌商商品服务
+    @Autowired
+    BrandReposService reposService;
     //需要将借卖方注册时的user_id添加到页面属性中作为此方法的参数
     @GetMapping("/getInfo/{seller_id}")
     public String getInfo(@PathVariable("seller_id")Integer id, Model model){
@@ -245,15 +248,51 @@ public class SellerinfoController {
     }
     //将退款订单改为已取消状态
     @GetMapping("/drawback/{id}/{status}/{stores}")
-    public String drawback(@PathVariable("id")Integer id,@PathVariable("status")String status,@PathVariable("stores")String stores){
-        //根据id获得对应的订单
+    public String drawback(@PathVariable("id")Integer id,@PathVariable("status")String status,@PathVariable("stores")String stores,HttpSession session){
+        //根据订单id获得对应的订单
         OrderInfo order = orderService.findByOrderId(id);
         //根据订单的数量和商品的单价，判断商品在品牌商那里的价格
         //获得商品的数量
         int quantity = order.getQuantity();
+        //通过商品id找到品牌商中的商品信息
+        BrandRepos brandRepos = reposService.findByGoodId(order.getGoods().getGoodId());
         //获得商品原有的单价
+        float price = brandRepos.getPrice();
+        float money = price*quantity;
+        //根据借卖方id找到借卖方钱包
+        Account account = accountService.findByUserId(((Users)session.getAttribute("user")).getUserId());
+        float result = account.getBalance()-money;
+        account.setBalance(result);
+        accountService.update(account);
         order.setStatus("已取消");
         orderService.update(order);
-        return "redirect:/seller/"+status+"/"+stores;
+        return "redirect:/seller/search/"+status+"/"+stores;
+    }
+    //将已发货的订单改为已完成状态
+    @GetMapping("/done/{id}/{status}/{stores}")
+    public String done(@PathVariable("id")Integer id,@PathVariable("status")String status,@PathVariable("stores")String stores,HttpSession session){
+        //根据订单id获得相应订单
+        OrderInfo order = orderService.findByOrderId(id);
+        //根据订单的数量和商品的单价，判断商品在品牌商那里的价格
+        //获得商品的数量
+        int quantity = order.getQuantity();
+        //通过商品id找到品牌商中的商品信息
+        BrandRepos brandRepos = reposService.findByGoodId(order.getGoods().getGoodId());
+        //获得商品原有的单价
+        float price = brandRepos.getPrice();
+        float money = price*quantity;
+        //根据借卖方id找到借卖方钱包
+        Account account = accountService.findByUserId(((Users)session.getAttribute("user")).getUserId());
+        float result = account.getBalance()-money;
+        account.setBalance(result);
+        accountService.update(account);
+        //将钱转给品牌商
+        Account accountPin = accountService.findByUserId(brandRepos.getBrand().getUserId());
+        float resultToPinpaishang = accountPin.getBalance()+money;
+        accountPin.setBalance(resultToPinpaishang);
+        accountService.update(accountPin);
+        order.setStatus("已完成");
+        orderService.update(order);
+        return "redirect:/seller/search/"+status+"/"+stores;
     }
 }
