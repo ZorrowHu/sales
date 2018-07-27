@@ -27,8 +27,6 @@ public class SellerinfoController {
     @Autowired
     BrandRecordService recordService ;
     //订单服务
-    @Autowired
-    StoreorderService storeorderService;
     //需要将借卖方注册时的user_id添加到页面属性中作为此方法的参数
     @GetMapping("/getInfo/{seller_id}")
     public String getInfo(@PathVariable("seller_id")Integer id, Model model){
@@ -173,13 +171,5 @@ public class SellerinfoController {
         return "/seller/record";
     }
 
-    @GetMapping("/sellerorder")
-    public String getSellerorder(HttpSession session,Model model){
-        Users user = (Users)session.getAttribute("user");
-        //先查询所有订单
-        List<StoreOrder> orders = storeorderService.findAllBySeller_UserId(user.getUserId());
-        model.addAttribute("orders",orders);
-        return "/seller/sellerorder";
-    }
 
 }

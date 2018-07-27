@@ -10,4 +10,5 @@ public interface StoregoodsService {
     void deleteByGoodID(Integer GoodID);
     StoreGoods updateGoodInfo(StoreGoods goods);
     List<StoreGoods> findAllByStores_StoreId(Integer id);
+    List<StoreGoods> findStoreGoodsByBrandRepos_GoodIdAndStores_StoreId(Integer gid,Integer sid);
 }

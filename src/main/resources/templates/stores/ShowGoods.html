@@ -109,10 +109,10 @@
                     </div>
                     <div class="widget-body">
                         <div class="row-fluid">
-                            <form th:action="@{/Stores/ShowGoods}" method="post">
+                            <form th:action="@{'/Stores/ShowGoods/'+${store_id}}" method="post">
                                 <div>
                                     <div style="float:left">
-                                        <a th:href="@{/Stores/ShowGoods}" class="btn btn-primary">查看全部信息</a>
+                                        <a th:href="@{'/Stores/ShowGoods/'+${store_id}}" class="btn btn-primary">查看全部信息</a>
                                     </div>
                                     <div style="float:right">
                                         <input type="text" class="input-medium search-query" style="width:240px" name="keyword"><button type="submit" class="btn btn-primary  ">搜索</button>
