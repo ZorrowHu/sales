@@ -35,6 +35,10 @@ public class AdministratorController {
     private BrandAccountRepository brandAccountRepository;
     @Autowired
     private BrandOrderRepository brandOrderRepository;
+    @Autowired
+    private StoregoodsRepository storegoodsRepository;
+    @Autowired
+    private StoresRepository storesRepository;
 
     /**
      * 跳转到管理员首页
@@ -326,9 +330,13 @@ public class AdministratorController {
     public String deleteSeller(@PathVariable("id") Integer id){
         SellerInfo seller = sellerinfoRepository.findById(id).get();
         Users user = usersRepository.findById(seller.getUser().getUserId()).get();
-        brandAccountRepository.deleteByUser(user);  // 删除借卖方对应的钱包
-        usersRepository.delete(user);           // 删除借卖方对应的角色
-        sellerinfoRepository.delete(seller); // 删除借卖方信息
+        recordAdminRepository.deleteAllByUsersOrOp(user, user); // 删除借卖方对应的流水信息
+        shipAddrRepository.deleteAllByUsers(user);              // 删除借卖方对应的地址信息
+        brandAccountRepository.deleteByUser(user);              // 删除借卖方对应的钱包
+        storegoodsRepository.deleteAllByStores_User(user);      // 删除借卖方对应的所有货物
+        storesRepository.deleteAllByUser(user);                 // 删除借卖方对应的所有商店
+        usersRepository.delete(user);                           // 删除借卖方对应的角色
+        sellerinfoRepository.delete(seller);                    // 删除借卖方信息
         return "redirect:/administrator/seller";
     }
 
