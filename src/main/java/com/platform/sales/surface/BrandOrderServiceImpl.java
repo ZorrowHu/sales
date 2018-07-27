@@ -36,8 +36,7 @@ public class BrandOrderServiceImpl implements BrandOrderService {
 
     @Override
     public void delByConsumerOrSeller(Integer id_1, Integer id_2) {
-        brandOrderRepository.deleteAllByConsumerUserIdOrSellerUserId(id_1,id_2);
-    }
 
+    }
 
 }

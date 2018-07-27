@@ -23,6 +23,6 @@ public class BrandAccountServiceImpl implements BrandAccountService{
 
     @Override
     public void deleteByUserId(Integer id) {
-        brandAccountRepository.deleteAccountByAccountId(id);
+//        brandAccountRepository.deleteAccountByAccountId(id);
     }
 }
