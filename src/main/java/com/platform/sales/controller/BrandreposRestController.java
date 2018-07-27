@@ -7,6 +7,7 @@ import com.platform.sales.repository.BrandReposRepository;
 import com.platform.sales.repository.TypeRepository;
 import com.platform.sales.repository.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
@@ -37,6 +38,41 @@ public class BrandreposRestController {
                 return tertiary;
         }
 
+        @GetMapping("/index")
+        public HashMap<String, Object> index(Model model){
+                List<Type> types = typeRepository.findAll();
+
+                HashMap<String, Object> sum = new HashMap<String,  Object>();
+
+                List<String> primaries = typeRepository.getPrimary();
+                List<String> secondaries = typeRepository.getSecondary();
+                List<String> tertiaries = typeRepository.getTertiary();
+
+                HashMap<String, Object> primary = new HashMap<String,  Object>();
+                for (String first : primaries){
+                        HashMap<String, Object> secondary = new HashMap<String, Object>();
+                        for (String second : secondaries){
+                                HashMap<String, Integer> tertiary = new HashMap<String, Integer>();
+                                for (String third : tertiaries){
+                                        for (Type type : types){
+                                                if (type.getContent3().equals(third) && type.getContent2().equals(second) && type.getContent1().equals(first))
+                                                {
+                                                        tertiary.put(type.getContent3(), type.getTypeId());
+                                                        secondary.put(type.getContent2(), tertiary);
+                                                        primary.put(type.getContent1(), secondary);
+                                                }
+                                        }
+                                }
+                        }
+                }
+//                for (Type type : types){
+//                        tertiary.put(type.getContent3(), type.getTypeId());
+//                        secondary.put(type.getContent2(), tertiary);
+//                        primary.put(type.getContent1(), secondary);
+//                }
+                //model.addAttribute("types", primary);
+                return primary;
+        }
         @PostMapping("/getgoodsbytype")
         public List<BrandRepos> getgoodsbytype(String primary, String secondary, String tertiary, HttpSession session){
                 Users users = (Users) session.getAttribute("user");

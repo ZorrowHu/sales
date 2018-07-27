@@ -15,5 +15,4 @@ public interface BrandOrderService {
 
     OrderInfo update(OrderInfo orderInfo);
 
-
 }

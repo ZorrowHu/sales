@@ -23,7 +23,7 @@ public interface BrandOrderRepository extends JpaRepository<OrderInfo,Integer> {
     void deleteAllByGoods_Brand(Users user);
 
     // 根据userid查找所有的订单
-    List<OrderInfo> findAllBySeller_UserId(Integer id);
+    List<OrderInfo> findAllByStoreUserUserId(Integer id);
 
 
 }
