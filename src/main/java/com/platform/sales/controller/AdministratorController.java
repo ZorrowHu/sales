@@ -326,6 +326,7 @@ public class AdministratorController {
     public String deleteSeller(@PathVariable("id") Integer id){
         SellerInfo seller = sellerinfoRepository.findById(id).get();
         Users user = usersRepository.findById(seller.getUser().getUserId()).get();
+        brandAccountRepository.deleteByUser(user);  // 删除借卖方对应的钱包
         usersRepository.delete(user);           // 删除借卖方对应的角色
         sellerinfoRepository.delete(seller); // 删除借卖方信息
         return "redirect:/administrator/seller";
