@@ -131,8 +131,8 @@
                                     <td th:text="${Order.payTime}"></td>
                                     <td th:text="${Order.status}"></td>
                                     <td>
-                                        <a th:if="${Order.status} eq '待发货'" th:href="@{'/brand/deliverorder/'+${Order.orderId}}" class="btn btn-warning">发货</a>
-                                        <a th:if="${Order.status ne '已取消'}" th:href="@{'/brand/cancelorder/'+${Order.orderId}}" class="btn btn-danger">取消</a>
+                                        <a th:if="${Order.status == '待发货'}" th:href="@{'/brand/deliverorder/'+${Order.orderId}}" class="btn btn-warning">发货</a>
+                                        <a th:if="${Order.status != '已取消' && Order.status != '已完成'}" th:href="@{'/brand/cancelorder/'+${Order.orderId}}" class="btn btn-danger">取消</a>
                                     </td>
                                 </tr>
                                 </tbody>
