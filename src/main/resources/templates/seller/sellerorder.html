@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!--备份成功-->
 <html lang="en"  xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
@@ -16,6 +17,11 @@
     <!--[if lt IE 9]>
     <script src="http://html5shim.googlecode.com/svn/trunk/html5.js">
     </script>
+    <style type="text/css">
+        td {
+            text-align: center;
+        }
+    </style>
     <![endif]-->
 </head>
 <body>
@@ -94,27 +100,30 @@
 
                         <div class="row-fluid">
                             <div class="col-lg-offset-2 col-lg-6">
-                                <form th:action="@{/seller/statusSelect}" method="post">
+                                <form th:action="@{/seller/search}" method="post">
                                     <!--div class="col-lg-4 form-control"-->
                                         <label class="label">订单状态</label>
                                         <select name="status" class="form-control">
                                             <option value="0">全  部</option>
-                                            <option value="待发货">待发货</option>
-                                            <option value="已发货">已发货</option>
-                                            <option value="已完成">已完成</option>
-                                            <option value="已取消">已取消</option>
+                                            <option value="1" th:selected="${status} eq '1'">已支付</option>
+                                            <option value="2" th:selected="${status} eq '2'">待退款</option>
+                                            <option value="3" th:selected="${status} eq '3'">待发货</option>
+                                            <option value="4" th:selected="${status} eq '4'">已发货</option>
+                                            <option value="5" th:selected="${status} eq '5'">已完成</option>
+                                            <option value="6" th:selected="${status} eq '6'">已取消</option>
                                         </select>
                                         &nbsp;&nbsp;
                                     <!--/div-->
                                     <!--div class="col-lg-4 form-control"-->
                                         <label class="label">店铺名称</label>
-                                        <select name="status" class="form-control">
-                                            <option value="0">全  部</option>
+                                        <select name="stores" class="form-control">
+                                            <option value="0" th:selected="${storestatue} eq '0'">全  部</option>
+                                            <option th:each="store:${storelist}" th:value="${store.storeId}" th:text="${store.storeName}" th:selected="${storestatue} eq ${store.storeId}+''"></option>
                                         </select>
                                         <button type="submit" class="btn btn-success">查询</button>
                                     <!--/div-->
                                 </form>
-                                <table  border="1" cellspacing="0">
+                                <table class="table table-bordered">
                                     <thead>
                                     <tr>
                                         <th>订单编号</th>
@@ -131,9 +140,9 @@
                                     </thead>
                                     <tbody>
                                     <tr th:each="order:${orders}">
-                                        <td th:text="${order.id}"></td>
-                                        <td th:text="${order.brandRepos.goodId}"></td>
-                                        <td th:text="${order.brandRepos.goodName}"></td>
+                                        <td th:text="${order.orderId}"></td>
+                                        <td th:text="${order.goods.goodId}"></td>
+                                        <td th:text="${order.goods.goodName}"></td>
                                         <td th:text="${order.consumer.userId}"></td>
                                         <td th:text="${order.quantity}"></td>
                                         <td th:text="${order.totalPrice}"></td>
@@ -142,8 +151,16 @@
                                         <td th:text="${order.payTime}"></td>
                                         <td th:text="${order.status}"></td>
                                         <td>
-                                            <a th:if="${order.status} eq '待发货'" th:href="@{'/brand/deliverorder/'+${order.id}}" class="btn btn-warning">发货</a>
-                                            <a th:if="${order.status ne '已取消'}" th:href="@{'/brand/cancelorder/'+${order.id}}" class="btn btn-danger">取消</a>
+                                            <a th:if="${order.status} eq '已支付'" th:href="@{'/seller/delivery/'+${order.orderId}+'/'+${status}+'/'+${storestatue}}" class="btn btn-warning">发货</a>
+                                            <a th:if="${order.status ne '已支付'}" href="#" class="btn">发货</a>
+                                        </td>
+                                        <td>
+                                            <a th:if="${order.status} eq '待退款'" th:href="@{'/seller/drawback/'+${order.orderId}}" class="btn btn-danger">退款</a>
+                                            <a th:if="${order.status ne '待退款'}" href="#" class="btn">退款</a>
+                                        </td>
+                                        <td>
+                                            <a th:if="${order.status} eq '已发货'" th:href="@{'/seller/done/'+${order.orderId}}" class="btn btn-success">完成</a>
+                                            <a th:if="${order.status ne '已发货'}" href="" class="btn">完成</a>
                                         </td>
                                     </tr>
                                     </tbody>

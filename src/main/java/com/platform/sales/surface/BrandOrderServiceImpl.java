@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-
+//备份成功
 @Service
 public class BrandOrderServiceImpl implements BrandOrderService {
     @Autowired
@@ -34,6 +34,25 @@ public class BrandOrderServiceImpl implements BrandOrderService {
         return brandOrderRepository.save(orderInfo);
     }
 
+    @Override
+    public List<OrderInfo> findAllByStore_User_UserId(Integer id) {
+        return brandOrderRepository.findAllByStore_User_UserId(id);
+    }
+
+    @Override
+    public List<OrderInfo> findAllByStatus(String status) {
+        return brandOrderRepository.findAllByStatus(status);
+    }
+
+    @Override
+    public List<OrderInfo> findAllByStore_StoreId(Integer id) {
+        return brandOrderRepository.findAllByStore_StoreId(id);
+    }
+
+    @Override
+    public List<OrderInfo> findAllByStatusAndStore_StoreId(String status, Integer id) {
+        return brandOrderRepository.findAllByStatusAndStore_StoreId(status,id);
+    }
 
 
 }

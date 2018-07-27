@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
 import java.util.List;
-
+//备份成功
 @Repository
 public interface BrandOrderRepository extends JpaRepository<OrderInfo,Integer> {
 
@@ -24,6 +24,13 @@ public interface BrandOrderRepository extends JpaRepository<OrderInfo,Integer> {
 
     // 根据userid查找所有的订单
     List<OrderInfo> findAllByStoreUserUserId(Integer id);
-
-
+    //根据借卖方的id查找用户自己的所有订单
+    List<OrderInfo> findAllByStore_User_UserId(Integer id);
+    //根据状态查找订单
+    List<OrderInfo> findAllByStatus(String status);
+    //根据店铺的id查找所有的订单
+    List<OrderInfo> findAllByStore_StoreId(Integer id);
+    //根据订单状态和店铺id查找订单
+    List<OrderInfo> findAllByStatusAndStore_StoreId(String status,Integer id);
+    //根据订单ID获得订单
 }
