@@ -113,6 +113,7 @@
                                     <tr th:each="list : ${Lists}">
                                         <td th:text="${list.goodId}">此处会被覆盖</td>
                                         <td><img th:src="@{'/goodsimg/'+${list.getImage()}}" style="height: 36px; width: 36px"></td>
+                                        <!--<td><img th:src="'http://localhost:8080/goodsimg/'+${list.getImage()}" style="height: 36px; width: 36px"></td>-->
                                         <td th:text="${list.goodName}">此处会被覆盖</td>
                                         <td th:text="${'￥'+list.price}">此处会被覆盖</td>
                                         <td th:text="${list.quantity}">此处会被覆盖</td>
