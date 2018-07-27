@@ -1,6 +1,5 @@
 package com.platform.sales.surface;
 
-import com.platform.sales.entity.StoreOrder;
 import com.platform.sales.repository.StoreorderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

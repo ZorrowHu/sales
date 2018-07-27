@@ -19,10 +19,10 @@ public class OrderInfo {
         private ShipAddr ship;      //收货地址
 
         private Integer quantity;   //数量
-        private String status;      //类型()
-
-        private Float totalPrice;  //此订单总额
         private Date payTime;      //支付时间
+        private String status;      //状态
+
+        private Float totalPrice;  //订单总价
 
         public OrderInfo() {
         }

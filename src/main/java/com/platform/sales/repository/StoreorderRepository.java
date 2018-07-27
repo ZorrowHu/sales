@@ -1,6 +1,5 @@
 package com.platform.sales.repository;
 
-import com.platform.sales.entity.StoreOrder;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
