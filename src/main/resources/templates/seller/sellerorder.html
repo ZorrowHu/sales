@@ -76,7 +76,6 @@
                             <a class="accordion-toggle" href="#"><i class="icon-star"></i> 我的订单</a>
                             <a class="accordion-toggle" th:href="@{/seller/sellerAccount}"><i class="icon-list-alt"></i> 我的钱包</a>
                             <a class="accordion-toggle" th:href="@{'/Stores/storeindex'}"><i class="icon-table"></i> 我的店铺</a>
-                            <a class="accordion-toggle" href="#"><i class="icon-circle"></i> 查看货物</a>
                         </div>
                     </div>
                 </div>
@@ -155,12 +154,12 @@
                                             <a th:if="${order.status ne '已支付'}" href="#" class="btn">发货</a>
                                         </td>
                                         <td>
-                                            <a th:if="${order.status} eq '待退款'" th:href="@{'/seller/drawback/'+${order.orderId}}" class="btn btn-danger">退款</a>
+                                            <a th:if="${order.status} eq '待退款'" th:href="@{'/seller/drawback/'+${order.orderId}+'/'+${status}+'/'+${storestatue}}" class="btn btn-danger">退款</a>
                                             <a th:if="${order.status ne '待退款'}" href="#" class="btn">退款</a>
                                         </td>
                                         <td>
-                                            <a th:if="${order.status} eq '已发货'" th:href="@{'/seller/done/'+${order.orderId}}" class="btn btn-success">完成</a>
-                                            <a th:if="${order.status ne '已发货'}" href="" class="btn">完成</a>
+                                            <a th:if="${order.status} eq '已发货'" th:href="@{'/seller/done/'+${order.orderId}+'/'+${status}+'/'+${storestatue}}" class="btn btn-success">完成</a>
+                                            <a th:if="${order.status ne '已发货'}" href="#" class="btn">完成</a>
                                         </td>
                                     </tr>
                                     </tbody>
