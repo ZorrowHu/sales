@@ -255,7 +255,7 @@ public class AdministratorController {
     public String deleteBrand(@PathVariable("id") Integer id){
         BrandInfo brand = brandInfoRepository.findById(id).get();
         Users user = usersRepository.findById(brandInfoRepository.findById(id).get().getUsers().getUserId()).get();
-        brandOrderRepository.deleteAllByGoods_Brand(user);
+        brandOrderRepository.deleteAllByGoods_Brand(user);      // 删除其对应的订单数据
         brandAccountRepository.deleteByUser(user);              // 删除品牌商对应的钱包
         shipAddrRepository.deleteAllByUsers(user);              // 删除品牌商对应的收货地址信息
         recordAdminRepository.deleteAllByUsersOrOp(user, user); // 删除品牌商对应的流水信息

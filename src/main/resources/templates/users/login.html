@@ -46,6 +46,11 @@
 										<input class="btn-block" name="password" type="password" id="inputPassword" placeholder="密码">
 									</div>
 								</div>
+								<div>
+									<strong class="alert alert-warning"
+											th:unless="${#strings.isEmpty(message)}"
+											th:text="${message}"></strong>
+								</div>
 								<div class="control-group ">
 									<label>角色类型:</label>
 									<div class="controls">
@@ -55,11 +60,6 @@
 											<option value="管理员">管理员</option>
 										</select>
 									</div>
-								</div>
-								<div>
-									<strong class="alert alert-warning"
-											th:unless="${#strings.isEmpty(message)}"
-											th:text="${message}"></strong>
 								</div>
 								<button type="submit" class="btn btn-large btn-block">登录</button>
 							</form>

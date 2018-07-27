@@ -58,9 +58,9 @@
             <div class="accordion" id="accordion2">
                 <div class="accordion-group">
                     <div class="accordion-heading">
-                        <a class="accordion-toggle b_C3F7A7 collapsed" data-toggle="collapse" data-parent="#accordion2" href="#collapse1"><i class="icon-user   "></i> <span>管理员业务</span></a>
+                        <a class="accordion-toggle b_C3F7A7 active" data-toggle="collapse" data-parent="#accordion2" href="#collapse1"><i class="icon-user   "></i> <span>管理员业务</span></a>
                     </div>
-                    <div id="collapse1" class="accordion-body collapse">
+                    <div id="collapse1" class="accordion-body collapse active in">
                         <div class="accordion-inner">
                             <a class="accordion-toggle" th:href="@{../administrator/type}"><i class="icon-star"></i> 商品类别管理</a>
                             <a class="accordion-toggle active" th:href="@{../administrator/cash}"><i class="icon-list-alt"></i> 平台流水管理</a>
@@ -132,7 +132,11 @@
                                     <td th:text="${Records.time}"></td>
                                     <td th:text="${Records.type}"></td>
                                     <td th:text="${Records.money}"></td>
-                                    <td th:text="${Records.status}"></td>
+                                    <td>
+                                        <span th:if="${Records.status} eq '待审核'" th:text="${Records.status}" class="label label-warning"></span>
+                                        <span th:if="${Records.status} eq '已通过'" th:text="${Records.status}" class="label label-success"></span>
+                                        <span th:if="${Records.status} eq '未通过'" th:text="${Records.status}" class="label label-danger"></span>
+                                    </td>
                                     <td>
                                         <a th:if="${Records.getStatus()} eq '待审核'"
                                            th:href="@{'../../administrator/pass/'+${Records.recordId}}"
@@ -144,8 +148,7 @@
                                     </td>
                                     <td>
                                         <div>
-                                            <strong class=""
-                                                    th:unless="${#strings.isEmpty(message)}"
+                                            <strong th:unless="${#strings.isEmpty(message)}"
                                                     th:if="${Records.recordId} eq ${ErrId}"
                                                     th:text="${message}"></strong>
                                         </div>
