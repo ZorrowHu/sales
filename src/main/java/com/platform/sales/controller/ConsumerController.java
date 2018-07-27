@@ -1,9 +1,8 @@
 package com.platform.sales.controller;
 
-<<<<<<< HEAD
 import com.platform.sales.entity.*;
 import com.platform.sales.repository.*;
-=======
+
 import com.platform.sales.entity.OrderInfo;
 import com.platform.sales.entity.StoreGoods;
 import com.platform.sales.entity.Type;
@@ -11,7 +10,6 @@ import com.platform.sales.entity.Users;
 import com.platform.sales.repository.BrandOrderRepository;
 import com.platform.sales.repository.StoregoodsRepository;
 import com.platform.sales.repository.TypeRepository;
->>>>>>> 664fe6b21a7d1ad0135973ec08166b9ed8e27e47
 import com.platform.sales.surface.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,6 +19,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -33,7 +32,6 @@ public class ConsumerController {
     @Autowired
     TypeRepository typeRepository;
     @Autowired
-<<<<<<< HEAD
     private BrandOrderRepository brandOrderRepository;
     @Autowired
     private StoregoodsRepository storegoodsRepository;
@@ -41,12 +39,7 @@ public class ConsumerController {
     private BrandAccountRepository brandAccountRepository;
     @Autowired
     private ShipAddrRepository shipAddrRepository;
-=======
-    StoregoodsRepository storegoodsRepository;
-    @Autowired
-    BrandOrderRepository brandOrderRepository;
 
->>>>>>> 664fe6b21a7d1ad0135973ec08166b9ed8e27e47
     /**
      * 跳转到主页
      * @return
@@ -258,7 +251,6 @@ public class ConsumerController {
         }
     }
 
-<<<<<<< HEAD
     /**
      *购物车
      * @param model
@@ -316,18 +308,19 @@ public class ConsumerController {
         Users consumer = (Users) session.getAttribute("user");
         List<OrderInfo> orders = brandOrderRepository.findAllByStatusAndAndConsumer("待支付",consumer);
         Float total = new Float(0);
+        Date time = new Date();
         for(int i = 0; i < orders.size(); i++){
             orders.get(i).setStatus("已支付");
+            orders.get(i).setPayTime(time);
             brandOrderRepository.save(orders.get(i));
             total += orders.get(i).getTotalPrice();
         }
         ShipAddr getaddr = shipAddrRepository.findByUsers(consumer);
         addr.setShipId(getaddr.getShipId());
         shipAddrRepository.save(addr);
-        model.addAttribute("message","支付成功！！！");
+        model.addAttribute("message","已支付"+total+"元！");
         return "/consumer/checkout";
     }
-=======
 
     /**
      * 跳转到历史订单首页并根据用户id查询其所有历史订单信息
@@ -355,5 +348,4 @@ public class ConsumerController {
         return "redirect:/consumer/myOrders/"+order.getConsumer().getUserId();
     }
 
->>>>>>> 664fe6b21a7d1ad0135973ec08166b9ed8e27e47
 }

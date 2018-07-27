@@ -51,7 +51,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                     <label th:text="${session.user.getUserName()}"  ></label>，欢迎你！
                 </p>
                 <div class="cart box_1"  th:if="${session.user != null}">
-                    <a href="#" style="text-decoration: none; color: inherit;">
+                    <a th:href="@{/consumer/checkout}" style="text-decoration: none; color: inherit;">
                         <h3>
                             <div class="total">
                                 <span class="simpleCart_total"></span>
