@@ -113,7 +113,7 @@ public class BrandInfoController {
             brandacnt.setUser(users);
             account = brandAccountService.update(brandacnt);
         }
-        if(account.getPayPwd().equals("") && account.getBalance() == 0){
+        if(account.getPayPwd().equals("")){
             model.addAttribute("account",account);
             return "/brand/newaccount";
         }else{
