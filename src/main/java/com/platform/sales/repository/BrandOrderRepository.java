@@ -18,6 +18,10 @@ public interface BrandOrderRepository extends JpaRepository<OrderInfo,Integer> {
 
     OrderInfo findByOrderId(Integer id);
 
+    //OrderInfo findByGoodsGoodIdAndConsumer_UserIdAndStatus(Integer storeGoodId, Integer userId, String status);
+    OrderInfo findOrderInfoByConsumer_UserIdAndGoods_GoodIdAndStatus(Integer storeGoodId, Integer userId, String status);
+    List<OrderInfo> findAllByConsumer_UserIdAndStatus(Integer userId, String status);
+
     // 根据品牌商删除所有有关商品
     @Transactional
     void deleteAllByGoods_Brand(Users user);
