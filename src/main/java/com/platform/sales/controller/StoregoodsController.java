@@ -7,6 +7,7 @@ import com.platform.sales.repository.BrandReposRepository;
 import com.platform.sales.repository.StoregoodsRepository;
 import com.platform.sales.repository.TypeRepository;
 import com.platform.sales.repository.UsersRepository;
+import com.platform.sales.surface.BrandReposService;
 import com.platform.sales.surface.StoregoodsService;
 import com.platform.sales.surface.StoresService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,9 @@ import java.util.List;
 
         @Autowired
     private  StoresService storesService;
+
+        @Autowired
+        private BrandReposService brandReposService;
 
         @Autowired
         BrandReposRepository brandReposRepository;
@@ -100,5 +104,22 @@ import java.util.List;
         model.addAttribute("Lists",  repository);
         return "Stores/brandgoods";
     }
+
+        @PostMapping("/ShowGoods/{id}")    //搜索店铺商品
+        public String search(Model model,@PathVariable("id") Integer store_id,String keyword) {
+            if(brandReposService.findBrandReposByGoodName(keyword).isEmpty())
+            {
+                List<StoreGoods> goodlists=null;
+                model.addAttribute("goods", goodlists);
+                model.addAttribute("store_id", store_id);
+            }                                //加个if是为了让用户在错误搜索的时候不跳到错误页面，而是显示空表。
+            else {
+                BrandRepos brandRepos=brandReposRepository.getBrandReposByGoodName(keyword);
+                List<StoreGoods> goodlists = storegoodsService.findStoreGoodsByBrandRepos_GoodIdAndStores_StoreId(brandRepos.getGoodId(), store_id);
+                model.addAttribute("goods", goodlists);
+                model.addAttribute("store_id", store_id);
+            }
+            return "Stores/ShowGoods";
+        }
     }
 
