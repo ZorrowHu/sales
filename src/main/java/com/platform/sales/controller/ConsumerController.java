@@ -267,6 +267,10 @@ public class ConsumerController {
         }else
             newaddr = addr;
         List<OrderInfo> orders = brandOrderRepository.findAllByStatusAndAndConsumer("待支付",consumer);
+        for(int i = 0; i < orders.size(); i++){
+            orders.get(i).setShip(newaddr);
+            brandOrderRepository.save(orders.get(i));
+        }
         model.addAttribute("orders",orders);
         if(orders.size() == 0)
             model.addAttribute("message","空空如也！！！");
