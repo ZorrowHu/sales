@@ -38,8 +38,6 @@ public class AdministratorController {
     @Autowired
     private StoregoodsRepository storegoodsRepository;
     @Autowired
-    private StoreorderRepository storeorderRepository;
-    @Autowired
     private StoresRepository storesRepository;
 
     /**
@@ -336,7 +334,6 @@ public class AdministratorController {
         shipAddrRepository.deleteAllByUsers(user);              // 删除借卖方对应的地址信息
         brandAccountRepository.deleteByUser(user);              // 删除借卖方对应的钱包
         storegoodsRepository.deleteAllByStores_User(user);      // 删除借卖方对应的所有货物
-        storeorderRepository.deleteAllBySeller(seller);         // 删除借卖方对应的所有订单
         storesRepository.deleteAllByUser(user);                 // 删除借卖方对应的所有商店
         usersRepository.delete(user);                           // 删除借卖方对应的角色
         sellerinfoRepository.delete(seller);                    // 删除借卖方信息
