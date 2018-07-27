@@ -89,10 +89,10 @@
                     </div>
                     <div class="widget-body">
                         <div class="row-fluid">
-                            <form th:action="@{/Store/brandgoods}" method="post">
+                            <form th:action="@{'/Stores/brandgoods/'+${id}}" method="post">
                                 <div>
                                     <div style="float:left">
-                                        <a th:href="@{/Store/brandgoods}" class="btn btn-primary">查看全部信息</a>
+                                        <a th:href="@{'/Stores/brandgoods/'+${id}}" class="btn btn-primary">查看全部信息</a>
                                     </div>
                                     <div style="float:right">
                                         <input type="text" class="input-medium search-query" style="width:240px" name="keyword"><button type="submit" class="btn btn-primary  ">搜索</button>
@@ -110,7 +110,7 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr th:each="list : ${Lists}">
+                                <tr th:each="list : ${Lists}" th:unless="${list.status} eq '新入仓'" th:if="${list.status} ne '已入仓'">
                                     <td th:text="${list.goodName}">Amie</td>
                                     <td th:text="${list.getType().getContent3()}">Admin</td>
                                     <td>

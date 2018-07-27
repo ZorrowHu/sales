@@ -1,16 +1,17 @@
 package com.platform.sales.controller;
 
+import com.platform.sales.entity.OrderInfo;
+import com.platform.sales.entity.StoreGoods;
 import com.platform.sales.entity.Type;
 import com.platform.sales.entity.Users;
+import com.platform.sales.repository.BrandOrderRepository;
+import com.platform.sales.repository.StoregoodsRepository;
 import com.platform.sales.repository.TypeRepository;
 import com.platform.sales.surface.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
@@ -25,16 +26,60 @@ public class ConsumerController {
     private UsersService usersService;
     @Autowired
     TypeRepository typeRepository;
+    @Autowired
+    StoregoodsRepository storegoodsRepository;
+    @Autowired
+    BrandOrderRepository brandOrderRepository;
 
     /**
      * 跳转到主页
      * @return
      */
     @GetMapping("/index")
-    public String index(Model model){
+    public String index(Model model, HttpSession session){
         List<Type> types = typeRepository.findAll();
 
-        HashMap<String, Object> sum = new HashMap<String,  Object>();
+        List<String> primaries = typeRepository.getPrimary();
+        List<String> secondaries = typeRepository.getSecondary();
+        List<String> tertiaries = typeRepository.getTertiary();
+
+        HashMap<String, Object> primary = new HashMap<String,  Object>();
+        for (String first : primaries){
+            HashMap<String, Object> secondary = new HashMap<String, Object>();
+            for (String second : secondaries){
+                HashMap<String, Integer> tertiary = new HashMap<String, Integer>();
+                for (String third : tertiaries){
+                    for (Type type : types){
+                        if (type.getContent3().equals(third) && type.getContent2().equals(second) && type.getContent1().equals(first))
+                        {
+                            tertiary.put(type.getContent3(), type.getTypeId());
+                             secondary.put(type.getContent2(), tertiary);
+                            primary.put(type.getContent1(), secondary);
+                        }
+                    }
+                }
+            }
+        }
+
+        List<StoreGoods> storeGoods = storegoodsRepository.findAll();
+        Users user = (Users)session.getAttribute("user");
+        Float totalPrice = new Float(0);
+        if (user != null){
+            List<OrderInfo> orders = brandOrderRepository.findAllByConsumer_UserIdAndStatus(user.getUserId(), "待支付");
+            for (OrderInfo each : orders){
+                totalPrice += each.getTotalPrice();
+            }
+        }
+        model.addAttribute("totalPrice", totalPrice);
+
+        model.addAttribute("goods", storeGoods);
+        model.addAttribute("primaries", primary);
+        return "consumer/index";
+    }
+
+    @GetMapping("/search/{id}")
+    public String search(@PathVariable("id") Integer typeId, Model model, HttpSession session){
+        List<Type> types = typeRepository.findAll();
 
         List<String> primaries = typeRepository.getPrimary();
         List<String> secondaries = typeRepository.getSecondary();
@@ -57,9 +102,69 @@ public class ConsumerController {
                 }
             }
         }
+        Type type = typeRepository.findById(typeId).get();
+        String keyword = type.getContent1() + " > " + type.getContent2() + " > " + type.getContent3() ;
+        List<StoreGoods> storeGoods = storegoodsRepository.findAllByBrandReposTypeTypeId(typeId);
 
+        Users user = (Users)session.getAttribute("user");
+        Float totalPrice = new Float(0);
+        if (user != null){
+            List<OrderInfo> orders = brandOrderRepository.findAllByConsumer_UserIdAndStatus(user.getUserId(), "待支付");
+            for (OrderInfo each : orders){
+                totalPrice += each.getTotalPrice();
+            }
+        }
+        model.addAttribute("totalPrice", totalPrice);
+
+
+        model.addAttribute("goods", storeGoods);
         model.addAttribute("primaries", primary);
-        return "consumer/index";
+        model.addAttribute("keyword", keyword);
+
+        return "consumer/search";
+    }
+
+    @PostMapping("/search")
+    public String search(@RequestParam String keyword, Model model, HttpSession session) {
+        List<Type> types = typeRepository.findAll();
+
+        List<String> primaries = typeRepository.getPrimary();
+        List<String> secondaries = typeRepository.getSecondary();
+        List<String> tertiaries = typeRepository.getTertiary();
+
+        HashMap<String, Object> primary = new HashMap<String, Object>();
+        for (String first : primaries) {
+            HashMap<String, Object> secondary = new HashMap<String, Object>();
+            for (String second : secondaries) {
+                HashMap<String, Integer> tertiary = new HashMap<String, Integer>();
+                for (String third : tertiaries) {
+                    for (Type type : types) {
+                        if (type.getContent3().equals(third) && type.getContent2().equals(second) && type.getContent1().equals(first)) {
+                            tertiary.put(type.getContent3(), type.getTypeId());
+                            secondary.put(type.getContent2(), tertiary);
+                            primary.put(type.getContent1(), secondary);
+                        }
+                    }
+                }
+            }
+        }
+        List<StoreGoods> storeGoods = storegoodsRepository.getByGoodNameLike(keyword);
+
+        Users user = (Users)session.getAttribute("user");
+        Float totalPrice = new Float(0);
+        if (user != null){
+            List<OrderInfo> orders = brandOrderRepository.findAllByConsumer_UserIdAndStatus(user.getUserId(), "待支付");
+            for (OrderInfo each : orders){
+                totalPrice += each.getTotalPrice();
+            }
+        }
+        model.addAttribute("totalPrice", totalPrice);
+
+        model.addAttribute("goods", storeGoods);
+        model.addAttribute("primaries", primary);
+        model.addAttribute("keyword", keyword);
+
+        return "consumer/search";
     }
 
     /**
@@ -120,7 +225,7 @@ public class ConsumerController {
         Users user = usersService.findByName(userName);
 
         if (userName == "" || password == ""){  // 当用户输入空白的信息
-            redirectAttributes.addFlashAttribute("message", "请不要输入空白信息，用户名密码均为必填");
+            redirectAttributes.addFlashAttribute("message", "请不要输入空白信息");
             return "redirect:/consumer/register";
         }else if (user != null){  // 当用户名已被占用，就重载到注册页并显示错误信息
             user.setPassword("");   // 将用户密码设空以免泄露信息
@@ -135,6 +240,33 @@ public class ConsumerController {
             redirectAttributes.addFlashAttribute("message", "");
             return "redirect:/consumer/login";   // 重载到登录页
         }
+    }
+
+
+    /**
+     * 跳转到历史订单首页并根据用户id查询其所有历史订单信息
+     * @param id
+     * @param model
+     * @return
+     */
+    @GetMapping("/myOrders/{id}")
+    public String myOrdersPage(@PathVariable("id") Integer id, Model model){
+        List<OrderInfo> orders = brandOrderRepository.findAllByConsumer_UserId(id);
+        model.addAttribute("orders", orders);
+        return "consumer/myOrders";
+    }
+
+    /**
+     * 根据订单id进行申请退款操作
+     * @param id
+     * @return
+     */
+    @GetMapping("/refund/{id}")
+    public String refund(@PathVariable("id") Integer id){
+        OrderInfo order = brandOrderRepository.findById(id).get();
+        order.setStatus("待退款");
+        brandOrderRepository.save(order);
+        return "redirect:/consumer/myOrders/"+order.getConsumer().getUserId();
     }
 
 }

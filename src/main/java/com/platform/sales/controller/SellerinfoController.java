@@ -28,7 +28,6 @@ public class SellerinfoController {
     StoresService storesService;
     @Autowired
     BrandOrderService orderService;
-
     //需要将借卖方注册时的user_id添加到页面属性中作为此方法的参数
     @GetMapping("/getInfo/{seller_id}")
     public String getInfo(@PathVariable("seller_id")Integer id, Model model){
@@ -172,7 +171,6 @@ public class SellerinfoController {
         model.addAttribute("records", records);
         return "/seller/record";
     }
-
     @GetMapping("/sellerorder")
     public String getSellerorder(HttpSession session,Model model){
         Users user = (Users)session.getAttribute("user");
@@ -254,7 +252,6 @@ public class SellerinfoController {
         //获得商品的数量
         int quantity = order.getQuantity();
         //获得商品原有的单价
-
         order.setStatus("已取消");
         orderService.update(order);
         return "redirect:/seller/"+status+"/"+stores;

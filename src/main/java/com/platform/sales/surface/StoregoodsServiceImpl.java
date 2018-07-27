@@ -45,6 +45,9 @@ public class StoregoodsServiceImpl implements StoregoodsService{
         return storegoodsRepository.findAllByStores_StoreId(id);
     }
 
-
+    @Override
+    public List<StoreGoods> findStoreGoodsByBrandRepos_GoodIdAndStores_StoreId(Integer gid, Integer sid) {
+        return storegoodsRepository.findStoreGoodsByBrandRepos_GoodIdAndStores_StoreId(gid,sid);
+    }
 }
 

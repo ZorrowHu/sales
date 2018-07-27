@@ -33,7 +33,6 @@ public class BrandOrderServiceImpl implements BrandOrderService {
     public OrderInfo update(OrderInfo orderInfo) {
         return brandOrderRepository.save(orderInfo);
     }
-
     @Override
     public List<OrderInfo> findAllByStore_User_UserId(Integer id) {
         return brandOrderRepository.findAllByStore_User_UserId(id);
@@ -53,6 +52,4 @@ public class BrandOrderServiceImpl implements BrandOrderService {
     public List<OrderInfo> findAllByStatusAndStore_StoreId(String status, Integer id) {
         return brandOrderRepository.findAllByStatusAndStore_StoreId(status,id);
     }
-
-
 }

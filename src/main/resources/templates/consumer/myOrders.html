@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html   xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>主页</title>
+    <title>我的历史订单</title>
     <link th:href="@{/frontend/css/bootstrap.css}" rel="stylesheet" type="text/css" media="all" />
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script th:src="@{/frontend/js/jquery.min.js}"></script>
@@ -18,7 +18,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
     <link th:href="@{/frontend/css/memenu.css}" rel="stylesheet" type="text/css" media="all" />
     <script type="text/javascript" th:src="@{/frontend/js/memenu.js}"></script>
     <script>$(document).ready(function(){$(".memenu").memenu();});</script>
-    <!--<script th:src="@{/frontend/js/simpleCart.min.js}"> </script>-->
+    <script th:src="@{/frontend/js/simpleCart.min.js}"> </script>
     <!-- slide -->
     <script th:src="@{/frontend/js/responsiveslides.min.js}"></script>
     <script>
@@ -54,7 +54,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                     <a href="#" style="text-decoration: none; color: inherit;">
                         <h3>
                             <div class="total">
-                                <span id="simpleCart_total" th:text="'￥' + ${totalPrice}"></span>
+                                <span class="simpleCart_total"></span>
                             </div>
                             <img th:src="@{/frontend/images/cart.png}" alt=""/>
                         </h3>
@@ -82,7 +82,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                                     <div class="h_nav">
                                         <h4 th:text="${secondaries.getKey()}">All Clothing</h4>
                                         <ul >
-                                            <li th:each="tertiaries : ${secondaries.getValue()}"><a th:href="@{'/consumer/search/' + ${tertiaries.getValue()}}" th:text="${tertiaries.getKey()}">Shirts</a></li>
+                                            <li th:each="tertiaries : ${secondaries.getValue()}"><a href="#" th:text="${tertiaries.getKey()}">Shirts</a></li>
                                         </ul>
                                     </div>
                                 </div>
@@ -91,45 +91,72 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                     </li>
                 </ul>
             </div>
+            <div class="" style="float:right;">
+                <a href="#"><i class="glyphicon glyphicon-search"> </i></a>
+            </div>
+            <div class="" style="float:right;">
+                <input type="text" class="">
+            </div>
             <!---->
         </div>
-        <form th:action="@{/consumer/search}" method="post">
-            <div class="input-group">
-                <input type="text" class="form-control" name="keyword">
-                <span class="input-group-btn">
-                    <button class="btn btn-default" type="submit">搜索</button>
-                </span>
-            </div><!-- /input-group -->
-        </form>
     </div>
 </div>
+
+
+
 <!--content-->
-<div class="content">
-    <div class="container">
-        <div class="content-top">
-            <h1>最新 上架</h1>
-            <div class="content-top1">
-                <div class="col-md-3 col-md2" th:each="good, index : ${goods}">
-                    <div class="col-md1 ">
-                        <a href="#">
-                            <img class="img-responsive"  th:src="@{'/goodsimg/'+${good.getBrandRepos().getImage()}}" alt="" />
-                        </a><br/>
-                        <h3><a href="#" th:text="${good.getBrandRepos().getGoodName()}">Tops</a></h3>
-                        <div class="price">
-                            <h5 class="item_price" th:text="${good.getPrice()}">$300</h5>
-                            <a th:if="${session.user != null}" href="javascript:void(0);" th:onclick="'addcarts(' + ${index.index} + ')'" >加入购物车</a>
-                            <div class="clearfix"> </div>
-                            <input th:id="'storeGoodsId' + ${index.index}" type="hidden" th:value="${good.getStoreGoodsId()}">
-                            <input th:id="'userId' + ${index.index}" th:if="${session.user != null}" type="hidden" th:value="${session.user.getUserId()}">
-                        </div>
-                    </div>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">我的历史订单</h3>
                 </div>
-                <div class="clearfix"> </div>
+                <div class="panel-body">
+                    <table class="table table-hover table-striped table-bordered">
+                        <thead>
+                        <tr>
+                            <th>订单编号</th>
+                            <th>商品名称</th>
+                            <th>收货地址</th>
+                            <th>数量</th>
+                            <th>创建时间</th>
+                            <th>订单状态</th>
+                            <th>订单总价</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="order:${orders}"
+                            th:unless="${order.status} eq '待支付'">
+                            <td th:text="${#numbers.formatInteger(order.orderId, 8)}"></td>
+                            <td th:text="${order.goods.getGoodName()}"></td>
+                            <td th:text="${order.ship.getAddress()}"></td>
+                            <td th:text="${order.quantity}"></td>
+                            <td th:text="${#dates.format(order.payTime, 'yyyy-MM-dd   HH:mm')}"></td>
+                            <td th:switch="${order.status}">
+                                <span th:case="已支付" class="label label-info" th:text="${order.status}"></span>
+                                <span th:case="待发货" class="label label-warning" th:text="${order.status}"></span>
+                                <span th:case="已发货" class="label label-primary" th:text="${order.status}"></span>
+                                <span th:case="待退款" class="label label-danger" th:text="${order.status}"></span>
+                                <span th:case="已完成" class="label label-success" th:text="${order.status}"></span>
+                                <span th:case="已取消" class="label label-default" th:text="${order.status}"></span>
+                            </td>
+                            <td th:text="${order.totalPrice }"></td>
+                            <td>
+                                <a th:if="${order.status} eq '已支付'" th:href="@{'../refund/'+${order.orderId}}">
+                                    <span class="label label-success">取消订单并申请退款</span>
+                                </a>
+                                <a th:if="${order.status} eq '待发货'" th:href="@{'../refund/'+${order.orderId}}">
+                                    <span class="label label-success">取消订单并申请退款</span>
+                                </a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
-            <div class="content-top1">
-                <div class="clearfix"> </div>
-            </div>
-        </div>
+        </div><!-- /.col-sm-12 -->
     </div>
 </div>
 <!--//content-->
@@ -143,26 +170,6 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
     </div>
 </div>
 
-<script type="text/javascript">
-    function addcarts(index){
-            var userId = $("#userId"+index).val();
-            var storeGoodsId = $("#storeGoodsId"+index).val();
-            //alert(userId + ' ' + storeGoodsId);
-            $.ajax({
-                type:"POST",
-                url : "/conrest/addcart",
-                async : false,
-                data:{
-                    userId : userId,
-                    goodId : storeGoodsId
-                },
-                success:function(data){
-                    //$("#simpleCart_total").text = data;
-                    document.getElementById("simpleCart_total").innerText = "￥"+data;
-                }
-            });
-    }
-</script>
 <!--//footer-->
 </body>
 </html>

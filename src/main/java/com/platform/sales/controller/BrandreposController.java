@@ -1,5 +1,6 @@
 package com.platform.sales.controller;
 
+import com.platform.sales.config.FileUtil;
 import com.platform.sales.entity.BrandRepos;
 import com.platform.sales.entity.Type;
 import com.platform.sales.entity.Users;
@@ -81,24 +82,16 @@ public class BrandreposController {
 
                 if (!file.isEmpty()) {
                         try {
-                                String pathName = "src/main/resources/static/goodsimg/";
+                                String pathName = FileUtil.getUpLoadFilePath("goodsimg/");
                                 Long stamp = new Date().getTime();
                                 String prefix = stamp.toString();
                                 String fileName = prefix + file.getOriginalFilename();
 
                                 brandrepos.setImage(fileName);
 
-                                BufferedOutputStream out = new BufferedOutputStream(
-                                        new FileOutputStream(new File(pathName + fileName)));
-                                out.write(file.getBytes());
-                                out.flush();
-                                out.close();
-                        } catch (FileNotFoundException e) {
+                                FileUtil.uploadFile(file.getBytes(), pathName, fileName);
+                        } catch (Exception e) {
                                 e.printStackTrace();
-                                //return "上传失败," + e.getMessage();
-                        } catch (IOException e) {
-                                e.printStackTrace();
-                                //return "上传失败," + e.getMessage();
                         }
                         //return "上传成功";
                 } else {
@@ -152,7 +145,7 @@ public class BrandreposController {
                 good.setBrand(temp.getBrand());
                 if (!file.isEmpty()) {
                         try {
-                                String pathName = "src/main/resources/static/goodsimg/";
+                                String pathName = FileUtil.getUpLoadFilePath("goodsimg/");
                                 Long stamp = new Date().getTime();
                                 String prefix = stamp.toString();
                                 String fileName = prefix + file.getOriginalFilename();
@@ -163,17 +156,9 @@ public class BrandreposController {
                                 File existFile = new File(pathName + existFileName);
                                 existFile.delete();
 
-                                BufferedOutputStream out = new BufferedOutputStream(
-                                        new FileOutputStream(new File(pathName + fileName)));
-                                out.write(file.getBytes());
-                                out.flush();
-                                out.close();
-                        } catch (FileNotFoundException e) {
+                                FileUtil.uploadFile(file.getBytes(), pathName, fileName);
+                        } catch (Exception e) {
                                 e.printStackTrace();
-                                //return "上传失败," + e.getMessage();
-                        } catch (IOException e) {
-                                e.printStackTrace();
-                                //return "上传失败," + e.getMessage();
                         }
                         //return "上传成功";
                 } else {
