@@ -26,5 +26,4 @@ public class BrandAccountServiceImpl implements BrandAccountService{
     public void deleteByUserId(Users user) {
         brandAccountRepository.deleteByUser(user);
     }
-
 }
