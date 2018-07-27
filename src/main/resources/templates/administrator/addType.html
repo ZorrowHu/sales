@@ -65,40 +65,42 @@
         <div class="main_container">
             <div class="row-fluid">
                 <!-- 页面内容写在这里 -->
-                <div class="col-lg-12">
-                    <p>
-                    <div class="alert alert-success">
-                        添加商品信息
+                <div class="widget widget-padding span12">
+                    <div class="widget-header">
+                        <i class="icon-table"></i>
+                        <h5>添加商品类型</h5>
                     </div>
-                    </p>
-                </div>
 
-                <div class="col-lg-offset-2 col-lg-6">
-                    <form class="form-horizontal" role="form" action="../../administrator/addType" method="post">
+                    <div class="widget-body">
+                        <div class="row-fluid">
+                            <div class="col-lg-offset-2 col-lg-6">
+                                <form class="form-horizontal" role="form" action="../../administrator/addType" method="post">
 
-                        <table class="table table-bordered">
-                            <thead>
-                            <tr>
-                                <td>一级目录</td>
-                                <td>二级目录</td>
-                                <td>三级目录</td>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr>
-                                <td><input type="text" name="content1" class="form-control"></td>
-                                <td><input type="text" name="content2" class="form-control"></td>
-                                <td><input type="text" name="content3" class="form-control"></td>
-                            </tr>
-                            <tr>
-                                <td colspan="3"><button type="submit" class="btn btn-success">添加商品类型</button></td>
-                            </tr>
-                            </tbody>
-                        </table>
+                                    <table class="table table-bordered table-striped">
+                                        <thead>
+                                        <tr>
+                                            <td>一级目录</td>
+                                            <td>二级目录</td>
+                                            <td>三级目录</td>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr>
+                                            <td><input type="text" name="content1" class="form-control"></td>
+                                            <td><input type="text" name="content2" class="form-control"></td>
+                                            <td><input type="text" name="content3" class="form-control"></td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="3"><button type="submit" class="btn btn-success">添加商品类型</button></td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
 
-                    </form>
-                </div>
-
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div> <!-- /widget-->
             </div>
         </div>
         <!-- /Main window -->

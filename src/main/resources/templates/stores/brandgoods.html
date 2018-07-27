@@ -120,7 +120,7 @@
                                     <td>
                                         <div class="btn-group">
                                             <a th:if ="${list.status} eq '已下架'" ><span class="label label-warning"> 已下架无法操作 </span></a>
-                                            <a th:if ="${list.status} eq '已上架' " th:href="@{'/Stores/addgoods/'+${id}+'/'+${list.goodId}+'/'}" class="btn"><span class="label label-success"> 上架 </span> </a>
+                                            <a th:if ="${list.status} eq '已上架' " th:href="@{'/Stores/addgoods/'+${id}+'/'+${list.goodId}+'/'}" class="btn"><span class="label label-success"> 添加到我的店铺 </span> </a>
                                         </div>
                                     </td>
                                 </tr>

@@ -1,9 +1,12 @@
 package com.platform.sales.controller;
 
+import com.platform.sales.entity.Type;
 import com.platform.sales.entity.Users;
+import com.platform.sales.repository.TypeRepository;
 import com.platform.sales.surface.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
+import java.util.HashMap;
+import java.util.List;
 
 @Controller
 @RequestMapping("consumer")
@@ -18,13 +23,42 @@ public class ConsumerController {
 
     @Autowired
     private UsersService usersService;
+    @Autowired
+    TypeRepository typeRepository;
 
     /**
      * 跳转到主页
      * @return
      */
     @GetMapping("/index")
-    public String index(){
+    public String index(Model model){
+        List<Type> types = typeRepository.findAll();
+
+        HashMap<String, Object> sum = new HashMap<String,  Object>();
+
+        List<String> primaries = typeRepository.getPrimary();
+        List<String> secondaries = typeRepository.getSecondary();
+        List<String> tertiaries = typeRepository.getTertiary();
+
+        HashMap<String, Object> primary = new HashMap<String,  Object>();
+        for (String first : primaries){
+            HashMap<String, Object> secondary = new HashMap<String, Object>();
+            for (String second : secondaries){
+                HashMap<String, Integer> tertiary = new HashMap<String, Integer>();
+                for (String third : tertiaries){
+                    for (Type type : types){
+                        if (type.getContent3().equals(third) && type.getContent2().equals(second) && type.getContent1().equals(first))
+                        {
+                            tertiary.put(type.getContent3(), type.getTypeId());
+                            secondary.put(type.getContent2(), tertiary);
+                            primary.put(type.getContent1(), secondary);
+                        }
+                    }
+                }
+            }
+        }
+
+        model.addAttribute("primaries", primary);
         return "consumer/index";
     }
 

@@ -34,9 +34,6 @@ public class BrandOrderServiceImpl implements BrandOrderService {
         return brandOrderRepository.save(orderInfo);
     }
 
-    @Override
-    public List<OrderInfo> findAllBySeller_UserId(Integer id) {
-        return brandOrderRepository.findAllBySeller_UserId(id);
-    }
+
 
 }

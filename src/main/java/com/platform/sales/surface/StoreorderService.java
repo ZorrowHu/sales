@@ -1,7 +1,5 @@
 package com.platform.sales.surface;
 
-import com.platform.sales.entity.StoreOrder;
-
 import java.util.List;
 
 public interface StoreorderService {
