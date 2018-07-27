@@ -16,6 +16,7 @@ import java.util.List;
 @Autowired
     private StoresService storesService;
 
+
     @GetMapping("/addstore")
     public String addPage(){
 

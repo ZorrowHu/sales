@@ -20,8 +20,9 @@ public interface BrandReposRepository extends JpaRepository<BrandRepos, Integer>
         List<BrandRepos> findBrandreposByStatusNotAndBrand(String status, Users user);
         List<BrandRepos> findBrandreposByGoodNameAndStatusNotAndBrand(String name, String status, Users user);
         List<BrandRepos> findBrandreposByTypeAndStatusAndBrand(Type type, String status, Users user);
-
+        List<BrandRepos> findBrandReposByStatusIsNot(String status);
         @Transactional
         void deleteByGoodIdAndBrand(Integer id, Users user);
+        @Transactional
         void deleteAllByBrand(Users user);
 }

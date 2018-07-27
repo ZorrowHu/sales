@@ -6,6 +6,7 @@ import com.platform.sales.entity.Users;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Repository
@@ -17,6 +18,12 @@ public interface BrandOrderRepository extends JpaRepository<OrderInfo,Integer> {
 
     OrderInfo findByOrderId(Integer id);
 
-    void deleteAllByConsumerUserIdOrSellerUserId(Integer id_1, Integer id_2);
+    // 根据品牌商删除所有有关商品
+    @Transactional
+    void deleteAllByGoods_Brand(Users user);
+
+    // 根据userid查找所有的订单
+    List<OrderInfo> findAllBySeller_UserId(Integer id);
+
 
 }

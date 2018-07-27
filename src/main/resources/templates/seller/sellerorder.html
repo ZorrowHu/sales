@@ -50,6 +50,7 @@
     <div class="container-fluid">
 
         <!-- Side menu -->
+
         <div class="sidebar-nav nav-collapse collapse">
             <div class="user_side clearfix">
                 <img th:src="@{/assets/img/odinn.jpg}" alt="Odinn god of Thunder">
@@ -64,10 +65,10 @@
                     </div>
                     <div id="collapse2" class="accordion-body collapse active in">
                         <div class="accordion-inner">
-                            <a class="accordion-toggle" th:href="@{'/seller/getInfo/'+${session.user.getUserId()}}"><i class="icon-rss"></i> 我的信息</a>
+                            <a class="accordion-toggle" th:href="@{/seller/getInfo}"><i class="icon-rss"></i> 我的信息</a>
                             <a class="accordion-toggle" href="#"><i class="icon-star"></i> 我的订单</a>
                             <a class="accordion-toggle" th:href="@{/seller/sellerAccount}"><i class="icon-list-alt"></i> 我的钱包</a>
-                            <a class="accordion-toggle" th:href="@{/Stores/storeindex}"><i class="icon-table"></i> 我的店铺</a>
+                            <a class="accordion-toggle" th:href="@{'/Stores/storeindex'}"><i class="icon-table"></i> 我的店铺</a>
                             <a class="accordion-toggle" href="#"><i class="icon-circle"></i> 查看货物</a>
                         </div>
                     </div>
@@ -82,46 +83,60 @@
                 <div class="widget widget-padding span12">
                     <div class="widget-header">
                         <i class="icon-table"></i>
-                        <h5>提现</h5>
+                        <h5>我的订单</h5>
                     </div>
                     <div class="widget-body">
+
+                        <div class="row-fluid">
+
+                        </div>
+
                         <div class="row-fluid">
                             <div class="col-lg-offset-2 col-lg-6">
-                                <form class="form-horizontal" role="form" th:action="@{/seller/withdraw}" method="post">
-                                    <table class="table table-striped">
-                                        <tbody>
-                                        <tr>
-                                            <td>提现金额</td>
-                                            <td>
-                                                <div class="col-sm-8">
-                                                    <input type="hidden" name="accountId" th:value="${account.accountId}">
-                                                    <input type="hidden" name="user.userId" th:value="${account.user.userId}">
-                                                    <input type="text" name="balance" th:value="${account.balance}" class="form-control">
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>支付密码</td>
-                                            <td>
-                                                <div class="col-sm-8">
-                                                    <input type="password" name="payPwd" class="form-control">
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <button type="submit" class="btn btn-success">提现</button>
-                                            </td>
-                                            <td>
-                                                <a class="btn btn-danger" th:href="@{/seller/sellerAccount}">返回</a>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td th:text="${error}"></td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
+                                <form th:action="@{/brand/selectorder}" method="post">
+                                    <div class="col-lg-6 form-control">
+                                        <label class="label">订单状态</label>
+                                        <select name="status" class="form-control">
+                                            <option value="0">全  部</option>
+                                            <option value="待发货">待发货</option>
+                                            <option value="已发货">已发货</option>
+                                            <option value="已完成">已完成</option>
+                                            <option value="已取消">已取消</option>
+                                        </select>
+                                        <button type="submit" class="btn btn-success">查询</button>
+                                    </div>
                                 </form>
+                                <table class="table table-striped table-bordered">
+                                    <thead>
+                                    <tr>
+                                        <th>订单编号</th>
+                                        <th>商品ID</th>
+                                        <th>借买方</th>
+                                        <th>消费者</th>
+                                        <th>数量</th>
+                                        <th>总价</th>
+                                        <th>支付时间</th>
+                                        <th>状态</th>
+                                        <th>操作</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="Order:${brandorder}">
+                                        <td th:text="${Order.orderId}"></td>
+                                        <td th:text="${Order.goods.goodId}"></td>
+                                        <td th:text="${Order.seller.userName}"></td>
+                                        <td th:text="${Order.consumer.userName}"></td>
+                                        <td th:text="${Order.quantity}"></td>
+                                        <td th:text="${Order.totalPrice}"></td>
+                                        <td th:text="${Order.payTime}"></td>
+                                        <td th:text="${Order.status}"></td>
+                                        <td>
+                                            <a th:if="${Order.status} eq '待发货'" th:href="@{'/brand/deliverorder/'+${Order.orderId}}" class="btn btn-warning">发货</a>
+                                            <a th:if="${Order.status ne '已取消'}" th:href="@{'/brand/cancelorder/'+${Order.orderId}}" class="btn btn-danger">取消</a>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
                             </div>
                         </div><!--/widget-body-->
                     </div> <!-- /widget -->

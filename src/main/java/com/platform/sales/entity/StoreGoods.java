@@ -13,6 +13,27 @@ public class StoreGoods {
     @ManyToOne
     private Stores stores;//商店ID
 
+    public StoreGoods(float price) {
+        this.price = price;
+    }
+
+    public StoreGoods(BrandRepos brandRepos) {
+
+        this.brandRepos = brandRepos;
+    }
+
+    public void setBrandRepos(BrandRepos brandRepos) {
+
+        this.brandRepos = brandRepos;
+    }
+
+    public BrandRepos getBrandRepos() {
+
+        return brandRepos;
+    }
+
+    @OneToOne
+    private  BrandRepos brandRepos;
 
     public Integer getStoreGoodsId() {
         return storeGoodsId;
@@ -36,5 +57,13 @@ public class StoreGoods {
 
     public void setStores(Stores stores) {
         this.stores = stores;
+    }
+
+    public StoreGoods(Stores stores) {
+        this.stores = stores;
+    }
+    public StoreGoods()
+    {
+
     }
 }

@@ -1,6 +1,7 @@
 package com.platform.sales.surface;
 
 import com.platform.sales.entity.Account;
+import com.platform.sales.entity.Users;
 import com.platform.sales.repository.BrandAccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,7 +23,7 @@ public class BrandAccountServiceImpl implements BrandAccountService{
     }
 
     @Override
-    public void deleteByUserId(Integer id) {
-        brandAccountRepository.deleteAccountByAccountId(id);
+    public void deleteByUserId(Users user) {
+        brandAccountRepository.deleteByUser(user);
     }
 }
