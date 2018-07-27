@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface StoregoodsRepository extends JpaRepository<StoreGoods,Integer> {
     List<StoreGoods> findAllByStores_StoreId(Integer id);
+    List<StoreGoods> findStoreGoodsByBrandRepos_GoodIdAndStores_StoreId(Integer gid,Integer sid);
 }

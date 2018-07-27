@@ -98,8 +98,9 @@ import java.util.List;
             return "redirect:/Stores/ShowGoods/"+id; // 修改完成后重定向到首页即：列表页面（index）
     }
 
-    @GetMapping("/brandgoods/{id}")
+    @GetMapping("brandgoods/{id}")
     public String index(Model model,@PathVariable("id") Integer store_id) {
+        model.addAttribute("id",store_id);
         List<BrandRepos> repository =  brandReposRepository.findBrandReposByStatusIsNot("已入仓");
         model.addAttribute("Lists",  repository);
         return "Stores/brandgoods";
@@ -120,6 +121,13 @@ import java.util.List;
                 model.addAttribute("store_id", store_id);
             }
             return "Stores/ShowGoods";
+        }
+
+        @PostMapping("/brandgoods/{id}")
+        public String searchbrand(Model model,@PathVariable("id") Integer store_id,String keyword) {
+            List<BrandRepos> repository =  brandReposRepository.findBrandReposByGoodName(keyword);
+            model.addAttribute("Lists",  repository);
+            return "Stores/brandgoods";
         }
     }
 
