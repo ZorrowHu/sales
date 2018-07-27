@@ -15,7 +15,12 @@ public class StoreOrder {
     private Stores store;       //店铺ID
     private Date payTime;      //支付时间
     @ManyToOne
+    private Users seller;//借卖方
+    @ManyToOne
+    private BrandRepos brandRepos; //商品
+    @ManyToOne
     private ShipAddr ship;     //收货地址
+    private int quantity; //购买数量
     private String status;      //订单状态
     private Float totalPrice;  //订单总价
 
@@ -77,5 +82,29 @@ public class StoreOrder {
 
     public void setTotalPrice(Float totalPrice) {
         this.totalPrice = totalPrice;
+    }
+
+    public Users getSeller() {
+        return seller;
+    }
+
+    public void setSeller(Users seller) {
+        this.seller = seller;
+    }
+
+    public BrandRepos getBrandRepos() {
+        return brandRepos;
+    }
+
+    public void setBrandRepos(BrandRepos brandRepos) {
+        this.brandRepos = brandRepos;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 }
