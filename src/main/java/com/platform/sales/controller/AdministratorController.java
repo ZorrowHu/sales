@@ -310,6 +310,16 @@ public class AdministratorController {
         return "administrator/updateSeller";
     }
 
+    /**
+     * 用于根据表单提交的数据来更新借卖方信息
+     * @param sellerId
+     * @param userName
+     * @param password
+     * @param sellerName
+     * @param sellerEmail
+     * @param sellerPhone
+     * @return
+     */
     @PostMapping("/updateSeller")
     public String updateSeller(@RequestParam Integer sellerId,
                                @RequestParam String userName,
