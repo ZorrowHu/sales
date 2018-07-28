@@ -301,6 +301,17 @@ public class ConsumerController {
         Users consumer = (Users) session.getAttribute("consumer");
         ShipAddr addr = shipAddrRepository.findByUsers(consumer);
         model.addAttribute("addr",addr);
+
+
+        Users user = (Users)session.getAttribute("consumer");
+        Float totalPrice = new Float(0);
+        if (user != null){
+            List<OrderInfo> orders_price = brandOrderRepository.findAllByConsumer_UserIdAndStatus(user.getUserId(), "待支付");
+            for (OrderInfo each : orders_price){
+                totalPrice += each.getTotalPrice();
+            }
+        }
+        model.addAttribute("totalPrice", totalPrice);
         return "/consumer/address";
     }
 
