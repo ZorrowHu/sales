@@ -112,6 +112,7 @@
                                     <th>订单编号</th>
                                     <th>商品ID</th>
                                     <th>借买方</th>
+                                    <th>收货地址</th>
                                     <th>数量</th>
                                     <th>支付时间</th>
                                     <th>状态</th>
@@ -123,9 +124,17 @@
                                     <td th:text="${Order.orderId}"></td>
                                     <td th:text="${Order.goods.goodId}"></td>
                                     <td th:text="${Order.store.user.userName}"></td>
+                                    <td th:text="${Order.ship.getAddress()}"></td>
                                     <td th:text="${Order.quantity}"></td>
                                     <td th:text="${Order.payTime}"></td>
-                                    <td th:text="${Order.status}"></td>
+                                    <td th:switch="${Order.status}">
+                                        <span th:case="已支付" class="label label-info" th:text="${Order.status}"></span>
+                                        <span th:case="待发货" class="label label-warning" th:text="${Order.status}"></span>
+                                        <span th:case="已发货" class="label label-primary" th:text="${Order.status}"></span>
+                                        <span th:case="待退款" class="label label-danger" th:text="${Order.status}"></span>
+                                        <span th:case="已完成" class="label label-success" th:text="${Order.status}"></span>
+                                        <span th:case="已取消" class="label label-default" th:text="${Order.status}"></span>
+                                    </td>
                                     <td>
                                         <a th:if="${Order.status == '待发货'}" th:href="@{'/brand/deliverorder/'+${Order.orderId}}" class="btn btn-warning">发货</a>
                                     </td>
