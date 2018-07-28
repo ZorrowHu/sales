@@ -19,5 +19,10 @@ public class BrandReposServiceImpl implements BrandReposService{
     public BrandRepos findByGoodId(Integer id) {
         return brandReposRepository.findByGoodId(id);
     }
+
+    @Override
+    public BrandRepos update(BrandRepos brandRepos) {
+        return brandReposRepository.save(brandRepos);
+    }
 }
 
