@@ -24,6 +24,8 @@ public interface BrandReposRepository extends JpaRepository<BrandRepos, Integer>
         List<BrandRepos> findBrandReposByGoodName(String name);
         List<BrandRepos> findBrandReposByStatusAndStatusAndGoodName(String sta1,String sta2,String name);
         List<BrandRepos> findBrandReposByStatusOrStatusAndGoodName(String s1,String s2,String name);
+        @Transactional
+        List<BrandRepos> findAllByType(Type type);
         BrandRepos getBrandReposByGoodName(String name);
         @Transactional
         void deleteByGoodIdAndBrand(Integer id, Users user);
