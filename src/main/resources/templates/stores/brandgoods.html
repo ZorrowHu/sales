@@ -119,8 +119,9 @@
                                     </td>
                                     <td>
                                         <div class="btn-group">
-                                            <a th:if ="${list.status} eq '已下架'" ><span class="label label-warning"> 已下架无法操作 </span></a>
-                                            <a th:if ="${list.status} eq '已上架' " th:href="@{'/Stores/addgoods/'+${id}+'/'+${list.goodId}+'/'}" class="btn"><span class="label label-success"> 添加到我的店铺 </span> </a>
+                                            <a th:if ="${list.status} eq '已下架'" ><span class="label label-default"> 已下架无法操作 </span></a>
+                                            <a th:if ="${list.status} eq '已上架' and ${Test.contains(list)==true}" ><span class="label label-warning"> 已在我的店铺中 </span></a>
+                                            <a th:if ="${list.status} eq '已上架' and ${Test.contains(list)==false}" th:href="@{'/Stores/addgoods/'+${id}+'/'+${list.goodId}+'/'}" class="btn"><span class="label label-success"> 添加到我的店铺 </span> </a>
                                         </div>
                                     </td>
                                 </tr>
