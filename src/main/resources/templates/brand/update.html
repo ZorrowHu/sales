@@ -178,20 +178,25 @@
 
 <script src="http://libs.baidu.com/jquery/1.9.1/jquery.min.js"></script>
 <script>
-    function imageInstantShow(e){
+    //在input file内容改变的时候触发事件
+    $('#photo_cover').change(function(){
+        //获取input file的files文件数组;
+        //$('#filed')获取的是jQuery对象，.get(0)转为原生对象;
+        //这边默认只能选一个，但是存放形式仍然是数组，所以取第一个元素使用[0];
+        var file = $('#photo_cover').get(0).files[0];
+        //创建用来读取此文件的对象
         var reader = new FileReader();
-        function f_change(file){
-            var img = document.getElementById('upload_file');
-            //读取File对象的数据
-            reader.onload = function(evt){
-                //data:img base64 编码数据显示
-                img.width  =  "100";
-                img.height =  "100";
-                img.src = evt.target.result;
-            }
-            reader.readAsDataURL(file.files[0]);
-
-    }
+        //使用该对象读取file文件
+        reader.readAsDataURL(file);
+        //读取文件成功后执行的方法函数
+        reader.onload=function(e){
+            //读取成功后返回的一个参数e，整个的一个进度事件
+            console.log(e);
+            //选择所要显示图片的img，要赋值给img的src就是e中target下result里面
+            //的base64编码格式的地址
+            $('#upload_file').get(0).src = e.target.result;
+        }
+    })
 </script>
 <script type="text/javascript">
     $(function(){
