@@ -46,7 +46,7 @@
                     <ul class="pull-right">
                         <li><a title="link to View all Messages page, no popover in phone view or tablet" href="#"><i class="icon-envelope"></i></a></li>
                         <li><a title="link to View all Notifications page, no popover in phone view or tablet" href="#"><i class="icon-globe"></i></a></li>
-                        <li><a th:href="@{/index/login}"><i class="icon-off"></i></a></li>
+                        <li><a th:href="@{/user/login}"><i class="icon-off"></i></a></li>
                     </ul>
                 </div>
 
@@ -103,11 +103,12 @@
                                     <label for="price" class="col-sm-2 control-label">商品价格　</label>
                                     <div class="col-sm-10">
                                         <input type="text" class="form-control" id="price" name="price" placeholder="请输入商品价格">
+                                        <button type="submit" class="btn btn-default">添加</button>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="col-sm-offset-2 col-sm-10">
-                                        <button type="submit" class="btn btn-default">添加</button>
+
                                     </div>
                                 </div>
                             </form>
