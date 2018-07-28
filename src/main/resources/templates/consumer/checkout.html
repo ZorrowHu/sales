@@ -135,9 +135,11 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                     <td th:text="${totalPrice}"></td>
                 </tr>
                 <tr>
-                    <td><a th:if="${orders != null && orders.size() != 0}" th:href="@{/consumer/pay}" class="btn btn-warning">结算</a></td>
-                    <td><a th:if="${orders != null && orders.size() != 0}" th:href="@{/consumer/cancel}" class="btn btn-danger">清空</a></td>
-                    <td><a th:href="@{/consumer/index}" class="btn btn-danger">返回</a></td>
+                    <td>
+                        <a th:if="${orders != null && orders.size() != 0}" th:href="@{/consumer/pay}" class="btn btn-warning">结算</a>
+                        <a th:if="${orders != null && orders.size() != 0}" th:href="@{/consumer/cancel}" class="btn btn-danger">清空</a>
+                        <a th:href="@{/consumer/index}" class="btn btn-danger">返回</a>
+                    </td>
                 </tr>
             </table>
         </form>

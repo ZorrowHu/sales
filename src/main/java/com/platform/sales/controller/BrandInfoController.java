@@ -239,6 +239,9 @@ public class BrandInfoController {
     @GetMapping("/deliverorder/{id}")
     public String deliverOrder(@PathVariable("id") Integer id,HttpSession session,Model model){
         OrderInfo orderInfo = brandOrderService.findByOrderId(id);
+        BrandRepos repos = brandReposRepository.findByGoodId(orderInfo.getGoods().getGoodId());
+        repos.setQuantity(repos.getQuantity() - orderInfo.getQuantity());
+        brandReposRepository.save(repos);
         orderInfo.setStatus("已发货");
         brandOrderService.update(orderInfo);
         Users user = (Users) session.getAttribute("user");
