@@ -364,7 +364,7 @@ public class ConsumerController {
      */
     @GetMapping("/myOrders/{id}")
     public String myOrdersPage(@PathVariable("id") Integer id, Model model,HttpSession session){
-        List<OrderInfo> orders = brandOrderRepository.findAllByConsumer_UserId(id);
+        List<OrderInfo> orders = brandOrderRepository.findAllByConsumer_UserIdOrderByPayTime(id);
         model.addAttribute("orders", orders);
         List<Type> types = typeRepository.findAll();
 
