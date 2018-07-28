@@ -38,21 +38,21 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
     <div class="header-top">
         <div class="container">
             <div class="col-sm-4 world">
-                <a th:if="${session.user != null}" th:href="@{'/consumer/myOrders/' + ${session.user.getUserId()}}" class="btn btn-sm btn-info">查看历史订单</a>
+                <a th:if="${session.consumer != null}" th:href="@{'/consumer/myOrders/' + ${session.consumer.getUserId()}}" class="btn btn-sm btn-info">查看历史订单</a>
             </div>
             <div class="col-sm-4 logo">
                 <a th:href="@{/consumer/index}"><img th:src="@{/frontend/images/logo.png}" alt=""></a>
             </div>
 
             <div class="col-sm-4 header-left">
-                <p class="log"  th:if="${session.user == null}"><a th:href="@{/consumer/login}"  >登陆</a>
+                <p class="log"  th:if="${session.consumer == null}"><a th:href="@{/consumer/login}"  >登陆</a>
                     <span>或</span><a  th:href="@{/consumer/register}"  >注册</a>
                 </p>
-                <p class="log"  th:if="${session.user != null}" align="right">
-                    <label th:text="${session.user.getUserName()}"  ></label>，欢迎你！
+                <p class="log"  th:if="${session.consumer != null}" align="right">
+                    <label th:text="${session.consumer.getUserName()}"  ></label>，欢迎你！
                     <a th:href="@{/consumer/logout}" class="btn btn-xs btn-danger" style="text-decoration: none;color: white">退出</a>
                 </p>
-                <div class="cart box_1"  th:if="${session.user != null}">
+                <div class="cart box_1"  th:if="${session.consumer != null}">
                     <a th:href="@{/consumer/checkout}" style="text-decoration: none; color: inherit;">
                         <h3>
                             <div class="total">
@@ -82,8 +82,8 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                 <tr>
                     <td>收货人姓名</td>
                     <td>
-                        <input type="hidden" name="users.userId" th:value="${session.user.getUserId()}">
-                        <input type="text" name="receiveName" th:value="${session.user.getUserName()}" class="form-control">
+                        <input type="hidden" name="users.userId" th:value="${session.consumer.getUserId()}">
+                        <input type="text" name="receiveName" th:value="${session.consumer.getUserName()}" class="form-control">
                     </td>
                 </tr>
                 <tr>

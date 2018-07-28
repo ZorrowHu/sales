@@ -38,21 +38,21 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
     <div class="header-top">
         <div class="container">
             <div class="col-sm-4 world">
-                <a th:if="${session.user != null}" th:href="@{'/consumer/myOrders/' + ${session.user.getUserId()}}" class="btn btn-sm btn-info">查看历史订单</a>
+                <a th:if="${session.consumer != null}" th:href="@{'/consumer/myOrders/' + ${session.consumer.getUserId()}}" class="btn btn-sm btn-info">查看历史订单</a>
             </div>
             <div class="col-sm-4 logo">
                 <a th:href="@{/consumer/index}"><img th:src="@{/frontend/images/logo.png}" alt=""></a>
             </div>
 
             <div class="col-sm-4 header-left">
-                <p class="log"  th:if="${session.user == null}"><a th:href="@{/consumer/login}"  >登陆</a>
+                <p class="log"  th:if="${session.consumer == null}"><a th:href="@{/consumer/login}"  >登陆</a>
                     <span>或</span><a  th:href="@{/consumer/register}"  >注册</a>
                 </p>
-                <p class="log"  th:if="${session.user != null}" align="right">
-                    <label th:text="${session.user.getUserName()}"  ></label>，欢迎你！
+                <p class="log"  th:if="${session.consumer != null}" align="right">
+                    <label th:text="${session.consumer.getUserName()}"  ></label>，欢迎你！
                     <a th:href="@{/consumer/logout}" class="btn btn-xs btn-danger" style="text-decoration: none;color: white">退出</a>
                 </p>
-                <div class="cart box_1"  th:if="${session.user != null}">
+                <div class="cart box_1"  th:if="${session.consumer != null}">
                     <a th:href="@{/consumer/checkout}" style="text-decoration: none; color: inherit;">
                         <h3>
                             <div class="total">
@@ -119,10 +119,10 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                         <h3><a href="#" th:text="${good.getBrandRepos().getGoodName()}">Tops</a></h3>
                         <div class="price">
                             <h5 class="item_price" th:text="${good.getPrice()}">$300</h5>
-                            <a th:if="${session.user != null}" href="javascript:void(0);" th:onclick="'addcarts(' + ${index.index} + ')'" >加入购物车</a>
+                            <a th:if="${session.consumer != null}" href="javascript:void(0);" th:onclick="'addcarts(' + ${index.index} + ')'" >加入购物车</a>
                             <div class="clearfix"> </div>
                             <input th:id="'storeGoodsId' + ${index.index}" type="hidden" th:value="${good.getStoreGoodsId()}">
-                            <input th:id="'userId' + ${index.index}" th:if="${session.user != null}" type="hidden" th:value="${session.user.getUserId()}">
+                            <input th:id="'userId' + ${index.index}" th:if="${session.consumer != null}" type="hidden" th:value="${session.consumer.getUserId()}">
                         </div>
                     </div>
                 </div>
