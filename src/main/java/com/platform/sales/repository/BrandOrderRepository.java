@@ -16,6 +16,8 @@ public interface BrandOrderRepository extends JpaRepository<OrderInfo,Integer> {
 
     List<OrderInfo> findAllByStatusAndGoods(String status, BrandRepos good);
 
+    List<OrderInfo> findAllByStatusNotAndGoods(String status, BrandRepos good);
+
     OrderInfo findByOrderId(Integer id);
 
     //OrderInfo findByGoodsGoodIdAndConsumer_UserIdAndStatus(Integer storeGoodId, Integer userId, String status);
