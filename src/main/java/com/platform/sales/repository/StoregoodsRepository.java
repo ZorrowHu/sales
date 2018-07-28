@@ -23,6 +23,9 @@ public interface StoregoodsRepository extends JpaRepository<StoreGoods,Integer> 
     @Transactional
     void deleteAllByStores_User(Users user);
 
+    @Transactional
+    void deleteAllByBrandRepos(BrandRepos brandRepos);
+
     //通过店铺ID和商品ID查找所有网店商品信息
     List<StoreGoods> findAllByStoresAndBrandRepos(Stores stores, BrandRepos brandRepos);
 }

@@ -5,6 +5,7 @@ import com.platform.sales.entity.BrandRepos;
 import com.platform.sales.entity.Type;
 import com.platform.sales.entity.Users;
 import com.platform.sales.repository.BrandReposRepository;
+import com.platform.sales.repository.StoregoodsRepository;
 import com.platform.sales.repository.TypeRepository;
 import com.platform.sales.repository.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,8 @@ public class BrandreposController {
         TypeRepository typeRepository;
         @Autowired
         UsersRepository usersRepository;
+        @Autowired
+        StoregoodsRepository storegoodsRepository;
 
         @GetMapping("/index")
         public String index(Model model, HttpSession session) {
@@ -231,6 +234,8 @@ public class BrandreposController {
                 BrandRepos good = brandReposRepository.findByGoodIdAndBrand(id, user);
                 good.setStatus("已下架");
                 brandReposRepository.save(good);
+
+                storegoodsRepository.deleteAllByBrandRepos(good);
                 return "redirect:/brand/mainframe";
         }
 }
