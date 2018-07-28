@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpSession;
 import java.util.Date;
 import java.util.List;
-import java.util.regex.Pattern;
 
 @Controller
 @RequestMapping("seller")
@@ -31,6 +30,9 @@ public class SellerinfoController {
     //品牌商商品服务
     @Autowired
     BrandReposService reposService;
+    //用户服务
+    @Autowired
+    UsersService usersService;
     //需要将借卖方注册时的user_id添加到页面属性中作为此方法的参数
     @GetMapping("/getInfo/{seller_id}")
     public String getInfo(@PathVariable("seller_id")Integer id, Model model){
@@ -182,7 +184,7 @@ public class SellerinfoController {
         model.addAttribute("status","0");
         model.addAttribute("storestatue","0");
         //先查询所有订单
-        List<OrderInfo> orders = orderService.findAllByStore_User_UserId(user.getUserId());
+        List<OrderInfo> orders = orderService.findAllByStore_User_UserIdOrderByPayTime(user.getUserId());
         model.addAttribute("orders",orders);
         return "/seller/sellerorder";
     }
@@ -201,11 +203,11 @@ public class SellerinfoController {
         model.addAttribute("storelist",storelist);
         List<OrderInfo> orders;
         if(status.equals("0")){
-            orders = orderService.findAllByStore_StoreId(Integer.parseInt(stores));
+            orders = orderService.findAllByStore_StoreIdOrderByPayTime(Integer.parseInt(stores));
         }else if(stores.equals("0")){
-            orders = orderService.findAllByStatus(statue);
+            orders = orderService.findAllByStatusOrderByPayTime(statue);
         }else{
-            orders = orderService.findAllByStatusAndStore_StoreId(statue,Integer.parseInt(stores));
+            orders = orderService.findAllByStatusAndStore_StoreIdOrderByPayTime(statue,Integer.parseInt(stores));
         }
         model.addAttribute("orders",orders);
         model.addAttribute("status",status);
@@ -226,11 +228,11 @@ public class SellerinfoController {
         model.addAttribute("storelist",storelist);
         List<OrderInfo> orders;
         if(status.equals("0")){
-            orders = orderService.findAllByStore_StoreId(Integer.parseInt(stores));
+            orders = orderService.findAllByStore_StoreIdOrderByPayTime(Integer.parseInt(stores));
         }else if(stores.equals("0")){
-            orders = orderService.findAllByStatus(statue);
+            orders = orderService.findAllByStatusOrderByPayTime(statue);
         }else{
-            orders = orderService.findAllByStatusAndStore_StoreId(statue,Integer.parseInt(stores));
+            orders = orderService.findAllByStatusAndStore_StoreIdOrderByPayTime(statue,Integer.parseInt(stores));
         }
         model.addAttribute("orders",orders);
         model.addAttribute("status",status);
@@ -256,16 +258,31 @@ public class SellerinfoController {
         int quantity = order.getQuantity();
         //通过商品id找到品牌商中的商品信息
         BrandRepos brandRepos = reposService.findByGoodId(order.getGoods().getGoodId());
+        //将商品退回
+        brandRepos.setQuantity(brandRepos.getQuantity()+quantity);
+        reposService.update(brandRepos);
         //获得商品原有的单价
         float price = brandRepos.getPrice();
         float money = price*quantity;
         //根据借卖方id找到借卖方钱包
-        Account account = accountService.findByUserId(((Users)session.getAttribute("user")).getUserId());
+        Users seller = (Users)session.getAttribute("user");
+        Account account = accountService.findByUserId(seller.getUserId());
         float result = account.getBalance()-money;
         account.setBalance(result);
         accountService.update(account);
         order.setStatus("已取消");
         orderService.update(order);
+        //将转账的金额写入借卖方账户流水：
+        //已经获取到借卖方，再获取到消费者
+        Users consumer = order.getConsumer();
+        Record record = new Record();
+        record.setUsers(seller);
+        record.setOp(consumer);
+        record.setStatus("已通过");
+        record.setTime(new Date());
+        record.setMoney(money);
+        record.setType("转出");
+        recordService.update(record);
         return "redirect:/seller/search/"+status+"/"+stores;
     }
     //将已发货的订单改为已完成状态
@@ -281,18 +298,42 @@ public class SellerinfoController {
         //获得商品原有的单价
         float price = brandRepos.getPrice();
         float money = price*quantity;
+        //找到借卖方的Users对象
+        Users seller = (Users)session.getAttribute("user");
         //根据借卖方id找到借卖方钱包
-        Account account = accountService.findByUserId(((Users)session.getAttribute("user")).getUserId());
+        Account account = accountService.findByUserId(seller.getUserId());
         float result = account.getBalance()-money;
         account.setBalance(result);
         accountService.update(account);
-        //将钱转给品牌商
-        Account accountPin = accountService.findByUserId(brandRepos.getBrand().getUserId());
+        //获取品牌商的User对象
+        Users brand = brandRepos.getBrand();
+        //找到品牌商的account
+        Account accountPin = accountService.findByUserId(brand.getUserId());
         float resultToPinpaishang = accountPin.getBalance()+money;
         accountPin.setBalance(resultToPinpaishang);
         accountService.update(accountPin);
         order.setStatus("已完成");
         orderService.update(order);
+        //新建借卖方流水对象
+        Date date = new Date();
+        Record sellerrecord = new Record();
+        sellerrecord.setType("转出");
+        sellerrecord.setUsers(seller);
+        sellerrecord.setOp(brand);
+        sellerrecord.setMoney(money);
+        sellerrecord.setTime(date);
+        sellerrecord.setStatus("已通过");
+        //新建品牌商流水对象
+        Record brandrecord = new Record();
+        brandrecord.setStatus("已通过");
+        brandrecord.setTime(date);
+        brandrecord.setMoney(money);
+        brandrecord.setOp(seller);
+        brandrecord.setType("转入");
+        brandrecord.setUsers(brand);
+        //将记录更新到数据库中
+        recordService.update(sellerrecord);
+        recordService.update(brandrecord);
         return "redirect:/seller/search/"+status+"/"+stores;
     }
 }

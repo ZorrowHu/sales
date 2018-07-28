@@ -2,6 +2,7 @@ package com.platform.sales.controller;
 
 import com.platform.sales.config.FileUtil;
 import com.platform.sales.entity.*;
+import com.platform.sales.repository.BrandOrderRepository;
 import com.platform.sales.repository.BrandReposRepository;
 import com.platform.sales.surface.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +39,9 @@ public class BrandInfoController {
 
     @Autowired
     private BrandOrderService brandOrderService;
+
+    @Autowired
+    private BrandOrderRepository brandOrderRepository;
 
     //我的信息
     @GetMapping("/brandinfo")
@@ -204,7 +208,7 @@ public class BrandInfoController {
         List<BrandRepos> goods = brandReposRepository.findAllByBrand(user);
         List<OrderInfo> brandOrder = new ArrayList<OrderInfo>();
         for(int i = 0; i < goods.size(); i++){
-            List<OrderInfo> order = brandOrderService.findByGoods(goods.get(i));
+            List<OrderInfo> order = brandOrderRepository.findAllByStatusNotAndGoods("待支付",goods.get(i));
             brandOrder.addAll(order);
         }
         model.addAttribute("brandorder",brandOrder);
@@ -218,7 +222,7 @@ public class BrandInfoController {
         List<OrderInfo> brandOrder = new ArrayList<OrderInfo>();
         if(select.equals("0")){
             for(int i = 0; i < goods.size(); i++){
-                List<OrderInfo> order = brandOrderService.findByGoods(goods.get(i));
+                List<OrderInfo> order = brandOrderRepository.findAllByStatusNotAndGoods("待支付",goods.get(i));
                 brandOrder.addAll(order);
             }
             model.addAttribute("brandorder",brandOrder);
@@ -239,13 +243,16 @@ public class BrandInfoController {
     @GetMapping("/deliverorder/{id}")
     public String deliverOrder(@PathVariable("id") Integer id,HttpSession session,Model model){
         OrderInfo orderInfo = brandOrderService.findByOrderId(id);
+        BrandRepos repos = brandReposRepository.findByGoodId(orderInfo.getGoods().getGoodId());
+        repos.setQuantity(repos.getQuantity() - orderInfo.getQuantity());
+        brandReposRepository.save(repos);
         orderInfo.setStatus("已发货");
         brandOrderService.update(orderInfo);
         Users user = (Users) session.getAttribute("user");
         List<BrandRepos> goods = brandReposRepository.findAllByBrand(user);
         List<OrderInfo> brandOrder = new ArrayList<OrderInfo>();
         for(int i = 0; i < goods.size(); i++){
-            List<OrderInfo> order = brandOrderService.findByGoods(goods.get(i));
+            List<OrderInfo> order = brandOrderRepository.findAllByStatusNotAndGoods("待支付",goods.get(i));
             brandOrder.addAll(order);
         }
         model.addAttribute("brandorder",brandOrder);

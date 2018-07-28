@@ -160,9 +160,17 @@ public class AdministratorController {
      * @return
      */
     @GetMapping("/deleteType/{id}")
-    public String deleteType(@PathVariable("id") Integer id){
-        typeService.deleteById(id);
-        return "redirect:/administrator/type";
+    public String deleteType(@PathVariable("id") Integer id,
+                             RedirectAttributes redirectAttributes){
+        Type type = typeService.findById(id);
+        if (brandReposRepository.findAllByType(type).isEmpty()) {   // 该类型下没有商品的时候可以删除类型
+            typeService.deleteById(id);
+            return "redirect:/administrator/type";
+        }else{
+            redirectAttributes.addFlashAttribute("message", "该类型下还有商品，不可删除！");
+            redirectAttributes.addFlashAttribute("ErrId", id + "");
+            return "redirect:/administrator/type";
+        }
     }
 
     /**

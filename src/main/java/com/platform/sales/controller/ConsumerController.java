@@ -71,7 +71,7 @@ public class ConsumerController {
         }
 
         List<StoreGoods> storeGoods = storegoodsRepository.findAll();
-        Users user = (Users)session.getAttribute("user");
+        Users user = (Users)session.getAttribute("consumer");
         Float totalPrice = new Float(0);
         if (user != null){
             List<OrderInfo> orders = brandOrderRepository.findAllByConsumer_UserIdAndStatus(user.getUserId(), "待支付");
@@ -115,7 +115,7 @@ public class ConsumerController {
         String keyword = type.getContent1() + " > " + type.getContent2() + " > " + type.getContent3() ;
         List<StoreGoods> storeGoods = storegoodsRepository.findAllByBrandReposTypeTypeId(typeId);
 
-        Users user = (Users)session.getAttribute("user");
+        Users user = (Users)session.getAttribute("consumer");
         Float totalPrice = new Float(0);
         if (user != null){
             List<OrderInfo> orders = brandOrderRepository.findAllByConsumer_UserIdAndStatus(user.getUserId(), "待支付");
@@ -157,9 +157,10 @@ public class ConsumerController {
                 }
             }
         }
+        model.addAttribute("primaries", primary);
         List<StoreGoods> storeGoods = storegoodsRepository.getByGoodNameLike(keyword);
 
-        Users user = (Users)session.getAttribute("user");
+        Users user = (Users)session.getAttribute("consumer");
         Float totalPrice = new Float(0);
         if (user != null){
             List<OrderInfo> orders = brandOrderRepository.findAllByConsumer_UserIdAndStatus(user.getUserId(), "待支付");
@@ -202,7 +203,7 @@ public class ConsumerController {
         Users user = usersService.consumerLogin(userName, password);    // 根据传过来的账户密码查询相应用户
         if (user != null && user.getUserRole().equals("消费者")){
             user.setPassword("");   // 将密码设空以免泄露
-            session.setAttribute("user", user);
+            session.setAttribute("consumer", user);
             return "redirect:/consumer/index";
         }
         // 默认为登陆错误
@@ -212,8 +213,8 @@ public class ConsumerController {
 
     @GetMapping("/logout")
     public String logout(HttpSession session){
-        session.setAttribute("user", null);
-        return "redirect:/consemer/login";
+        session.setAttribute("consumer", null);
+        return "redirect:/consumer/index";
     }
 
     /**
@@ -245,7 +246,7 @@ public class ConsumerController {
         }else if (user != null){  // 当用户名已被占用，就重载到注册页并显示错误信息
             user.setPassword("");   // 将用户密码设空以免泄露信息
             redirectAttributes.addFlashAttribute("message", "该用户名已被占用，请输入其他用户名！");
-            return "redirect:/consemer/register";
+            return "redirect:/consumer/register";
         }else{                 // 当用户名可用
             Users userInfo = new Users();
             userInfo.setUserName(userName);
@@ -264,7 +265,7 @@ public class ConsumerController {
      */
     @GetMapping("/checkout")
     public String checkout(Model model,HttpSession session){
-        Users consumer = (Users) session.getAttribute("user");
+        Users consumer = (Users) session.getAttribute("consumer");
         ShipAddr addr = shipAddrRepository.findByUsers(consumer);
         ShipAddr newaddr = new ShipAddr();
         if(addr == null){
@@ -280,12 +281,24 @@ public class ConsumerController {
         model.addAttribute("orders",orders);
         if(orders.size() == 0)
             model.addAttribute("message","空空如也！！！");
+
+        Users user = (Users)session.getAttribute("consumer");
+        Float totalPrice = new Float(0);
+        if (user != null){
+            List<OrderInfo> orders_price = brandOrderRepository.findAllByConsumer_UserIdAndStatus(user.getUserId(), "待支付");
+            for (OrderInfo each : orders_price){
+                totalPrice += each.getTotalPrice();
+            }
+        }
+        model.addAttribute("totalPrice", totalPrice);
+
+
         return "/consumer/checkout";
     }
 
     @GetMapping("/pay")
     public String pay(HttpSession session,Model model){
-        Users consumer = (Users) session.getAttribute("user");
+        Users consumer = (Users) session.getAttribute("consumer");
         ShipAddr addr = shipAddrRepository.findByUsers(consumer);
         model.addAttribute("addr",addr);
         return "/consumer/address";
@@ -294,7 +307,7 @@ public class ConsumerController {
     @GetMapping("/cancelby/{id}")
     public String cancelBy(@PathVariable("id") Integer id,HttpSession session, Model model){
         brandOrderRepository.deleteById(id);
-        Users consumer = (Users) session.getAttribute("user");
+        Users consumer = (Users) session.getAttribute("consumer");
         List<OrderInfo> orders = brandOrderRepository.findAllByStatusAndAndConsumer("待支付",consumer);
         if(orders.size() == 0)
             model.addAttribute("message","空空如也！！！");
@@ -304,7 +317,7 @@ public class ConsumerController {
 
     @GetMapping("/cancel")
     public String cancel(HttpSession session,Model model){
-        Users consumer = (Users) session.getAttribute("user");
+        Users consumer = (Users) session.getAttribute("consumer");
         List<OrderInfo> orders = brandOrderRepository.findAllByStatusAndAndConsumer("待支付",consumer);
         for(int i = 0; i < orders.size(); i++){
             brandOrderRepository.deleteById(orders.get(i).getOrderId());
@@ -315,7 +328,7 @@ public class ConsumerController {
 
     @PostMapping("/address")
     public String address(HttpSession session,Model model,ShipAddr addr){
-        Users consumer = (Users) session.getAttribute("user");
+        Users consumer = (Users) session.getAttribute("consumer");
         List<OrderInfo> orders = brandOrderRepository.findAllByStatusAndAndConsumer("待支付",consumer);
         Float total = new Float(0);
         Date time = new Date();
@@ -329,6 +342,17 @@ public class ConsumerController {
         addr.setShipId(getaddr.getShipId());
         shipAddrRepository.save(addr);
         model.addAttribute("message","已支付"+total+"元！");
+
+        Users user = (Users)session.getAttribute("consumer");
+        Float totalPrice = new Float(0);
+        if (user != null){
+            List<OrderInfo> orders_price = brandOrderRepository.findAllByConsumer_UserIdAndStatus(user.getUserId(), "待支付");
+            for (OrderInfo each : orders_price){
+                totalPrice += each.getTotalPrice();
+            }
+        }
+        model.addAttribute("totalPrice", totalPrice);
+
         return "/consumer/checkout";
     }
 
@@ -339,9 +363,42 @@ public class ConsumerController {
      * @return
      */
     @GetMapping("/myOrders/{id}")
-    public String myOrdersPage(@PathVariable("id") Integer id, Model model){
-        List<OrderInfo> orders = brandOrderRepository.findAllByConsumer_UserId(id);
+    public String myOrdersPage(@PathVariable("id") Integer id, Model model,HttpSession session){
+        List<OrderInfo> orders = brandOrderRepository.findAllByConsumer_UserIdOrderByPayTime(id);
         model.addAttribute("orders", orders);
+        List<Type> types = typeRepository.findAll();
+
+        List<String> primaries = typeRepository.getPrimary();
+        List<String> secondaries = typeRepository.getSecondary();
+        List<String> tertiaries = typeRepository.getTertiary();
+
+        HashMap<String, Object> primary = new HashMap<String, Object>();
+        for (String first : primaries) {
+            HashMap<String, Object> secondary = new HashMap<String, Object>();
+            for (String second : secondaries) {
+                HashMap<String, Integer> tertiary = new HashMap<String, Integer>();
+                for (String third : tertiaries) {
+                    for (Type type : types) {
+                        if (type.getContent3().equals(third) && type.getContent2().equals(second) && type.getContent1().equals(first)) {
+                            tertiary.put(type.getContent3(), type.getTypeId());
+                            secondary.put(type.getContent2(), tertiary);
+                            primary.put(type.getContent1(), secondary);
+                        }
+                    }
+                }
+            }
+        }
+        model.addAttribute("primaries", primary);
+        Users user = (Users)session.getAttribute("consumer");
+        Float totalPrice = new Float(0);
+        if (user != null){
+            List<OrderInfo> orders_price = brandOrderRepository.findAllByConsumer_UserIdAndStatus(user.getUserId(), "待支付");
+            for (OrderInfo each : orders_price){
+                totalPrice += each.getTotalPrice();
+            }
+        }
+        model.addAttribute("totalPrice", totalPrice);
+
         return "consumer/myOrders";
     }
 

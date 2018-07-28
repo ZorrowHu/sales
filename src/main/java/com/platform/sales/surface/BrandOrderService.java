@@ -15,11 +15,11 @@ public interface BrandOrderService {
 
     OrderInfo update(OrderInfo orderInfo);
     //根据借卖方的id查找所有订单
-    List<OrderInfo> findAllByStore_User_UserId(Integer id);
+    List<OrderInfo> findAllByStore_User_UserIdOrderByPayTime(Integer id);
     //根据状态查找所有订单
-    List<OrderInfo> findAllByStatus(String status);
+    List<OrderInfo> findAllByStatusOrderByPayTime(String status);
     //根据店铺id查找所有订单
-    List<OrderInfo> findAllByStore_StoreId(Integer id);
+    List<OrderInfo> findAllByStore_StoreIdOrderByPayTime(Integer id);
     //根据订单的状态和店铺的id查找所有订单
-    List<OrderInfo> findAllByStatusAndStore_StoreId(String status,Integer id);
+    List<OrderInfo> findAllByStatusAndStore_StoreIdOrderByPayTime(String status,Integer id);
 }

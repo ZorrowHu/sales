@@ -16,6 +16,8 @@ public interface BrandOrderRepository extends JpaRepository<OrderInfo,Integer> {
 
     List<OrderInfo> findAllByStatusAndGoods(String status, BrandRepos good);
 
+    List<OrderInfo> findAllByStatusNotAndGoods(String status, BrandRepos good);
+
     OrderInfo findByOrderId(Integer id);
 
     //OrderInfo findByGoodsGoodIdAndConsumer_UserIdAndStatus(Integer storeGoodId, Integer userId, String status);
@@ -35,14 +37,14 @@ public interface BrandOrderRepository extends JpaRepository<OrderInfo,Integer> {
 
 
     //根据借卖方的id查找用户自己的所有订单
-    List<OrderInfo> findAllByStore_User_UserId(Integer id);
+    List<OrderInfo> findAllByStore_User_UserIdOrderByPayTime(Integer id);
     //根据状态查找订单
     List<OrderInfo> findAllByStatus(String status);
     //根据店铺的id查找所有的订单
-    List<OrderInfo> findAllByStore_StoreId(Integer id);
+    List<OrderInfo> findAllByStore_StoreIdOrderByPayTime(Integer id);
     //根据订单状态和店铺id查找订单
-    List<OrderInfo> findAllByStatusAndStore_StoreId(String status,Integer id);
+    List<OrderInfo> findAllByStatusAndStore_StoreIdOrderByPayTime(String status,Integer id);
     //根据订单ID获得订单
     // 根据消费者id查询所有的订单
-    List<OrderInfo> findAllByConsumer_UserId(Integer id);
+    List<OrderInfo> findAllByConsumer_UserIdOrderByPayTime(Integer id);
 }

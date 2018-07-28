@@ -139,9 +139,9 @@
                                     <label class="control-label">商品图片</label>
                                     <div class="controls">
                                         <input id="lefile" type="file" style="display:none">
-                                        <img th:src="@{'/goodsimg/'+${good.getImage()}}" style="height: 100px; width: 100px">
+                                        <img id="upload_file" th:src="@{'/goodsimg/'+${good.getImage()}}" style="height: 100px; width: 100px">
                                         <div class="input-append">
-                                            <input id="photoCover" class="input-large" type="file" style="height:30px;width:425.94px;" placeholder="请打开商品图片" name="filamge">
+                                            <input id="photo_cover" onchange="imageInstantShow(this);" class="input-large" type="file" style="height:30px;width:425.94px;" placeholder="请打开商品图片" name="filamge">
                                         </div>
                                     </div>
                                 </div>
@@ -176,7 +176,23 @@
 <script type="text/javascript" th:src="@{/assets/js/realm.js}"></script>
 <script type="text/javascript" th:src="@{/assets/js/jquery.slimscroll.min.js}"></script>
 
+<script src="http://libs.baidu.com/jquery/1.9.1/jquery.min.js"></script>
+<script>
+    function imageInstantShow(e){
+        var reader = new FileReader();
+        function f_change(file){
+            var img = document.getElementById('upload_file');
+            //读取File对象的数据
+            reader.onload = function(evt){
+                //data:img base64 编码数据显示
+                img.width  =  "100";
+                img.height =  "100";
+                img.src = evt.target.result;
+            }
+            reader.readAsDataURL(file.files[0]);
 
+    }
+</script>
 <script type="text/javascript">
     $(function(){
         $("#type_primary").change(function(){

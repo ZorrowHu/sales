@@ -52,4 +52,9 @@ public class BrandRecordServiceImpl implements BrandRecordService {
     public List<Record> findAllByUser_UserId(Integer id) {
         return brandRecordRepository.findAllByUsers_UserId(id);
     }
+
+    @Override
+    public Record update(Record record) {
+        return brandRecordRepository.save(record);
+    }
 }

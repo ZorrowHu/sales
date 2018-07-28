@@ -84,6 +84,7 @@
                                     <th>二级目录</th>
                                     <th>三级目录</th>
                                     <th>操作</th>
+                                    <th>备注</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -95,6 +96,13 @@
                                         <a th:href="@{'updateType/'+${Type.getTypeId()}}" title="修改">修改<i class="fa fa-edit text-navy"></i></a>
                                         &nbsp;&nbsp;&nbsp;&nbsp;
                                         <a th:href="@{'deleteType/'+${Type.getTypeId()}}" title="删除">删除<i class="fa fa-trash-o text-navy"></i></a>
+                                    </td>
+                                    <td>
+                                        <div>
+                                            <strong th:unless="${#strings.isEmpty(message)}"
+                                                    th:if="${Type.getTypeId()} eq ${ErrId}"
+                                                    th:text="${message}"></strong>
+                                        </div>
                                     </td>
                                 </tr>
                                 </tbody>
