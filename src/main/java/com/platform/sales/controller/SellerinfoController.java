@@ -1,14 +1,11 @@
 package com.platform.sales.controller;
-
+//备份成功
 import com.platform.sales.entity.*;
 import com.platform.sales.surface.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.Date;
@@ -20,13 +17,20 @@ import java.util.regex.Pattern;
 public class SellerinfoController {
     @Autowired
     SellerinfoService sellerinfoService;
-    //账户服务
+    //钱包账户服务
     @Autowired
     BrandAccountService accountService;
     //流水服务
     @Autowired
     BrandRecordService recordService ;
-    //订单服务
+    //商店服务
+    @Autowired
+    StoresService storesService;
+    @Autowired
+    BrandOrderService orderService;
+    //品牌商商品服务
+    @Autowired
+    BrandReposService reposService;
     //需要将借卖方注册时的user_id添加到页面属性中作为此方法的参数
     @GetMapping("/getInfo/{seller_id}")
     public String getInfo(@PathVariable("seller_id")Integer id, Model model){
@@ -170,6 +174,125 @@ public class SellerinfoController {
         model.addAttribute("records", records);
         return "/seller/record";
     }
-
-
+    @GetMapping("/sellerorder")
+    public String getSellerorder(HttpSession session,Model model){
+        Users user = (Users)session.getAttribute("user");
+        List<Stores> stores = storesService.findAllByUser_UserId(user.getUserId());
+        model.addAttribute("storelist",stores);
+        model.addAttribute("status","0");
+        model.addAttribute("storestatue","0");
+        //先查询所有订单
+        List<OrderInfo> orders = orderService.findAllByStore_User_UserId(user.getUserId());
+        model.addAttribute("orders",orders);
+        return "/seller/sellerorder";
+    }
+    //根据下拉列表里面的内容查询订单
+    @PostMapping("/search")
+    public String getSearch(@RequestParam("status")String status,@RequestParam("stores")String stores, HttpSession session,Model model){
+        if(stores.equals("0")&&status.equals("0"))return "redirect:/seller/sellerorder";
+        String statue="0";
+        if(status.equals("1"))statue="已支付";
+        if(status.equals("2"))statue="待退款";
+        if(status.equals("3"))statue="待发货";
+        if(status.equals("4"))statue="已发货";
+        if(status.equals("5"))statue="已完成";
+        if(status.equals("6"))statue="已取消";
+        List<Stores> storelist = storesService.findAllByUser_UserId(((Users)session.getAttribute("user")).getUserId());
+        model.addAttribute("storelist",storelist);
+        List<OrderInfo> orders;
+        if(status.equals("0")){
+            orders = orderService.findAllByStore_StoreId(Integer.parseInt(stores));
+        }else if(stores.equals("0")){
+            orders = orderService.findAllByStatus(statue);
+        }else{
+            orders = orderService.findAllByStatusAndStore_StoreId(statue,Integer.parseInt(stores));
+        }
+        model.addAttribute("orders",orders);
+        model.addAttribute("status",status);
+        model.addAttribute("storestatue",stores);
+        return "/seller/sellerorder";
+    }
+    @GetMapping("/search/{status}/{stores}")
+    public String regetSearch(@PathVariable("status")String status,@PathVariable("stores")String stores, HttpSession session,Model model){
+        if(stores.equals("0")&&status.equals("0"))return "redirect:/seller/sellerorder";
+        String statue="0";
+        if(status.equals("1"))statue="已支付";
+        if(status.equals("2"))statue="待退款";
+        if(status.equals("3"))statue="待发货";
+        if(status.equals("4"))statue="已发货";
+        if(status.equals("5"))statue="已完成";
+        if(status.equals("6"))statue="已取消";
+        List<Stores> storelist = storesService.findAllByUser_UserId(((Users)session.getAttribute("user")).getUserId());
+        model.addAttribute("storelist",storelist);
+        List<OrderInfo> orders;
+        if(status.equals("0")){
+            orders = orderService.findAllByStore_StoreId(Integer.parseInt(stores));
+        }else if(stores.equals("0")){
+            orders = orderService.findAllByStatus(statue);
+        }else{
+            orders = orderService.findAllByStatusAndStore_StoreId(statue,Integer.parseInt(stores));
+        }
+        model.addAttribute("orders",orders);
+        model.addAttribute("status",status);
+        model.addAttribute("storestatue",stores);
+        return "/seller/sellerorder";
+    }
+    //将已支付订单改为发货状态
+    @GetMapping("/delivery/{id}/{status}/{stores}")
+    public String delivery(@PathVariable("id")Integer id,@PathVariable("status")String status,@PathVariable("stores")String stores){
+        //根据id获得对应的订单
+        OrderInfo order = orderService.findByOrderId(id);
+        order.setStatus("待发货");
+        orderService.update(order);
+        return "redirect:/seller/search/"+status+"/"+stores;
+    }
+    //将退款订单改为已取消状态
+    @GetMapping("/drawback/{id}/{status}/{stores}")
+    public String drawback(@PathVariable("id")Integer id,@PathVariable("status")String status,@PathVariable("stores")String stores,HttpSession session){
+        //根据订单id获得对应的订单
+        OrderInfo order = orderService.findByOrderId(id);
+        //根据订单的数量和商品的单价，判断商品在品牌商那里的价格
+        //获得商品的数量
+        int quantity = order.getQuantity();
+        //通过商品id找到品牌商中的商品信息
+        BrandRepos brandRepos = reposService.findByGoodId(order.getGoods().getGoodId());
+        //获得商品原有的单价
+        float price = brandRepos.getPrice();
+        float money = price*quantity;
+        //根据借卖方id找到借卖方钱包
+        Account account = accountService.findByUserId(((Users)session.getAttribute("user")).getUserId());
+        float result = account.getBalance()-money;
+        account.setBalance(result);
+        accountService.update(account);
+        order.setStatus("已取消");
+        orderService.update(order);
+        return "redirect:/seller/search/"+status+"/"+stores;
+    }
+    //将已发货的订单改为已完成状态
+    @GetMapping("/done/{id}/{status}/{stores}")
+    public String done(@PathVariable("id")Integer id,@PathVariable("status")String status,@PathVariable("stores")String stores,HttpSession session){
+        //根据订单id获得相应订单
+        OrderInfo order = orderService.findByOrderId(id);
+        //根据订单的数量和商品的单价，判断商品在品牌商那里的价格
+        //获得商品的数量
+        int quantity = order.getQuantity();
+        //通过商品id找到品牌商中的商品信息
+        BrandRepos brandRepos = reposService.findByGoodId(order.getGoods().getGoodId());
+        //获得商品原有的单价
+        float price = brandRepos.getPrice();
+        float money = price*quantity;
+        //根据借卖方id找到借卖方钱包
+        Account account = accountService.findByUserId(((Users)session.getAttribute("user")).getUserId());
+        float result = account.getBalance()-money;
+        account.setBalance(result);
+        accountService.update(account);
+        //将钱转给品牌商
+        Account accountPin = accountService.findByUserId(brandRepos.getBrand().getUserId());
+        float resultToPinpaishang = accountPin.getBalance()+money;
+        accountPin.setBalance(resultToPinpaishang);
+        accountService.update(accountPin);
+        order.setStatus("已完成");
+        orderService.update(order);
+        return "redirect:/seller/search/"+status+"/"+stores;
+    }
 }

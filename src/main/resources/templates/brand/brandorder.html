@@ -99,7 +99,7 @@
                                         <select name="status" class="form-control">
                                             <option value="0">全  部</option>
                                             <option value="待发货">待发货</option>
-                                            <option value="已发货">已发货</option>
+                                            <option value="已完成">已发货</option>
                                             <option value="已完成">已完成</option>
                                             <option value="已取消">已取消</option>
                                         </select>
@@ -112,9 +112,7 @@
                                     <th>订单编号</th>
                                     <th>商品ID</th>
                                     <th>借买方</th>
-                                    <th>消费者</th>
                                     <th>数量</th>
-                                    <th>总价</th>
                                     <th>支付时间</th>
                                     <th>状态</th>
                                     <th>操作</th>
@@ -125,14 +123,11 @@
                                     <td th:text="${Order.orderId}"></td>
                                     <td th:text="${Order.goods.goodId}"></td>
                                     <td th:text="${Order.store.user.userName}"></td>
-                                    <td th:text="${Order.consumer.userName}"></td>
                                     <td th:text="${Order.quantity}"></td>
-                                    <td th:text="${Order.totalPrice}"></td>
                                     <td th:text="${Order.payTime}"></td>
                                     <td th:text="${Order.status}"></td>
                                     <td>
                                         <a th:if="${Order.status == '待发货'}" th:href="@{'/brand/deliverorder/'+${Order.orderId}}" class="btn btn-warning">发货</a>
-                                        <a th:if="${Order.status != '已取消' && Order.status != '已完成'}" th:href="@{'/brand/cancelorder/'+${Order.orderId}}" class="btn btn-danger">取消</a>
                                     </td>
                                 </tr>
                                 </tbody>

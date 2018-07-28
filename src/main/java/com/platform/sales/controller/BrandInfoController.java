@@ -252,20 +252,4 @@ public class BrandInfoController {
         return "/brand/brandorder";
     }
 
-   // 订单取消
-   @GetMapping("/cancelorder/{id}")
-   public String cancelOrder(@PathVariable("id") Integer id,HttpSession session,Model model){
-       OrderInfo orderInfo = brandOrderService.findByOrderId(id);
-       orderInfo.setStatus("已取消");
-       brandOrderService.update(orderInfo);
-       Users user = (Users) session.getAttribute("user");
-       List<BrandRepos> goods = brandReposRepository.findAllByBrand(user);
-       List<OrderInfo> brandOrder = new ArrayList<OrderInfo>();
-       for(int i = 0; i < goods.size(); i++){
-           List<OrderInfo> order = brandOrderService.findByGoods(goods.get(i));
-           brandOrder.addAll(order);
-       }
-       model.addAttribute("brandorder",brandOrder);
-       return "/brand/brandorder";
-   }
 }
