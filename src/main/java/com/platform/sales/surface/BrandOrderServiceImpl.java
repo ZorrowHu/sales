@@ -34,22 +34,22 @@ public class BrandOrderServiceImpl implements BrandOrderService {
         return brandOrderRepository.save(orderInfo);
     }
     @Override
-    public List<OrderInfo> findAllByStore_User_UserId(Integer id) {
-        return brandOrderRepository.findAllByStore_User_UserId(id);
+    public List<OrderInfo> findAllByStore_User_UserIdOrderByPayTime(Integer id) {
+        return brandOrderRepository.findAllByStore_User_UserIdOrderByPayTime(id);
     }
 
     @Override
-    public List<OrderInfo> findAllByStatus(String status) {
+    public List<OrderInfo> findAllByStatusOrderByPayTime(String status) {
         return brandOrderRepository.findAllByStatus(status);
     }
 
     @Override
-    public List<OrderInfo> findAllByStore_StoreId(Integer id) {
-        return brandOrderRepository.findAllByStore_StoreId(id);
+    public List<OrderInfo> findAllByStore_StoreIdOrderByPayTime(Integer id) {
+        return brandOrderRepository.findAllByStore_StoreIdOrderByPayTime(id);
     }
 
     @Override
-    public List<OrderInfo> findAllByStatusAndStore_StoreId(String status, Integer id) {
-        return brandOrderRepository.findAllByStatusAndStore_StoreId(status,id);
+    public List<OrderInfo> findAllByStatusAndStore_StoreIdOrderByPayTime(String status, Integer id) {
+        return brandOrderRepository.findAllByStatusAndStore_StoreIdOrderByPayTime(status,id);
     }
 }

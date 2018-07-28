@@ -182,7 +182,7 @@ public class SellerinfoController {
         model.addAttribute("status","0");
         model.addAttribute("storestatue","0");
         //先查询所有订单
-        List<OrderInfo> orders = orderService.findAllByStore_User_UserId(user.getUserId());
+        List<OrderInfo> orders = orderService.findAllByStore_User_UserIdOrderByPayTime(user.getUserId());
         model.addAttribute("orders",orders);
         return "/seller/sellerorder";
     }
@@ -201,11 +201,11 @@ public class SellerinfoController {
         model.addAttribute("storelist",storelist);
         List<OrderInfo> orders;
         if(status.equals("0")){
-            orders = orderService.findAllByStore_StoreId(Integer.parseInt(stores));
+            orders = orderService.findAllByStore_StoreIdOrderByPayTime(Integer.parseInt(stores));
         }else if(stores.equals("0")){
-            orders = orderService.findAllByStatus(statue);
+            orders = orderService.findAllByStatusOrderByPayTime(statue);
         }else{
-            orders = orderService.findAllByStatusAndStore_StoreId(statue,Integer.parseInt(stores));
+            orders = orderService.findAllByStatusAndStore_StoreIdOrderByPayTime(statue,Integer.parseInt(stores));
         }
         model.addAttribute("orders",orders);
         model.addAttribute("status",status);
@@ -226,11 +226,11 @@ public class SellerinfoController {
         model.addAttribute("storelist",storelist);
         List<OrderInfo> orders;
         if(status.equals("0")){
-            orders = orderService.findAllByStore_StoreId(Integer.parseInt(stores));
+            orders = orderService.findAllByStore_StoreIdOrderByPayTime(Integer.parseInt(stores));
         }else if(stores.equals("0")){
-            orders = orderService.findAllByStatus(statue);
+            orders = orderService.findAllByStatusOrderByPayTime(statue);
         }else{
-            orders = orderService.findAllByStatusAndStore_StoreId(statue,Integer.parseInt(stores));
+            orders = orderService.findAllByStatusAndStore_StoreIdOrderByPayTime(statue,Integer.parseInt(stores));
         }
         model.addAttribute("orders",orders);
         model.addAttribute("status",status);

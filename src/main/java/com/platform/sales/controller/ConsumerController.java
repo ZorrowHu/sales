@@ -340,7 +340,7 @@ public class ConsumerController {
      */
     @GetMapping("/myOrders/{id}")
     public String myOrdersPage(@PathVariable("id") Integer id, Model model){
-        List<OrderInfo> orders = brandOrderRepository.findAllByConsumer_UserId(id);
+        List<OrderInfo> orders = brandOrderRepository.findAllByConsumer_UserIdOrderByPayTime(id);
         model.addAttribute("orders", orders);
         return "consumer/myOrders";
     }
