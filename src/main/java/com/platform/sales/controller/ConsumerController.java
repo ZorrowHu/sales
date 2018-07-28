@@ -210,6 +210,12 @@ public class ConsumerController {
         return "redirect:/consumer/login";
     }
 
+    @GetMapping("/logout")
+    public String logout(HttpSession session){
+        session.setAttribute("user", null);
+        return "redirect:/consemer/login";
+    }
+
     /**
      * 跳转到注册页
      * @return
