@@ -226,7 +226,6 @@ public class BrandInfoController {
                 brandOrder.addAll(order);
             }
             model.addAttribute("brandorder",brandOrder);
-            model.addAttribute("select", select);
             return "/brand/brandorder";
         }else {
             for (int i = 0; i < goods.size(); i++) {
@@ -234,7 +233,6 @@ public class BrandInfoController {
                 brandOrder.addAll(order);
             }
             model.addAttribute("brandorder",brandOrder);
-            model.addAttribute("select", select);
             return "/brand/brandorder";
         }
     }
