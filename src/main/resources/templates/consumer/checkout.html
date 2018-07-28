@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html   xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>购物车</title>
+    <title>主页</title>
     <link th:href="@{/frontend/css/bootstrap.css}" rel="stylesheet" type="text/css" media="all" />
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script th:src="@{/frontend/js/jquery.min.js}"></script>
@@ -18,7 +18,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
     <link th:href="@{/frontend/css/memenu.css}" rel="stylesheet" type="text/css" media="all" />
     <script type="text/javascript" th:src="@{/frontend/js/memenu.js}"></script>
     <script>$(document).ready(function(){$(".memenu").memenu();});</script>
-    <script th:src="@{/frontend/js/simpleCart.min.js}"> </script>
+    <!--<script th:src="@{/frontend/js/simpleCart.min.js}"> </script>-->
     <!-- slide -->
     <script th:src="@{/frontend/js/responsiveslides.min.js}"></script>
     <script>
@@ -38,6 +38,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
     <div class="header-top">
         <div class="container">
             <div class="col-sm-4 world">
+                <a th:if="${session.user != null}" th:href="@{'/consumer/myOrders/' + ${session.user.getUserId()}}" class="btn btn-sm btn-info">查看历史订单</a>
             </div>
             <div class="col-sm-4 logo">
                 <a th:href="@{/consumer/index}"><img th:src="@{/frontend/images/logo.png}" alt=""></a>
@@ -49,12 +50,13 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                 </p>
                 <p class="log"  th:if="${session.user != null}" align="right">
                     <label th:text="${session.user.getUserName()}"  ></label>，欢迎你！
+                    <a th:href="@{/consumer/logout}" class="btn btn-xs btn-danger" style="text-decoration: none;color: white">退出</a>
                 </p>
                 <div class="cart box_1"  th:if="${session.user != null}">
                     <a th:href="@{/consumer/checkout}" style="text-decoration: none; color: inherit;">
                         <h3>
                             <div class="total">
-                                <span class="simpleCart_total"></span>
+                                <span id="simpleCart_total" th:text="'￥' + ${totalPrice}"></span>
                             </div>
                             <img th:src="@{/frontend/images/cart.png}" alt=""/>
                         </h3>
@@ -65,39 +67,6 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                 <div class="clearfix"> </div>
             </div>
             <div class="clearfix"> </div>
-        </div>
-    </div>
-    <div class="container">
-        <div class="head-top">
-            <div class="col-sm-2 number">
-                <span><i class="glyphicon glyphicon-phone"></i>800 820 8820</span>
-            </div>
-            <div class="col-sm-8 h_menu4">
-                <ul class="memenu skyblue">
-                    <li class=" grid"><a  th:href="@{/consumer/index}">Home</a></li>
-                    <li th:each="primary : ${primaries}"><a  href="#" th:text="${primary.getKey()}">Men</a>
-                        <div class="mepanel">
-                            <div class="row">
-                                <div class="col1" th:each="secondaries : ${primary.getValue()}">
-                                    <div class="h_nav">
-                                        <h4 th:text="${secondaries.getKey()}">All Clothing</h4>
-                                        <ul >
-                                            <li th:each="tertiaries : ${secondaries.getValue()}"><a href="#" th:text="${tertiaries.getKey()}">Shirts</a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-            <div class="" style="float:right;">
-                <a href="#"><i class="glyphicon glyphicon-search"> </i></a>
-            </div>
-            <div class="" style="float:right;">
-                <input type="text" class="">
-            </div>
-            <!---->
         </div>
     </div>
 </div>
@@ -132,7 +101,6 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                 </tr>
                 <tr>
                     <td colspan="5" align="center" th:text="${message}"></td>
-                    <td th:text="${totalPrice}"></td>
                 </tr>
                 <tr>
                     <td>

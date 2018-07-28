@@ -18,7 +18,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
     <link th:href="@{/frontend/css/memenu.css}" rel="stylesheet" type="text/css" media="all" />
     <script type="text/javascript" th:src="@{/frontend/js/memenu.js}"></script>
     <script>$(document).ready(function(){$(".memenu").memenu();});</script>
-    <script th:src="@{/frontend/js/simpleCart.min.js}"> </script>
+    <!--<script th:src="@{/frontend/js/simpleCart.min.js}"> </script>-->
     <!-- slide -->
     <script th:src="@{/frontend/js/responsiveslides.min.js}"></script>
     <script>
@@ -38,6 +38,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
     <div class="header-top">
         <div class="container">
             <div class="col-sm-4 world">
+                <a th:if="${session.user != null}" th:href="@{'/consumer/myOrders/' + ${session.user.getUserId()}}" class="btn btn-sm btn-info">查看历史订单</a>
             </div>
             <div class="col-sm-4 logo">
                 <a th:href="@{/consumer/index}"><img th:src="@{/frontend/images/logo.png}" alt=""></a>
@@ -49,7 +50,21 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                 </p>
                 <p class="log"  th:if="${session.user != null}" align="right">
                     <label th:text="${session.user.getUserName()}"  ></label>，欢迎你！
+                    <a th:href="@{/consumer/logout}" class="btn btn-xs btn-danger" style="text-decoration: none;color: white">退出</a>
                 </p>
+                <div class="cart box_1"  th:if="${session.user != null}">
+                    <a th:href="@{/consumer/checkout}" style="text-decoration: none; color: inherit;">
+                        <h3>
+                            <div class="total">
+                                <span id="simpleCart_total" th:text="'￥' + ${totalPrice}"></span>
+                            </div>
+                            <img th:src="@{/frontend/images/cart.png}" alt=""/>
+                        </h3>
+                        <p><span href="javascript:;" class="simpleCart_empty" style="color:lightgrey;">购物车</span></p>
+                    </a>
+
+                </div>
+                <div class="clearfix"> </div>
             </div>
             <div class="clearfix"> </div>
         </div>
