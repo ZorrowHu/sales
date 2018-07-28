@@ -256,6 +256,9 @@ public class SellerinfoController {
         int quantity = order.getQuantity();
         //通过商品id找到品牌商中的商品信息
         BrandRepos brandRepos = reposService.findByGoodId(order.getGoods().getGoodId());
+        //将商品退回
+        brandRepos.setQuantity(brandRepos.getQuantity()+quantity);
+        reposService.update(brandRepos);
         //获得商品原有的单价
         float price = brandRepos.getPrice();
         float money = price*quantity;
