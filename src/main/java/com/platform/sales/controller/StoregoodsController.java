@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.ui.Model;
 
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.List;
 
     @Controller
@@ -100,12 +101,22 @@ import java.util.List;
 
     @GetMapping("brandgoods/{id}")
     public String index(Model model,@PathVariable("id") Integer store_id) {
+        Integer range;
+        BrandRepos brandRepos;
         model.addAttribute("id",store_id);
+        List<StoreGoods> storeGoods=storegoodsService.findAllByStores_StoreId(store_id);
+        List<BrandRepos> test=new ArrayList<BrandRepos>();
+        for(int i=0;i<storeGoods.size();i++)
+        {
+            range=storeGoods.get(i).getBrandRepos().getGoodId();
+            brandRepos=brandReposRepository.getBrandReposByGoodId(range);
+            test.add(brandRepos);
+        }
+        model.addAttribute("Test",test);
         List<BrandRepos> repository =  brandReposRepository.findBrandReposByStatusIsNot("已入仓");
         model.addAttribute("Lists",  repository);
         return "Stores/brandgoods";
     }
-
         @PostMapping("/ShowGoods/{id}")    //搜索店铺商品
         public String search(Model model,@PathVariable("id") Integer store_id,String keyword) {
             if(brandReposService.findBrandReposByGoodName(keyword).isEmpty())

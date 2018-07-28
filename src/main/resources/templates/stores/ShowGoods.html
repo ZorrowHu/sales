@@ -46,7 +46,7 @@
                     <ul class="pull-right">
                         <li><a title="link to View all Messages page, no popover in phone view or tablet" href="#"><i class="icon-envelope"></i></a></li>
                         <li><a title="link to View all Notifications page, no popover in phone view or tablet" href="#"><i class="icon-globe"></i></a></li>
-                        <li><a th:href="@{/index/login}"><i class="icon-off"></i></a></li>
+                        <li><a th:href="@{/user/login}"><i class="icon-off"></i></a></li>
                     </ul>
                 </div>
 
@@ -66,17 +66,12 @@
             <div class="accordion" id="accordion2">
                 <div class="accordion-group">
                     <div class="accordion-heading">
-                        <a class="accordion-toggle active b_F79999" href="#"><i class="icon-dashboard"></i> <span>管理员</span></a>
+                        <a class="accordion-toggle b_C3F7A7 collapsed" data-toggle="collapse" data-parent="#accordion2" href="#collapse1"><i class="icon-reorder"></i> <span>借卖方</span></a>
                     </div>
-                </div>
-                <div class="accordion-group">
-                    <div class="accordion-heading">
-                        <a class="accordion-toggle b_C3F7A7 collapsed" data-toggle="collapse" data-parent="#accordion2" href="#collapse1"><i class="icon-magic"></i> <span>借卖方</span></a>
-                    </div>
-                    <div id="collapse1" class="accordion-body collapse">
+                    <div id="collapse1" class="accordion-body active in">
                         <div class="accordion-inner">
                             <a class="accordion-toggle" th:href="@{'/seller/getInfo/'+${session.user.getUserId()}}"><i class="icon-rss"></i> 我的信息</a>
-                            <a class="accordion-toggle" href="#"><i class="icon-star"></i> 我的订单</a>
+                            <a class="accordion-toggle" th:href="@{/seller/sellerorder}"><i class="icon-star"></i> 我的订单</a>
                             <a class="accordion-toggle" th:href="@{/seller/sellerAccount}"><i class="icon-list-alt"></i> 我的钱包</a>
                             <a class="accordion-toggle" th:href="@{/Stores/storeindex}"><i class="icon-table"></i> 我的店铺</a>
                         </div>
@@ -86,16 +81,6 @@
         </div>
         <!-- /Side menu -->
         <div class="main_container" id="tables_page">
-            <div class="row-fluid">
-                <ul class="breadcrumb">
-                    <li><a href="#">后台管理页面</a> <span class="divider">/</span></li>
-                    <li><a th:href="@{/Stores/storeindex}">借卖方店铺</a> <span class="divider">/</span></li>
-                    <li class="active">商品信息管理</li>
-                </ul>
-                <h2 class="heading">
-                    商品信息管理表
-                </h2>
-            </div>
 
             <div class="row-fluid">
                 <div class="widget widget-padding span12">
