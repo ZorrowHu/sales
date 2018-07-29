@@ -296,6 +296,7 @@ public class ConsumerController {
         return "/consumer/checkout";
     }
 
+    //支付跳转
     @GetMapping("/pay")
     public String pay(HttpSession session,Model model){
         Users consumer = (Users) session.getAttribute("consumer");
@@ -315,6 +316,7 @@ public class ConsumerController {
         return "/consumer/address";
     }
 
+    //根据订单ID，取消单个商品订单
     @GetMapping("/cancelby/{id}")
     public String cancelBy(@PathVariable("id") Integer id,HttpSession session, Model model){
         brandOrderRepository.deleteById(id);
@@ -326,6 +328,7 @@ public class ConsumerController {
         return "/consumer/checkout";
     }
 
+    //清空购物车
     @GetMapping("/cancel")
     public String cancel(HttpSession session,Model model){
         Users consumer = (Users) session.getAttribute("consumer");
@@ -337,6 +340,7 @@ public class ConsumerController {
         return "/consumer/checkout";
     }
 
+    //填写地址信息
     @PostMapping("/address")
     public String address(HttpSession session,Model model,ShipAddr addr){
         Users consumer = (Users) session.getAttribute("consumer");

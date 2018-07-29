@@ -16,6 +16,9 @@ import java.util.List;
 @Autowired
     private StoresService storesService;
 
+    /*
+    添加店铺的方法。
+     */
 
     @GetMapping("/addstore")
     public String addPage(){
