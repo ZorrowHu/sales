@@ -19,7 +19,8 @@ public class Record {
     private Date time;          //创建时间
     private String status;      //状态
     private String type;        //类型（转账、提现、充值）
-
+    @OneToOne
+    private OrderInfo orderInfo;    //订单
 
     public Record() {
     }
@@ -80,5 +81,13 @@ public class Record {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public OrderInfo getOrderInfo() {
+        return orderInfo;
+    }
+
+    public void setOrderInfo(OrderInfo orderInfo) {
+        this.orderInfo = orderInfo;
     }
 }
