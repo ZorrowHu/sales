@@ -185,13 +185,44 @@ public class SellerinfoController {
         model.addAttribute("storestatue","0");
         //先查询所有订单
         List<OrderInfo> orders = orderService.findAllByStore_User_UserIdOrderByPayTime(user.getUserId());
+        //6个字段用来保存各个状态包括总计的钱
+        float yizhifumoney=0;
+        float daifahuomoney=0;
+        float yifahuomoney=0;
+        float daituikuanmoney=0;
+        float yiwanchengmoney=0;
+        float yiquxiaomoney=0;
+        //遍历，为money赋值
+        for (OrderInfo bborder:orders) {
+            if(bborder.getStatus().equals("已支付"))yizhifumoney += bborder.getTotalPrice();
+            if(bborder.getStatus().equals("待发货"))daifahuomoney += bborder.getTotalPrice();
+            if(bborder.getStatus().equals("已发货"))yifahuomoney += bborder.getTotalPrice();
+            if(bborder.getStatus().equals("待退款"))daituikuanmoney += bborder.getTotalPrice();
+            if(bborder.getStatus().equals("已完成"))yiwanchengmoney += bborder.getTotalPrice();
+            if(bborder.getStatus().equals("已取消"))yiquxiaomoney += bborder.getTotalPrice();
+        }
+        model.addAttribute("yizhifu",yizhifumoney);
+        model.addAttribute("daifahuo",daifahuomoney);
+        model.addAttribute("yifahuo",yifahuomoney);
+        model.addAttribute("daituikuan",daituikuanmoney);
+        model.addAttribute("yiwancheng",yiwanchengmoney);
+        model.addAttribute("yiquxiao",yiquxiaomoney);
+
         model.addAttribute("orders",orders);
         return "/seller/sellerorder";
     }
     //根据下拉列表里面的内容查询订单
     @PostMapping("/search")
-    public String getSearch(@RequestParam("status")String status,@RequestParam("stores")String stores, HttpSession session,Model model){
+    public String getSearch(@RequestParam("status")String status,@RequestParam("stores")String stores, HttpSession session,Model model,@RequestParam("yizhifu")float yizhifumoney
+            ,@RequestParam("daifahuo")float daifahuomoney,@RequestParam("yifahuo")float yifahuomoney,@RequestParam("daituikuan")float daituikuanmoney
+            ,@RequestParam("yiwancheng")float yiwanchengmoney,@RequestParam("yiquxiao")float yiquxiaomoney){
         if(stores.equals("0")&&status.equals("0"))return "redirect:/seller/sellerorder";
+        model.addAttribute("yizhifu",yizhifumoney);
+        model.addAttribute("daifahuo",daifahuomoney);
+        model.addAttribute("yifahuo",yifahuomoney);
+        model.addAttribute("daituikuan",daituikuanmoney);
+        model.addAttribute("yiwancheng",yiwanchengmoney);
+        model.addAttribute("yiquxiao",yiquxiaomoney);
         String statue="0";
         if(status.equals("1"))statue="已支付";
         if(status.equals("2"))statue="待退款";

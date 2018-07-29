@@ -97,12 +97,18 @@
                                     <div class="col-lg-6 form-control">
                                         <label class="label">订单状态</label>
                                         <select name="status" class="form-control">
-                                            <option value="0">全  部</option>
-                                            <option value="待发货">待发货</option>
-                                            <option value="已发货">已发货</option>
-                                            <option value="已完成">已完成</option>
-                                            <option value="已取消">已取消</option>
+                                            <option value="0" th:selected="${select} eq '0'">全  部</option>
+                                            <option value="待发货" th:selected="${select} eq '待发货'">待发货</option>
+                                            <option value="已发货" th:selected="${select} eq '已发货'">已发货</option>
+                                            <option value="已完成" th:selected="${select} eq '已完成'">已完成</option>
+                                            <option value="已取消" th:selected="${select} eq '已取消'">已取消</option>
                                         </select>
+                                        <input type="hidden" name="yizhifu" th:value="${yizhifu}"/>
+                                        <input type="hidden" name="daifahuo" th:value="${daifahuo}"/>
+                                        <input type="hidden" name="yifahuo" th:value="${yifahuo}"/>
+                                        <input type="hidden" name="daituikuan" th:value="${daituikuan}"/>
+                                        <input type="hidden" name="yiwancheng" th:value="${yiwancheng}"/>
+                                        <input type="hidden" name="yiquxiao" th:value="${yiquxiao}"/>
                                         <button type="submit" class="btn btn-success">查询</button>
                                     </div>
                                 </form>
@@ -143,6 +149,34 @@
                                 </tr>
                                 </tbody>
                                 </table>
+
+
+                                <br/>
+                                <br/>
+                                <label class="label">订单金额统计</label>
+                                <table class="table table-striped table-bordered">
+                                    <tbody>
+                                    <tr>
+                                        <th></th>
+                                        <th>已支付</th>
+                                        <th>待发货</th>
+                                        <th>已发货</th>
+                                        <th>待退款</th>
+                                        <th>已完成</th>
+                                        <th>已取消</th>
+                                    </tr>
+                                    <tr>
+                                        <td>总计金额</td>
+                                        <td th:text="${yizhifu}"></td>
+                                        <td th:text="${daifahuo}"></td>
+                                        <td th:text="${yifahuo}"></td>
+                                        <td th:text="${daituikuan}"></td>
+                                        <td th:text="${yiwancheng}"></td>
+                                        <td th:text="${yiquxiao}"></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+
                             </div>
                         </div><!--/widget-body-->
                     </div> <!-- /widget -->

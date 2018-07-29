@@ -202,23 +202,55 @@ public class BrandInfoController {
     //订单管理
     @GetMapping("/brandorder")
     public String brandOrder(HttpSession session, Model model){
+        model.addAttribute("select","0");
         Users user = (Users) session.getAttribute("user");
         List<BrandRepos> goods = brandReposRepository.findAllByBrand(user);
+        //6个字段用来保存各个状态包括总计的钱
+        float yizhifumoney=0;
+        float daifahuomoney=0;
+        float yifahuomoney=0;
+        float daituikuanmoney=0;
+        float yiwanchengmoney=0;
+        float yiquxiaomoney=0;
         List<OrderInfo> brandOrder = new ArrayList<OrderInfo>();
         for(int i = 0; i < goods.size(); i++){
             List<OrderInfo> order = brandOrderRepository.findAllByStatusNotAndGoods("待支付",goods.get(i));
             brandOrder.addAll(order);
         }
+        //遍历，为money赋值
+        for (OrderInfo bborder:brandOrder) {
+            if(bborder.getStatus().equals("已支付"))yizhifumoney += bborder.getGoods().getPrice()*bborder.getQuantity();
+            if(bborder.getStatus().equals("待发货"))daifahuomoney += bborder.getGoods().getPrice()*bborder.getQuantity();
+            if(bborder.getStatus().equals("已发货"))yifahuomoney += bborder.getGoods().getPrice()*bborder.getQuantity();
+            if(bborder.getStatus().equals("待退款"))daituikuanmoney += bborder.getGoods().getPrice()*bborder.getQuantity();
+            if(bborder.getStatus().equals("已完成"))yiwanchengmoney += bborder.getGoods().getPrice()*bborder.getQuantity();
+            if(bborder.getStatus().equals("已取消"))yiquxiaomoney += bborder.getGoods().getPrice()*bborder.getQuantity();
+        }
+        model.addAttribute("yizhifu",yizhifumoney);
+        model.addAttribute("daifahuo",daifahuomoney);
+        model.addAttribute("yifahuo",yifahuomoney);
+        model.addAttribute("daituikuan",daituikuanmoney);
+        model.addAttribute("yiwancheng",yiwanchengmoney);
+        model.addAttribute("yiquxiao",yiquxiaomoney);
         model.addAttribute("brandorder",brandOrder);
         return "/brand/brandorder";
     }
 
     @RequestMapping(value = "/selectorder",method = RequestMethod.POST)
-    public String selectOrder(@RequestParam("status") String select, HttpSession session,Model model){
+    public String selectOrder(@RequestParam("status") String select, HttpSession session,Model model,@RequestParam("yizhifu")float yizhifumoney
+    ,@RequestParam("daifahuo")float daifahuomoney,@RequestParam("yifahuo")float yifahuomoney,@RequestParam("daituikuan")float daituikuanmoney
+    ,@RequestParam("yiwancheng")float yiwanchengmoney,@RequestParam("yiquxiao")float yiquxiaomoney){
+        model.addAttribute("yizhifu",yizhifumoney);
+        model.addAttribute("daifahuo",daifahuomoney);
+        model.addAttribute("yifahuo",yifahuomoney);
+        model.addAttribute("daituikuan",daituikuanmoney);
+        model.addAttribute("yiwancheng",yiwanchengmoney);
+        model.addAttribute("yiquxiao",yiquxiaomoney);
         Users user = (Users) session.getAttribute("user");
         List<BrandRepos> goods = brandReposRepository.findAllByBrand(user);
         List<OrderInfo> brandOrder = new ArrayList<OrderInfo>();
         if(select.equals("0")){
+            model.addAttribute("select","0");
             for(int i = 0; i < goods.size(); i++){
                 List<OrderInfo> order = brandOrderRepository.findAllByStatusNotAndGoods("待支付",goods.get(i));
                 brandOrder.addAll(order);
@@ -226,6 +258,10 @@ public class BrandInfoController {
             model.addAttribute("brandorder",brandOrder);
             return "/brand/brandorder";
         }else {
+            if(select.equals("待发货"))model.addAttribute("select","待发货");
+            if(select.equals("已发货"))model.addAttribute("select","已发货");
+            if(select.equals("已完成"))model.addAttribute("select","已完成");
+            if(select.equals("已取消"))model.addAttribute("select","已取消");
             for (int i = 0; i < goods.size(); i++) {
                 List<OrderInfo> order = brandOrderService.findByStatusAndGoods(select, goods.get(i));
                 brandOrder.addAll(order);
