@@ -110,7 +110,8 @@
                                 <tr>
                                     <th>商品名称</th>
                                     <th>商品编号</th>
-                                    <th>商品价格</th>
+                                    <th>品牌方价格</th>
+                                    <th>店铺价格</th>
                                     <th>商品库存</th>
                                     <th>操作</th>
                                 </tr>
@@ -119,6 +120,7 @@
                                 <tr th:each="StoreGoods : ${goods}">
                                     <td th:text="${StoreGoods.getBrandRepos().getGoodName()}">此处会被覆盖</td>
                                     <td th:text="${StoreGoods.storeGoodsId}">此处会被覆盖</td>
+                                    <td th:text="${StoreGoods.getBrandRepos().getPrice()}">此处会被覆盖</td>
                                     <td th:text="${StoreGoods.price}">此处会被覆盖</td>
                                     <td th:text="${StoreGoods.getBrandRepos().getQuantity()}">此处会被覆盖</td>
                                     <td>
