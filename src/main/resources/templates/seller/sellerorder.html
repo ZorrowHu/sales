@@ -139,7 +139,7 @@
                                     </thead>
                                     <tbody>
                                     <tr th:each="order:${orders}">
-                                        <td th:text="${order.orderId}"></td>
+                                        <td th:text="${#numbers.formatInteger(order.orderId, 8)}"></td>
                                         <td th:text="${order.goods.goodId}"></td>
                                         <td th:text="${order.goods.goodName}"></td>
                                         <td th:text="${order.consumer.userId}"></td>
@@ -147,7 +147,7 @@
                                         <td th:text="${order.totalPrice}"></td>
                                         <td><a style="cursor:pointer;" th:text="详细地址" th:title="${order.ship.province}+${order.ship.city}+${order.ship.district}+${order.ship.address}
     +'邮编'+${order.ship.postal}"></a></td>
-                                        <td th:text="${order.payTime}"></td>
+                                        <td th:text="${#dates.format(order.payTime, 'yyyy-MM-dd  HH:mm')}"></td>
                                         <td th:switch="${order.status}">
                                             <span th:case="已支付" class="label label-info" th:text="${order.status}"></span>
                                             <span th:case="待发货" class="label label-warning" th:text="${order.status}"></span>
