@@ -340,7 +340,7 @@ public class ConsumerController {
         return "/consumer/checkout";
     }
 
-    //填写地址信息
+    //填写地址信息并结算
     @PostMapping("/address")
     public String address(HttpSession session,Model model,ShipAddr addr){
         Users consumer = (Users) session.getAttribute("consumer");
@@ -351,12 +351,16 @@ public class ConsumerController {
             orders.get(i).setStatus("已支付");
             orders.get(i).setPayTime(time);
             brandOrderRepository.save(orders.get(i));
+            Account seller = brandAccountRepository.findAccountByUserUserId(orders.get(i).getStore().getUser().getUserId());
+            seller.setBalance(seller.getBalance() + orders.get(i).getTotalPrice());
+            brandAccountRepository.save(seller);
             total += orders.get(i).getTotalPrice();
         }
         ShipAddr getaddr = shipAddrRepository.findByUsers(consumer);
         addr.setShipId(getaddr.getShipId());
         shipAddrRepository.save(addr);
         model.addAttribute("message","已支付"+total+"元！");
+
 
         Users user = (Users)session.getAttribute("consumer");
         Float totalPrice = new Float(0);

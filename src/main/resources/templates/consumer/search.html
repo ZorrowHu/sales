@@ -114,7 +114,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                 <div class="col-md-3 col-md2" th:each="good, index : ${goods}">
                     <div class="col-md1 ">
                         <a href="#">
-                            <img class="img-responsive"  th:src="@{'/goodsimg/'+${good.getBrandRepos().getImage()}}" alt="" />
+                            <img class="img-responsive"  th:src="@{'/goodsimg/'+${good.getBrandRepos().getImage()}}" alt=""  style="height:200px; width:200px;"/>
                         </a><br/>
                         <h3><a href="#" th:text="${good.getBrandRepos().getGoodName()}">Tops</a></h3>
                         <div class="price">

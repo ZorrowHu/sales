@@ -180,20 +180,18 @@ public class BrandInfoController {
     public String withdrawRecord(HttpSession session, Model model){
         Users users = (Users) session.getAttribute("user");
 
-        List<Record> records_1 = brandRecordService.findByUser(users);
         List<Record> records_2 = brandRecordService.findByOp(users);
         List<Record> records = brandRecordService.findByUserAndOp(users.getUserId());
-        records.addAll(records_1);
         records.addAll(records_2);
-//        for (int i = 0; i < records.size(); i++){
-//            Record record = records.get(i);
-//            if(record.getUsers().getUserId() == users.getUserId()
-//                    && record.getOp().getUserId() == users.getUserId()){
-//                record.setType("提现");
-//            }else{
-//                record.setType("转账");
-//            }
-//        }
+        for (int i = 0; i < records.size(); i++){
+            Record record = records.get(i);
+            if(record.getUsers().getUserId() == users.getUserId()
+                    && record.getOp().getUserId() == users.getUserId()){
+                record.setType("提现");
+            }else{
+                record.setType("转入");
+            }
+        }
         if(records.isEmpty())
             model.addAttribute("empty","无");
         model.addAttribute("id", users.getUserId());

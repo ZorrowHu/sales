@@ -110,10 +110,11 @@
                                 <thead>
                                 <tr>
                                     <th>订单编号</th>
-                                    <th>商品ID</th>
+                                    <th>商品</th>
                                     <th>借买方</th>
                                     <th>收货地址</th>
                                     <th>数量</th>
+                                    <th>总价</th>
                                     <th>支付时间</th>
                                     <th>状态</th>
                                     <th>操作</th>
@@ -122,10 +123,11 @@
                                 <tbody>
                                 <tr th:each="Order:${brandorder}">
                                     <td th:text="${Order.orderId}"></td>
-                                    <td th:text="${Order.goods.goodId}"></td>
+                                    <td th:text="${Order.goods.goodName}"></td>
                                     <td th:text="${Order.store.user.userName}"></td>
                                     <td th:text="${Order.ship.getAddress()}"></td>
                                     <td th:text="${Order.quantity}"></td>
+                                    <th th:text="${Order.quantity * Order.goods.price}"></th>
                                     <td th:text="${Order.payTime}"></td>
                                     <td th:switch="${Order.status}">
                                         <span th:case="已支付" class="label label-info" th:text="${Order.status}"></span>

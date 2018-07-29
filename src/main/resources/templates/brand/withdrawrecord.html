@@ -90,8 +90,6 @@
                                     <thead>
                                     <tr>
                                         <th>流水编号</th>
-                                        <th>发起人</th>
-                                        <th>接受方</th>
                                         <th>金额</th>
                                         <th>类型</th>
                                         <th>创建时间</th>
@@ -101,8 +99,6 @@
                                     <tbody>
                                     <tr th:each="Record:${records}">
                                         <td th:text="${Record.recordId}"></td>
-                                        <td th:text="${Record.users.userName}"></td>
-                                        <td th:text="${Record.op.userName}"></td>
                                         <td th:text="${Record.money}"></td>
                                         <td th:text="${Record.type}"></td>
                                         <td th:text="${Record.time}"></td>
