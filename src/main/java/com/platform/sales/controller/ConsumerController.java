@@ -39,7 +39,8 @@ public class ConsumerController {
     private BrandAccountRepository brandAccountRepository;
     @Autowired
     private ShipAddrRepository shipAddrRepository;
-
+    @Autowired
+    private BrandRecordRepository brandRecordRepository;
     /**
      * 跳转到主页
      * @return
@@ -353,6 +354,17 @@ public class ConsumerController {
             brandOrderRepository.save(orders.get(i));
             Account seller = brandAccountRepository.findAccountByUserUserId(orders.get(i).getStore().getUser().getUserId());
             seller.setBalance(seller.getBalance() + orders.get(i).getTotalPrice());
+
+            Record record = new Record();
+            record.setUsers(consumer);
+            record.setOp(orders.get(i).getStore().getUser());
+            record.setTime(time);
+            record.setType("转账");
+            record.setStatus("已通过");
+            record.setMoney(orders.get(i).getTotalPrice());
+            record.setOrderInfo(orders.get(i));
+            brandRecordRepository.save(record);
+
             brandAccountRepository.save(seller);
             total += orders.get(i).getTotalPrice();
         }
