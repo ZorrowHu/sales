@@ -3,6 +3,7 @@ package com.platform.sales.controller;
 import com.platform.sales.config.FileUtil;
 import com.platform.sales.entity.*;
 import com.platform.sales.repository.BrandOrderRepository;
+import com.platform.sales.repository.BrandRecordRepository;
 import com.platform.sales.repository.BrandReposRepository;
 import com.platform.sales.surface.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,8 @@ import java.util.List;
 @RequestMapping("brand")
 public class BrandInfoController {
 
+    @Autowired
+    BrandRecordRepository brandRecordRepository;
     @Autowired
     private BrandInfoService brandInfoService;
 
@@ -180,6 +183,8 @@ public class BrandInfoController {
     public String withdrawRecord(HttpSession session, Model model){
         Users users = (Users) session.getAttribute("user");
 
+        List<String> orderString = new ArrayList<String>();
+
         List<Record> records_2 = brandRecordService.findByOp(users);
         List<Record> records = brandRecordService.findByUserAndOp(users.getUserId());
         records.addAll(records_2);
@@ -192,8 +197,15 @@ public class BrandInfoController {
                 record.setType("转入");
             }
         }
-        if(records.isEmpty())
-            model.addAttribute("empty","无");
+        if(records.isEmpty()) {
+            model.addAttribute("empty", "无");
+        }
+
+        else{
+        }
+        model.addAttribute("orderString","wu");
+
+
         model.addAttribute("id", users.getUserId());
         model.addAttribute("records", records);
         return "/brand/withdrawrecord";
@@ -291,4 +303,21 @@ public class BrandInfoController {
         return "/brand/brandorder";
     }
 
+    @GetMapping("/xiangqing/{id}")
+    public String getXiangqing(@PathVariable("id") Integer id,Model model){
+        Record record = brandRecordRepository.findById(id).get();
+        OrderInfo orderInfo = record.getOrderInfo();
+        StringBuilder stringBuilder = new StringBuilder("订单编号:");
+        stringBuilder.append(orderInfo.getOrderId());
+        //订单编号	商品ID	商品名	消费者	数量	总价 创建时间	状态
+        stringBuilder.append(";商品ID:"+orderInfo.getGoods().getGoodId());
+        stringBuilder.append(";商品名:"+orderInfo.getGoods().getGoodName());
+        stringBuilder.append(";消费者:"+orderInfo.getConsumer().getUserName());
+        stringBuilder.append(";数量:"+orderInfo.getQuantity());
+        stringBuilder.append(";总价:"+orderInfo.getTotalPrice());
+        stringBuilder.append(";创建时间:"+orderInfo.getPayTime());
+        stringBuilder.append(";状态:"+orderInfo.getStatus());
+        model.addAttribute("string",stringBuilder.toString());
+        return "/seller/xiangqing";
+    }
 }

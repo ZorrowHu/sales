@@ -1,6 +1,7 @@
 package com.platform.sales.controller;
 //备份成功
 import com.platform.sales.entity.*;
+import com.platform.sales.repository.BrandRecordRepository;
 import com.platform.sales.surface.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -8,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -33,6 +35,8 @@ public class SellerinfoController {
     //用户服务
     @Autowired
     UsersService usersService;
+    @Autowired
+    BrandRecordRepository brandRecordRepository;
     //需要将借卖方注册时的user_id添加到页面属性中作为此方法的参数
     @GetMapping("/getInfo/{seller_id}")
     public String getInfo(@PathVariable("seller_id")Integer id, Model model){
@@ -170,8 +174,15 @@ public class SellerinfoController {
     public String withdrawRecord(HttpSession session, Model model){
         Users users = (Users) session.getAttribute("user");
         List<Record> records = recordService.findAllByUser_UserId(users.getUserId());
-        if(records.isEmpty())
-            model.addAttribute("empty","无");
+        List<String> orderString = new ArrayList<String>();
+        model.addAttribute("orderString","无");
+        if(records.isEmpty()) {
+            model.addAttribute("empty", "无");
+
+        }else{
+
+        }
+        model.addAttribute("orderString",orderString);
         model.addAttribute("id", users.getUserId());
         model.addAttribute("records", records);
         return "/seller/record";
@@ -313,6 +324,7 @@ public class SellerinfoController {
         record.setTime(new Date());
         record.setMoney(money);
         record.setType("转出");
+        record.setOrderInfo(order);
         recordService.update(record);
         return "redirect:/seller/search/"+status+"/"+stores;
     }
@@ -353,6 +365,7 @@ public class SellerinfoController {
         sellerrecord.setOp(brand);
         sellerrecord.setMoney(money);
         sellerrecord.setTime(date);
+        sellerrecord.setOrderInfo(order);
         sellerrecord.setStatus("已通过");
         //新建品牌商流水对象
         Record brandrecord = new Record();
@@ -361,10 +374,29 @@ public class SellerinfoController {
         brandrecord.setMoney(money);
         brandrecord.setOp(seller);
         brandrecord.setType("转入");
+        brandrecord.setOrderInfo(order);
         brandrecord.setUsers(brand);
         //将记录更新到数据库中
         recordService.update(sellerrecord);
         recordService.update(brandrecord);
         return "redirect:/seller/search/"+status+"/"+stores;
+    }
+
+    @GetMapping("/xiangqing/{id}")
+    public String getXiangqing(@PathVariable("id") Integer id,Model model){
+            Record record = brandRecordRepository.findById(id).get();
+            OrderInfo orderInfo = record.getOrderInfo();
+            StringBuilder stringBuilder = new StringBuilder("订单编号:");
+            stringBuilder.append(orderInfo.getOrderId());
+            //订单编号	商品ID	商品名	消费者	数量	总价 创建时间	状态
+            stringBuilder.append(";商品ID:"+orderInfo.getGoods().getGoodId());
+            stringBuilder.append(";商品名:"+orderInfo.getGoods().getGoodName());
+            stringBuilder.append(";消费者:"+orderInfo.getConsumer().getUserName());
+            stringBuilder.append(";数量:"+orderInfo.getQuantity());
+            stringBuilder.append(";总价:"+orderInfo.getTotalPrice());
+            stringBuilder.append(";创建时间:"+orderInfo.getPayTime());
+            stringBuilder.append(";状态:"+orderInfo.getStatus());
+            model.addAttribute("string",stringBuilder.toString());
+            return "/seller/xiangqing";
     }
 }

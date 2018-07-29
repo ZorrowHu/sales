@@ -2,7 +2,7 @@
 <html lang="en"  xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
-    <title>Realm - Dashboard</title>
+    <title>流水明细</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="author" content="Bluth Company">
     <link rel="shortcut icon" th:href="@{/assets/ico/favicon.html}">
@@ -94,6 +94,7 @@
                                         <th>类型</th>
                                         <th>创建时间</th>
                                         <th>状态</th>
+                                        <th>记录对应的订单</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -104,6 +105,10 @@
                                         <td th:text="${Record.type}"></td>
                                         <td th:text="${Record.time}"></td>
                                         <td th:text="${Record.status}"></td>
+                                        <td>
+                                            <a th:if="${Record.status} ne '充值' and ${Record.status} ne '提现'" th:href="@{'/seller/xiangqing/'+${Record.recordId}}">查看详情</a>
+                                            <a th:if="${Record.status} eq '充值' or ${Record.status} eq '提现'"></a>
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td th:text="${empty}"></td>
