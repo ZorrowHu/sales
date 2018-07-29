@@ -351,7 +351,7 @@ public class ConsumerController {
             orders.get(i).setStatus("已支付");
             orders.get(i).setPayTime(time);
             brandOrderRepository.save(orders.get(i));
-            Account seller = brandAccountRepository.findAccountByUserUserId(orders.get(i).getConsumer().getUserId());
+            Account seller = brandAccountRepository.findAccountByUserUserId(orders.get(i).getStore().getUser().getUserId());
             seller.setBalance(seller.getBalance() + orders.get(i).getTotalPrice());
             brandAccountRepository.save(seller);
             total += orders.get(i).getTotalPrice();
