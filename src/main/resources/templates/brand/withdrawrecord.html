@@ -105,8 +105,7 @@
                                         <td th:text="${Record.time}"></td>
                                         <td th:text="${Record.status}"></td>
                                         <td>
-                                            <a th:if="${Record.status} ne '充值' and ${Record.status} ne '提现'" th:href="@{'/seller/xiangqing/'+${Record.recordId}}">查看详情</a>
-                                            <a th:if="${Record.status} eq '充值' or ${Record.status} eq '提现'"></a>
+                                            <a th:if="${Record.type} eq '转账'" th:href="@{'/brand/xiangqing/'+${Record.recordId}}">查看详情</a>
                                         </td>
                                     <tr>
                                         <td th:text="${empty}"></td>

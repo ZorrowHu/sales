@@ -173,7 +173,7 @@ public class SellerinfoController {
     @GetMapping("/record")
     public String withdrawRecord(HttpSession session, Model model){
         Users users = (Users) session.getAttribute("user");
-        List<Record> records = recordService.findAllByUser_UserId(users.getUserId());
+        List<Record> records = recordService.findAllByUser_UserIdOrOp_UserId(users.getUserId(),users.getUserId());
         List<String> orderString = new ArrayList<String>();
         model.addAttribute("orderString","无");
         if(records.isEmpty()) {
@@ -323,7 +323,7 @@ public class SellerinfoController {
         record.setStatus("已通过");
         record.setTime(new Date());
         record.setMoney(money);
-        record.setType("转出");
+        record.setType("转账");
         record.setOrderInfo(order);
         recordService.update(record);
         return "redirect:/seller/search/"+status+"/"+stores;
@@ -360,7 +360,7 @@ public class SellerinfoController {
         //新建借卖方流水对象
         Date date = new Date();
         Record sellerrecord = new Record();
-        sellerrecord.setType("转出");
+        sellerrecord.setType("转账");
         sellerrecord.setUsers(seller);
         sellerrecord.setOp(brand);
         sellerrecord.setMoney(money);
@@ -373,7 +373,7 @@ public class SellerinfoController {
         brandrecord.setTime(date);
         brandrecord.setMoney(money);
         brandrecord.setOp(seller);
-        brandrecord.setType("转入");
+        brandrecord.setType("转账");
         brandrecord.setOrderInfo(order);
         brandrecord.setUsers(brand);
         //将记录更新到数据库中

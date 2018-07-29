@@ -57,4 +57,10 @@ public class BrandRecordServiceImpl implements BrandRecordService {
     public Record update(Record record) {
         return brandRecordRepository.save(record);
     }
+
+    @Override
+    public List<Record> findAllByUser_UserIdOrOp_UserId(Integer id1, Integer id2) {
+        return brandRecordRepository.findAllByUsers_UserIdOrOp_UserId(id1,id2);
+    }
+
 }

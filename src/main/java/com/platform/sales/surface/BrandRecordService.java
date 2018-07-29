@@ -23,4 +23,5 @@ public interface BrandRecordService {
     List<Record> findAllByUser_UserId(Integer id);
     //保存流水记录
     Record update(Record record);
+    public List<Record> findAllByUser_UserIdOrOp_UserId(Integer id1,Integer id2);
 }
