@@ -125,8 +125,8 @@
                                 </thead>
                                 <tbody>
                                 <tr th:each="Records:${Records}">
-                                    <td th:text="${Records.op.getUserName()}"></td>
                                     <td th:text="${Records.users.getUserName()}"></td>
+                                    <td th:text="${Records.op.getUserName()}"></td>
                                     <td th:text="${Records.time}"></td>
                                     <td th:text="${Records.type}"></td>
                                     <td th:text="${Records.money}"></td>
