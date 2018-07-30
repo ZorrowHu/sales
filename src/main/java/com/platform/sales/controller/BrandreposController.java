@@ -165,7 +165,7 @@ public class BrandreposController {
                         }
                         //return "上传成功";
                 } else {
-                        //return "上传失败，因为文件是空的.";
+                        good.setImage(temp.getImage());
                 }
                 brandReposRepository.save(good);
                 return "redirect:/brand/index";
