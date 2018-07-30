@@ -194,7 +194,7 @@ public class BrandInfoController {
                     && record.getOp().getUserId() == users.getUserId()){
                 record.setType("提现");
             }else{
-                record.setType("转入");
+                record.setType("转账");
             }
         }
         if(records.isEmpty()) {
