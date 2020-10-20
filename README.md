@@ -28,4 +28,4 @@ A platform for brands and consumers to have free trades with vendors involved.
 
 <img src="https://github.com/ZorrowHu/Sales/blob/master/src/%E5%9B%BE%E7%89%876.jpg" width="100%" alt="商城页面"/><br/>
 
-![](https://github.com/ZorrowHu/Sales/blob/master/src/dpj3v-anxtf.gif)
+![](https://github.com/ZorrowHu/Sales/blob/master/src/%E8%B4%AD%E7%89%A9%E8%BD%A6%E5%B1%95%E7%A4%BA.gif)
