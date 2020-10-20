@@ -15,12 +15,13 @@ A platform for brands and consumers to have free trades with vendors involved.
 
 #### 后台管理逻辑
 
+![](https://github.com/ZorrowHu/Sales/blob/master/src/%E5%9B%BE%E7%89%871.png)
 
 #### 部分前端展示
-![](https://github.com/ZorrowHu/Sales/blob/master/src/%E5%9B%BE%E7%89%871.png)
+
 ![](https://github.com/ZorrowHu/Sales/blob/master/src/%E5%9B%BE%E7%89%872.png)
 ![](https://github.com/ZorrowHu/Sales/blob/master/src/%E5%9B%BE%E7%89%873.png)
 ![](https://github.com/ZorrowHu/Sales/blob/master/src/%E5%9B%BE%E7%89%874.png)
 ![](https://github.com/ZorrowHu/Sales/blob/master/src/%E5%9B%BE%E7%89%875.png)
 ![](https://github.com/ZorrowHu/Sales/blob/master/src/%E5%9B%BE%E7%89%876.jpg)
-![](https://github.com/ZorrowHu/Sales/blob/master/src/%E5%AA%92%E4%BD%931.mp4)
+![](https://github.com/ZorrowHu/Sales/blob/master/src/dpj3v-anxtf.gif)
