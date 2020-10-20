@@ -1,5 +1,6 @@
 # Sales
 A platform for brands and consumers to have free trades with vendors involved.
+
 电商网站设计与实现——借卖平台项目
 
 ### 借卖平台项目介绍
