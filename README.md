@@ -1,7 +1,8 @@
 # Sales
 A platform for brands and consumers to have free trades with vendors involved.
 
-电商网站设计与实现——借卖平台项目
+电商网站设计与实现——借卖平台项目，利用Spring Boot和Maven框架进行搭建一个简单但是功能齐全的电商网站
+项目过程中进行了需求分析、数据库设计、任务分工、测试与验收等工作
 
 ### 借卖平台项目介绍
 
