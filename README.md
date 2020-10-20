@@ -20,8 +20,12 @@ A platform for brands and consumers to have free trades with vendors involved.
 #### 部分前端展示
 <img src="https://github.com/ZorrowHu/Sales/blob/master/src/%E5%9B%BE%E7%89%872.png" width="100%" alt="商城游客页面"/><br/>
 
-![](https://github.com/ZorrowHu/Sales/blob/master/src/%E5%9B%BE%E7%89%873.png)
-![](https://github.com/ZorrowHu/Sales/blob/master/src/%E5%9B%BE%E7%89%874.png)
-![](https://github.com/ZorrowHu/Sales/blob/master/src/%E5%9B%BE%E7%89%875.png)
-![](https://github.com/ZorrowHu/Sales/blob/master/src/%E5%9B%BE%E7%89%876.jpg)
+<img src="https://github.com/ZorrowHu/Sales/blob/master/src/%E5%9B%BE%E7%89%873.png" width="100%" alt="商城页面"/><br/>
+
+<img src="https://github.com/ZorrowHu/Sales/blob/master/src/%E5%9B%BE%E7%89%874.png" width="100%" alt="商城页面"/><br/>
+
+<img src="https://github.com/ZorrowHu/Sales/blob/master/src/%E5%9B%BE%E7%89%875.png" width="100%" alt="商城页面"/><br/>
+
+<img src="https://github.com/ZorrowHu/Sales/blob/master/src/%E5%9B%BE%E7%89%876.png" width="100%" alt="商城页面"/><br/>
+
 ![](https://github.com/ZorrowHu/Sales/blob/master/src/dpj3v-anxtf.gif)
