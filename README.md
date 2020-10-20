@@ -19,6 +19,8 @@ A platform for brands and consumers to have free trades with vendors involved.
 
 <img src="https://github.com/ZorrowHu/Sales/blob/master/src/%E5%9B%BE%E7%89%871.png" width="100%" alt="后台管理逻辑"/><br/>
 
+在后台管理页面用，利用颜色表示订单的状态，如“已支付”、“已发货”、“已完成”、“待退款”、“已取消”等等状态，便于各个角色（管理员、品牌方、借卖方）进行商品和订单管理。
+
 #### 部分前端展示
 <img src="https://github.com/ZorrowHu/Sales/blob/master/src/%E5%9B%BE%E7%89%872.png" width="100%" alt="商城游客页面"/><br/>
 
