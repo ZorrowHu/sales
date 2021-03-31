@@ -1,6 +1,6 @@
 # Sales
 A platform for brands and consumers to have free trades with vendors involved.
-
+ 
 电商网站设计与实现——借卖平台项目，利用Spring Boot搭建一个简单但是功能齐全的电商网站
 
 项目过程中进行了需求分析、数据库设计、任务分工、测试与验收等工作
