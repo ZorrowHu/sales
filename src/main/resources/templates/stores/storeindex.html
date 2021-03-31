@@ -1,0 +1,157 @@
+
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>我的店铺</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Bluth Company">
+    <link rel="shortcut icon" th:href="@{/assets/ico/favicon.html}">
+    <link th:href="@{/assets/css/bootstrap.css}" rel="stylesheet">
+    <link th:href="@{/assets/css/theme.css}" rel="stylesheet">
+    <link th:href="@{/assets/css/font-awesome.min.css}" rel="stylesheet">
+    <link th:href="@{/assets/css/alertify.css}" rel="stylesheet">
+    <!-- <link href="http://fonts.useso.com/css?family=Open+Sans:400,700" rel="stylesheet" type="text/css"> -->
+    <link rel="Favicon Icon" th:href="@{/assets/ico/favicon.ico}">
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+</head>
+<body>
+
+<div id="wrap">
+    <div class="navbar navbar-fixed-top">
+        <div class="navbar-inner">
+            <div class="container-fluid">
+                <div class="logo">
+                    <img th:src="@{/assets/img/logo.png}" alt="Realm Admin Template">
+                </div>
+                <a class="btn btn-navbar visible-phone" data-toggle="collapse" data-target=".nav-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </a>
+                <a class="btn btn-navbar slide_menu_left visible-tablet">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </a>
+
+                <div class="top-menu visible-desktop">
+                    <ul class="pull-right">
+                        <li><a th:href="@{/user/login}"><i class="icon-off"></i> Logout</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid">
+
+        <!-- Side menu -->
+        <div class="sidebar-nav nav-collapse collapse">
+            <div class="user_side clearfix">
+                <img th:src="@{/assets/img/odinn.jpg}" alt="Odinn god of Thunder">
+                <h5 th:text="${session.user.getUserRole()}">Odinn</h5>
+                <h5 th:text="${session.user.getUserName()}">Odinn</h5>
+            </div>
+            <div class="accordion" id="accordion2">
+                <div class="accordion-group">
+
+                    <div class="accordion-heading">
+                        <a class="accordion-toggle b_9FDDF6 active" data-toggle="collapse" data-parent="#accordion2" href="#collapse2"><i class="icon-reorder"></i> <span>借卖方</span></a>
+                    </div>
+                    <div id="collapse2" class="accordion-body collapse active in">
+                        <div class="accordion-inner">
+                            <a class="accordion-toggle" th:href="@{'/seller/getInfo/'+${session.user.getUserId()}}"><i class="icon-rss"></i> 我的信息</a>
+                            <a class="accordion-toggle" th:href="@{/seller/sellerorder}"><i class="icon-star"></i> 我的订单</a>
+                            <a class="accordion-toggle" th:href="@{/seller/sellerAccount}"><i class="icon-list-alt"></i> 我的钱包</a>
+                            <a class="accordion-toggle" th:href="@{/Stores/storeindex}"><i class="icon-table"></i> 我的店铺</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /Side menu -->
+
+        <!-- Main window -->
+        <div class="main_container" id="tables_page">
+            <div class="row-fluid">
+                <div class="widget widget-padding span12">
+                    <div class="widget-header">
+                        <i class="icon-table"></i>
+                        <h5>店铺商品一览</h5>
+                        <div class="widget-buttons">
+                            <!--<a href="http://twitter.github.com/bootstrap/base-css.html#tables" data-title="Documentation" class="tip" target="_blank"><i class="icon-external-link"></i></a>-->
+                            <!--<a href="#" data-title="Collapse" data-collapsed="false" class="tip collapse"><i class="icon-chevron-up"></i></a>-->
+                        </div>
+                    </div>
+                    <div class="widget-body">
+                        <div class="row-fluid">
+                            <div class="col-lg-offset-1 col-lg-10">
+                                <div class="panel panel-primary">
+                            <div class="panel-heading">店铺信息管理</div>
+                            <div class="panel-body">
+                                <p>
+                                <div class="alert alert-success">
+                                    对店铺的信息进行增删改查操作
+                                    <a th:href="@{/Stores/addstore}" class="alert-link">&nbsp;&nbsp;添加一个店铺</a>
+                                </div>
+                                </p>
+                            <table class="table table-bordered">
+                                <thead>
+                                <tr>
+                                    <th>店铺名</th>
+                                    <th>店铺编号</th>
+                                    <th>店铺拥有者</th>
+                                    <th>操作</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="Stores:${stus}">
+                                    <td th:text="${Stores.storeId}"> aehyok</td>
+                                    <td th:text="${Stores.storeName}">leo</td>
+                                    <td th:text="${Stores.user.userName}">leo</td>
+                                    <td>
+                                        <div class="btn-group">
+                                            <a th:href="@{'/Stores/updatestore/'+${Stores.getStoreId()}}" class="btn"> 修改</a>
+                                            <a th:href="@{'/Stores/delete/'+${Stores.getStoreId()}}" class="btn"> 删除</a>
+                                            <a th:href="@{'/Stores/ShowGoods/'+${Stores.getStoreId()}}" class="btn"> 管理店铺商品</a>
+                                        </div>
+                                    </td>
+
+                                </tbody>
+                            </table>
+                            <br/><br/>
+                            <div align="right">
+                            </div>
+                        </div><!--/widget-body-->
+                    </div> <!-- /widget -->
+                </div> <!-- /row-fluid -->
+            </div>
+        </div><!-- wrap ends-->
+    </div>
+</div>
+
+
+
+
+<script type="text/javascript" th:src="@{/assets/js/jquery.min.js}"></script>
+<script type="text/javascript" th:src="@{/assets/js/jquery-ui.min.js}"></script>
+<script type="text/javascript" th:src="@{/assets/js/raphael-min.js}"></script>
+<script type="text/javascript" th:src="@{/assets/js/bootstrap.js}"></script>
+<script type="text/javascript" th:src='@{/assets/js/sparkline.js}'></script>
+<script type="text/javascript" th:src='@{/assets/js/morris.min.js}'></script>
+<script type="text/javascript" th:src="@{/assets/js/jquery.dataTables.min.js}"></script>
+<script type="text/javascript" th:src="@{/assets/js/jquery.masonry.min.js}"></script>
+<script type="text/javascript" th:src="@{/assets/js/jquery.imagesloaded.min.js}"></script>
+<script type="text/javascript" th:src="@{/assets/js/jquery.facybox.js}"></script>
+<script type="text/javascript" th:src="@{/assets/js/jquery.alertify.min.js}"></script>
+<script type="text/javascript" th:src="@{/assets/js/jquery.knob.js}"></script>
+<script type='text/javascript' th:src='@{/assets/js/fullcalendar.min.js}'></script>
+<script type='text/javascript' th:src='@{/assets/js/jquery.gritter.min.js}'></script>
+<script type="text/javascript" th:src="@{/assets/js/realm.js}"></script>
+<script type="text/javascript" th:src="@{/assets/js/jquery.slimscroll.min.js}"></script>
+</body>
+</html>

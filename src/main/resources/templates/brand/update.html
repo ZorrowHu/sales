@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>商品信息管理</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Bluth Company">
+    <link rel="shortcut icon" th:href="@{/assets/ico/favicon.html}">
+    <link th:href="@{/assets/css/bootstrap.css}" rel="stylesheet">
+    <link th:href="@{/assets/css/theme.css}" rel="stylesheet">
+    <link th:href="@{/assets/css/font-awesome.min.css}" rel="stylesheet">
+    <link th:href="@{/assets/css/alertify.css}" rel="stylesheet">
+    <!-- <link href="http://fonts.useso.com/css?family=Open+Sans:400,700" rel="stylesheet" type="text/css"> -->
+    <link rel="Favicon Icon" th:href="@{/assets/ico/favicon.ico}">
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+</head>
+<body>
+<div id="wrap">
+    <div class="navbar navbar-fixed-top">
+        <div class="navbar-inner">
+            <div class="container-fluid">
+                <div class="logo">
+                    <img th:src="@{/assets/img/logo.png}" alt="Realm Admin Template">
+                </div>
+                <a class="btn btn-navbar visible-phone" data-toggle="collapse" data-target=".nav-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </a>
+                <a class="btn btn-navbar slide_menu_left visible-tablet">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </a>
+
+                <div class="top-menu visible-desktop">
+                    <ul class="pull-right">
+                        <li><a th:href="@{/user/login}"><i class="icon-off"></i> Logout</a></li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid">
+
+        <!-- Side menu -->
+        <div class="sidebar-nav nav-collapse collapse">
+            <div class="user_side clearfix">
+                <img th:src="@{/assets/img/odinn.jpg}" alt="Odinn god of Thunder">
+                <h5 th:text="${session.user.getUserRole()}">Odinn</h5>
+                <h5 th:text="${session.user.getUserName()}">Odinn</h5>
+            </div>
+            <div class="accordion" id="accordion2">
+                <div class="accordion-group">
+
+                    <div class="accordion-heading">
+                        <a class="accordion-toggle b_9FDDF6 active" data-toggle="collapse" data-parent="#accordion2" href="#collapse2"><i class="icon-reorder"></i> <span>品牌商</span></a>
+                    </div>
+                    <div id="collapse2" class="accordion-body collapse active in">
+                        <div class="accordion-inner">
+                            <a class="accordion-toggle" th:href="@{/brand/brandinfo}"><i class="icon-rss"></i> 我的信息</a>
+                            <a class="accordion-toggle" th:href="@{/brand/index}"><i class="icon-calendar"></i> 商品录入</a>
+                            <a class="accordion-toggle" th:href="@{/brand/mainframe}"><i class="icon-picture"></i> 商品主图</a>
+                            <a class="accordion-toggle" th:href="@{/brand/brandaccount}"><i class="icon-calendar"></i> 我的钱包</a>
+                            <a class="accordion-toggle" th:href="@{/brand/brandorder}"><i class="icon-picture"></i> 订单管理</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /Side menu -->
+        <div class="main_container" id="tables_page">
+            <div class="row-fluid">
+                <div class="widget widget-padding span12">
+                    <div class="widget-header">
+                        <i class="icon-list-alt"></i><h5>修改商品信息</h5>
+                        <div class="widget-buttons">
+                            <a href="#" data-title="Collapse" data-collapsed="false" class="tip collapse"><i class="icon-chevron-up"></i></a>
+                        </div>
+                    </div>
+                    <form class="form-horizontal" role="form" th:action="@{'/brand/doupdate/'+ ${good.getGoodId()}}" method="post" enctype="multipart/form-data">
+                        <input type="hidden" name="goodId">
+                        <div class="widget-body">
+                            <div class="widget-forms clearfix">
+                                <div class="control-group">
+                                    <label class="control-label">商品名称</label>
+                                    <div class="controls">
+                                        <input class="span7" type="text" placeholder="请输入商品名称" name="goodName" th:value="${good.goodName}">
+                                        <span class="help-inline"></span>
+                                    </div>
+                                </div>
+                                <div class="control-group">
+                                    <label class="control-label">商品价格</label>
+                                    <div class="controls">
+                                        <input class="span7" type="text" placeholder="请输入商品价格" name="price" th:value="${good.price}">
+                                        <span class="help-inline"></span>
+                                    </div>
+                                </div>
+                                <div class="control-group">
+                                    <label class="control-label">商品库存</label>
+                                    <div class="controls">
+                                        <input class="span7" type="text" placeholder="请输入商品库存" name="quantity" th:value="${good.quantity}">
+                                        <span class="help-inline"></span>
+                                    </div>
+                                </div>
+                                <div class="control-group">
+                                <label class="control-label">一级类别</label>
+                                <div class="controls">
+                                    <select tabindex="1" class="span7" id="type_primary" name="type_primary">
+                                        <option value="Category 0">----请选择商品的一级类别----</option>
+                                        <option th:each="primary : ${primaries}" th:selected="${good.getType().content1==primary}" th:value="${primary}" th:text="${primary}">First Dropdown</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label">二级类别</label>
+                                <div class="controls">
+                                    <select tabindex="1" class="span7" id="type_secondary" name="type_secondary">
+                                        <option value="Category 0">----请选择商品的二级类别----</option>
+                                        <option th:each="secondary : ${secondaries}" th:selected="${good.getType().content2==secondary}" th:value="${secondary}" th:text="${secondary}">Second Dropdown</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="control-group">
+                                <label class="control-label">三级类别</label>
+                                <div class="controls">
+                                    <select tabindex="1" class="span7" id="type_tertiary" name="type_tertiary">
+                                        <option value="Category 0">----请选择商品的三级类别----</option>>
+                                        <option th:each="tertiary : ${tertiaries}" th:selected="${good.getType().content3==tertiary}" th:value="${tertiary}" th:text="${tertiary}">Third Dropdown</option>
+                                    </select>
+                                </div>
+                            </div>
+                                <div class="control-group">
+                                    <label class="control-label">商品图片</label>
+                                    <div class="controls">
+                                        <input id="lefile" type="file" style="display:none">
+                                        <img id="upload_file" th:src="@{'/goodsimg/'+${good.getImage()}}" style="height: 100px; width: 100px">
+                                        <div class="input-append">
+                                            <input id="photo_cover" onchange="imageInstantShow(this);" class="input-large" type="file" style="height:30px;width:425.94px;" placeholder="请打开商品图片" name="filamge">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="widget-footer">
+                            <button class="btn btn-primary" type="submit">修改</button>
+                            <a class="btn" type="button" th:href="@{/brand/index}">取消</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div><!--/.fluid-container-->
+    </div><!-- wrap ends-->
+</div>
+
+
+<script type="text/javascript" th:src="@{/assets/js/jquery.min.js}"></script>
+<script type="text/javascript" th:src="@{/assets/js/jquery-ui.min.js}"></script>
+<script type="text/javascript" th:src="@{/assets/js/raphael-min.js}"></script>
+<script type="text/javascript" th:src="@{/assets/js/bootstrap.js}"></script>
+<script type="text/javascript" th:src='@{/assets/js/sparkline.js}'></script>
+<script type="text/javascript" th:src='@{/assets/js/morris.min.js}'></script>
+<script type="text/javascript" th:src="@{/assets/js/jquery.dataTables.min.js}"></script>
+<script type="text/javascript" th:src="@{/assets/js/jquery.masonry.min.js}"></script>
+<script type="text/javascript" th:src="@{/assets/js/jquery.imagesloaded.min.js}"></script>
+<script type="text/javascript" th:src="@{/assets/js/jquery.facybox.js}"></script>
+<script type="text/javascript" th:src="@{/assets/js/jquery.alertify.min.js}"></script>
+<script type="text/javascript" th:src="@{/assets/js/jquery.knob.js}"></script>
+<script type='text/javascript' th:src='@{/assets/js/fullcalendar.min.js}'></script>
+<script type='text/javascript' th:src='@{/assets/js/jquery.gritter.min.js}'></script>
+<script type="text/javascript" th:src="@{/assets/js/realm.js}"></script>
+<script type="text/javascript" th:src="@{/assets/js/jquery.slimscroll.min.js}"></script>
+
+<script src="http://libs.baidu.com/jquery/1.9.1/jquery.min.js"></script>
+<script>
+    //在input file内容改变的时候触发事件
+    $('#photo_cover').change(function(){
+        //获取input file的files文件数组;
+        //$('#filed')获取的是jQuery对象，.get(0)转为原生对象;
+        //这边默认只能选一个，但是存放形式仍然是数组，所以取第一个元素使用[0];
+        var file = $('#photo_cover').get(0).files[0];
+        //创建用来读取此文件的对象
+        var reader = new FileReader();
+        //使用该对象读取file文件
+        reader.readAsDataURL(file);
+        //读取文件成功后执行的方法函数
+        reader.onload=function(e){
+            //读取成功后返回的一个参数e，整个的一个进度事件
+            console.log(e);
+            //选择所要显示图片的img，要赋值给img的src就是e中target下result里面
+            //的base64编码格式的地址
+            $('#upload_file').get(0).src = e.target.result;
+        }
+    })
+</script>
+<script type="text/javascript">
+    $(function(){
+        $("#type_primary").change(function(){
+            var type_primary = $("#type_primary").val();
+            //alert(type_primary);
+            $.ajax({
+                type:"POST",
+                url : "/brandrest/getsecondary",
+                async : false,
+                data:{
+                    primary : type_primary
+                },
+                success:function(data){
+                    $("#type_secondary").empty();
+                    $("#type_tertiary").empty();
+                    $("#type_goods").empty();
+                    $("#type_secondary").append("<option value=''>----请选择商品的耳机类别----</option>");
+                    for (i = 0; i < data.length; i++) {
+                        //alert(data[i]);
+                        $("#type_secondary").append( "<option value='"+data[i]+"'>"+data[i]+"</option>");
+                    }
+                }
+            });
+        });
+    });
+</script>
+<script type="text/javascript">
+    $(function(){
+        $("#type_secondary").change(function(){
+            var type_primary = $("#type_primary").val();
+            var type_secondary = $("#type_secondary").val();
+            //alert(type_primary);
+            $.ajax({
+                type:"POST",
+                url : "/brandrest/gettertiary",
+                async : false,
+                data:{
+                    primary : type_primary,
+                    secondary : type_secondary
+                },
+                success:function(data){
+                    $("#type_tertiary").empty();
+                    $("#type_goods").empty();
+                    $("#type_tertiary").append("<option value=''>----请选择商品的三级类别----</option>");
+                    for (i = 0; i < data.length; i++) {
+                        //alert(data[i]);
+                        $("#type_tertiary").append( "<option value='"+data[i]+"'>"+data[i]+"</option>");
+                    }
+                }
+            });
+        });
+    });
+</script>
+</body>
+</html>

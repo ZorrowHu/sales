@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html   xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>我的历史订单</title>
+    <link th:href="@{/frontend/css/bootstrap.css}" rel="stylesheet" type="text/css" media="all" />
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script th:src="@{/frontend/js/jquery.min.js}"></script>
+    <!-- Custom Theme files -->
+    <!--theme-style-->
+    <link th:href="@{/frontend/css/style.css}" rel="stylesheet" type="text/css" media="all" />
+    <!--//theme-style-->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="keywords" content="Fashion Mania Responsive web template, Bootstrap Web Templates, Flat Web Templates, Andriod Compatible web template,
+Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyErricsson, Motorola web design" />
+    <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+    <!-- start menu -->
+    <link th:href="@{/frontend/css/memenu.css}" rel="stylesheet" type="text/css" media="all" />
+    <script type="text/javascript" th:src="@{/frontend/js/memenu.js}"></script>
+    <script>$(document).ready(function(){$(".memenu").memenu();});</script>
+    <script th:src="@{/frontend/js/simpleCart.min.js}"> </script>
+    <!-- slide -->
+    <script th:src="@{/frontend/js/responsiveslides.min.js}"></script>
+    <script>
+        $(function () {
+            $("#slider").responsiveSlides({
+                auto: true,
+                speed: 500,
+                namespace: "callbacks",
+                pager: true,
+            });
+        });
+    </script>
+</head>
+<body>
+<!--header-->
+<div class="header">
+    <div class="header-top">
+        <div class="container">
+            <div class="col-sm-4 world">
+                <a th:if="${session.consumer != null}" th:href="@{'/consumer/myOrders/' + ${session.consumer.getUserId()}}" class="btn btn-sm btn-info">查看历史订单</a>
+            </div>
+            <div class="col-sm-4 logo">
+                <a th:href="@{/consumer/index}"><img th:src="@{/frontend/images/logo.png}" alt=""></a>
+            </div>
+
+            <div class="col-sm-4 header-left">
+                <p class="log"  th:if="${session.consumer == null}"><a th:href="@{/consumer/login}"  >登陆</a>
+                    <span>或</span><a  th:href="@{/consumer/register}"  >注册</a>
+                </p>
+                <p class="log"  th:if="${session.consumer != null}" align="right">
+                    <label th:text="${session.consumer.getUserName()}"  ></label>，欢迎你！
+                    <a th:href="@{/consumer/logout}" class="btn btn-xs btn-danger" style="text-decoration: none;color: white">退出</a>
+                </p>
+                <div class="cart box_1"  th:if="${session.consumer != null}">
+                    <a th:href="@{/consumer/checkout}" style="text-decoration: none; color: inherit;">
+                        <h3>
+                            <div class="total">
+                                <span id="simpleCart_total" th:text="'￥' + ${totalPrice}"></span>
+                            </div>
+                            <img th:src="@{/frontend/images/cart.png}" alt=""/>
+                        </h3>
+                        <p><span href="javascript:;" class="simpleCart_empty" style="color:lightgrey;">购物车</span></p>
+                    </a>
+
+                </div>
+                <div class="clearfix"> </div>
+            </div>
+            <div class="clearfix"> </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="head-top">
+            <div class="col-sm-2 number">
+                <span><i class="glyphicon glyphicon-phone"></i>800 820 8820</span>
+            </div>
+            <div class="col-sm-8 h_menu4">
+                <ul class="memenu skyblue">
+                    <li class=" grid"><a  th:href="@{/consumer/index}">Home</a></li>
+                    <li th:each="primary : ${primaries}"><a  href="#" th:text="${primary.getKey()}">Men</a>
+                        <div class="mepanel">
+                            <div class="row">
+                                <div class="col1" th:each="secondaries : ${primary.getValue()}">
+                                    <div class="h_nav">
+                                        <h4 th:text="${secondaries.getKey()}">All Clothing</h4>
+                                        <ul >
+                                            <li th:each="tertiaries : ${secondaries.getValue()}"><a th:href="@{'/consumer/search/' + ${tertiaries.getValue()}}" th:text="${tertiaries.getKey()}">Shirts</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <!---->
+        </div>
+        <form th:action="@{/consumer/search}" method="post">
+            <div class="input-group">
+                <input type="text" class="form-control" name="keyword">
+                <span class="input-group-btn">
+                    <button class="btn btn-default" type="submit">搜索</button>
+                </span>
+            </div><!-- /input-group -->
+        </form>
+    </div>
+</div>
+
+
+
+<!--content-->
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">我的历史订单</h3>
+                </div>
+                <div class="panel-body">
+                    <table class="table table-hover table-striped table-bordered">
+                        <thead>
+                        <tr>
+                            <th>订单编号</th>
+                            <th>商品名称</th>
+                            <th>收货地址</th>
+                            <th>数量</th>
+                            <th>创建时间</th>
+                            <th>订单状态</th>
+                            <th>订单总价</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="order:${orders}"
+                            th:unless="${order.status} eq '待支付'">
+                            <td th:text="${#numbers.formatInteger(order.orderId, 8)}"></td>
+                            <td th:text="${order.goods.getGoodName()}"></td>
+                            <td th:text="${order.ship.getAddress()}"></td>
+                            <td th:text="${order.quantity}"></td>
+                            <td th:text="${#dates.format(order.payTime, 'yyyy-MM-dd   HH:mm')}"></td>
+                            <td th:switch="${order.status}">
+                                <span th:case="已支付" class="label label-info" th:text="${order.status}"></span>
+                                <span th:case="待发货" class="label label-warning" th:text="${order.status}"></span>
+                                <span th:case="已发货" class="label label-primary" th:text="${order.status}"></span>
+                                <span th:case="待退款" class="label label-danger" th:text="${order.status}"></span>
+                                <span th:case="已完成" class="label label-success" th:text="${order.status}"></span>
+                                <span th:case="已取消" class="label label-default" th:text="${order.status}"></span>
+                            </td>
+                            <td th:text="${order.totalPrice }"></td>
+                            <td>
+                                <a th:if="${order.status} eq '已支付'" th:href="@{'../refund/'+${order.orderId}}">
+                                    <span class="label label-success">取消订单并申请退款</span>
+                                </a>
+                                <a th:if="${order.status} eq '待发货'" th:href="@{'../refund/'+${order.orderId}}">
+                                    <span class="label label-success">取消订单并申请退款</span>
+                                </a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div><!-- /.col-sm-12 -->
+    </div>
+</div>
+<!--//content-->
+<!--footer-->
+<div class="footer">
+    <div class="footer-bottom">
+        <div class="container">
+            <div class="clearfix"> </div>
+            <p class="footer-class">Copyright &copy; 2018.暨南大学南校区软件工程酱油团及模板之家</p>
+        </div>
+    </div>
+</div>
+
+<!--//footer-->
+</body>
+</html>
